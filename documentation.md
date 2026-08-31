@@ -141,3 +141,51 @@ The static web client and live workspace operate entirely in the client browser:
 - **Standardized Directives**: `robots.txt` explicitly allows full crawling for standard user agents (`Googlebot`, `Bingbot`, `Slurp`, `DuckDuckBot`, `Baiduspider`, `YandexBot`).
 - **Sitemap Manifest**: `sitemap.xml` provides full coverage with change frequencies and priorities for all public entrypoints (`/`, `/workspace.html`, `/settings.html`, `/docs.html`, `/privacy.html`, `/terms.html`, `/contact.html`).
 - **Canonical Meta Tags**: Each page contains strict OpenGraph, Twitter Card, and Canonical link tags for indexation.
+
+---
+
+## 7. Document CRUD, Multi-Format Export Engine & Data Wipe Protocol
+
+### 7.1 Client-Side Document CRUD Management
+- **Create**: Multi-image drag-and-drop / file picker ingestion, blank spreadsheet generation (`createBlankSheet`), and realistic sample preset loader (`loadSampleTemplate` for invoices, medical logs, and inventory registers).
+- **Read**: Dynamic document preview with thumbnail rendering and pan-zoom expansion, interactive 2D table grid, structured Markdown notes summary, and multi-file queue inspector.
+- **Update**: In-place document renaming, inline `contenteditable` cell and column header editing, real-time column sorting (alphanumeric/numeric ascending and descending), instant row filtering/searching (`filterGridRows`), and dynamic `+ Row`, `- Row`, `+ Col`, `- Col` dimension modifiers.
+- **Delete**: Queue item removal, active sheet reset, individual history record deletion, and bulk history purge.
+
+### 7.2 Multi-Format Export Engine
+- **Excel (.xlsx)**: True binary spreadsheet workbook generated client-side via SheetJS (`XLSX.writeFile`) with zero server roundtrips.
+- **CSV (.csv)**: Strict RFC 4180 compliant comma-separated file format with double-quote escaping.
+- **JSON (.json)**: Normalized array of structured key-value objects for direct database and API pipeline ingestion.
+- **Markdown (.md)**: GitHub-Flavored Markdown table representation alongside generated structured analytical notes.
+- **Clipboard (TSV)**: Instant tab-separated clipboard copy for direct copy-pasting into Microsoft Excel, Google Sheets, LibreOffice Calc, or Notion.
+
+### 7.3 Type-to-Confirm Application Reset Safeguard
+- **Data Sanitization**: Under `Settings > Reset Application`, users can purge all stored credentials, custom endpoints, prompt rules, and document history.
+- **Strict Verification Protocol**: The destructive wipe trigger remains strictly disabled until the user explicitly inputs `delete my data` into the confirmation input. Upon confirmation, `localStorage.clear()` and `sessionStorage.clear()` execute simultaneously, restoring factory default state.
+
+### 7.4 Mobile-First Responsive Framework
+- **Touch-Friendly Targets**: All buttons, inputs, and editable table cells adhere to minimum 44px touch targets.
+- **Adaptive Viewport Modes**: On screens `< 960px`, the interface shifts from a split-pane layout to a focused tab switcher (`Upload`, `Table`, `Notes`, `History`), eliminating vertical scroll fatigue.
+- **Horizontal Table Scrolling**: Spreadsheet tables are isolated in responsive touch-scroll containers with sticky column headers and dynamic row visibility indicators.
+
+---
+
+## 8. Icon-Driven Navigation Header & Streamlined Mobile Workspace Controls
+
+### 8.1 Icon-Driven Header Architecture
+- **Accessible Tooltips & Aria Tokens**: Text-heavy top navigation links are replaced with compact, accessible SVG icon buttons (`Workspace`, `Settings`, `Docs`, `Theme Switcher`, and `GitHub Repository`).
+- **Zero Layout Shift**: Fixed-dimension 38px icon buttons maintain visual balance and prevent navigation overflow across extreme mobile screen widths (320px to 480px).
+
+### 8.2 Mobile View Icon Transformations
+- **Relatable Metaphors**: Mobile workspace tab controls use high-clarity SVG icons:
+  - *Upload*: Arrow-up tray icon.
+  - *Table*: 2D spreadsheet grid icon.
+  - *Notes*: Document text icon.
+  - *History*: Clock history icon.
+- **Card and Toolbar Icons**: Interactive controls throughout the workspace feature intuitive icon representations for `New` (Plus), `Sample` (Sparkles), `Export` (Download tray), `Sort` (Bidirectional arrows), and `Clear` (Trash bin).
+
+### 8.3 Streamlined Spreadsheet Interactions
+- **Toolbar De-Cluttering**: Redundant `+ Row`, `- Row`, `+ Col`, `- Col` buttons are eliminated from the grid header bar to maximize horizontal space for live search filtering, column sorting, and multi-format export dropdowns.
+- **Direct Inline Mutation**: Users perform cell editing, row additions, and header updates directly within the 2D grid matrix via standard contenteditable interactions and keyboard shortcuts.
+
+

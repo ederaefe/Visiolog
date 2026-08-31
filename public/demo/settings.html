@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Settings — Visiolog AI Configuration</title>
-  <meta name="description" content="Configure AI vision providers, API keys, custom models, test outbound connections, and adjust extraction prompts for Visiolog." />
+  <meta name="description" content="Configure AI vision providers, API keys, custom models, test outbound connections, and reset application storage for Visiolog." />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <link rel="canonical" href="https://ederaefe.github.io/Visiolog/settings.html" />
 
@@ -17,7 +17,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
 
+  <!-- Synchronous Theme Evaluation -->
   <script>
+    /* Evaluate theme preference before rendering to prevent visual flicker */
     (function () {
       var stored = localStorage.getItem('visiolog_theme');
       var isDark = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -26,6 +28,7 @@
   </script>
 
   <style>
+    /* CSS Variables for Light Theme */
     :root {
       --bg: hsl(70, 60%, 96%);
       --fg: hsl(214, 35%, 10%);
@@ -40,12 +43,13 @@
       --shadow: rgba(13, 82, 0, 0.08);
       --danger: hsl(0, 72%, 51%);
       --success: hsl(142, 72%, 40%);
-      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
       --font-serif: 'Fraunces', Georgia, serif;
       --font-mono: 'JetBrains Mono', monospace;
       --radius: 0.75rem;
     }
 
+    /* CSS Variables for Dark Theme */
     [data-theme="dark"] {
       --bg: hsl(0, 0%, 13%);
       --fg: hsl(0, 0%, 98%);
@@ -62,49 +66,252 @@
       --success: hsl(142, 72%, 50%);
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column; }
-    .wrap { width: 100%; max-width: 820px; margin: 0 auto; padding: 0 1.25rem; }
+    /* Reset and Base Rules */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
     .font-serif { font-family: var(--font-serif); }
     .font-mono  { font-family: var(--font-mono); }
 
-    .site-header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 3.75rem; gap: 1rem; }
-    .brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); font-weight: 800; font-size: 1.1rem; }
-    .brand-mark { width: 2rem; height: 2rem; background: var(--primary); color: var(--primary-fg); border-radius: 0.45rem; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.1rem; font-weight: 900; }
-    .badge-tag { background: hsla(102, 87%, 76%, 0.2); color: var(--primary); border: 1px solid var(--border); border-radius: 9999px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 0.15rem 0.5rem; font-family: var(--font-mono); }
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
 
-    .btn { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; font-size: 0.8125rem; border-radius: var(--radius); padding: 0.5rem 1rem; text-decoration: none; cursor: pointer; border: 1px solid transparent; background: transparent; color: var(--fg); transition: opacity 0.15s ease, background-color 0.15s ease; white-space: nowrap; }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.75rem;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 800;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      width: 2rem;
+      height: 2rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-radius: 0.45rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    .badge-tag {
+      background: hsla(102, 87%, 76%, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.15rem 0.5rem;
+      font-family: var(--font-mono);
+    }
+
+    /* Icon-Driven Nav Bar */
+    .nav-icon-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .nav-icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      width: 2.35rem;
+      height: 2.35rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--fg);
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .nav-icon-btn:hover {
+      background: var(--muted);
+      border-color: var(--primary);
+    }
+
+    .nav-icon-btn.active {
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-color: var(--primary);
+    }
+
+    /* Universal Button Styles */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      font-weight: 600;
+      font-size: 0.8125rem;
+      border-radius: var(--radius);
+      padding: 0.45rem 0.85rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--fg);
+      transition: opacity 0.15s ease, background-color 0.15s ease;
+      white-space: nowrap;
+      min-height: 38px;
+    }
+
+    .btn:hover { background: var(--muted); }
     .btn-primary { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
     .btn-primary:hover { opacity: 0.88; }
     .btn-outline { background: var(--card); border-color: var(--border); color: var(--fg); }
     .btn-outline:hover { background: var(--muted); }
-    .btn-ghost { color: var(--muted-fg); }
-    .btn-ghost:hover { color: var(--fg); }
+    .btn-ghost { color: var(--muted-fg); border-color: transparent; background: transparent; }
+    .btn-ghost:hover { color: var(--fg); background: var(--muted); }
+    .btn-danger { background: var(--danger); color: #ffffff; border-color: var(--danger); }
+    .btn-danger:hover { opacity: 0.9; }
+    .btn-danger:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-sm { font-size: 0.75rem; padding: 0.3rem 0.6rem; min-height: 32px; }
+    .btn-full { width: 100%; }
 
-    .svg-icon { width: 1rem; height: 1rem; stroke-width: 2; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    /* SVG Helpers */
+    .svg-icon {
+      width: 1rem;
+      height: 1rem;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
     .svg-icon-sm { width: 0.875rem; height: 0.875rem; }
     .spin { animation: spin 0.9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .settings-container { padding: 2.5rem 0 4rem; display: flex; flex-direction: column; gap: 1.5rem; }
-    .settings-header { margin-bottom: 0.5rem; }
-    .settings-title { font-size: 1.85rem; font-weight: 900; letter-spacing: -0.02em; }
-    .settings-sub { color: var(--muted-fg); font-size: 0.875rem; margin-top: 0.25rem; }
+    /* Settings Container Layout */
+    .settings-container {
+      padding: 1.5rem 0 3.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
 
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 2px 6px var(--shadow); }
-    .card-heading { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
-    .card-title { font-size: 0.95rem; font-weight: 700; color: var(--fg); font-family: var(--font-serif); }
-    .card-desc { font-size: 0.75rem; color: var(--muted-fg); line-height: 1.5; }
+    .settings-header { margin-bottom: 0.25rem; }
+    .settings-title { font-size: 1.75rem; font-weight: 900; letter-spacing: -0.02em; }
+    .settings-sub { color: var(--muted-fg); font-size: 0.85rem; margin-top: 0.25rem; }
 
-    .provider-tabs { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-    .provider-tab { flex: 1; min-width: 110px; padding: 0.5rem; font-size: 0.75rem; font-weight: 700; border-radius: 0.5rem; border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg); cursor: pointer; font-family: var(--font-mono); text-align: center; transition: all 0.15s ease; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: 0 1px 4px var(--shadow);
+    }
+
+    .card-danger {
+      border-color: hsla(0, 72%, 51%, 0.35);
+      background: hsla(0, 72%, 51%, 0.02);
+    }
+
+    .card-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--fg);
+      font-family: var(--font-serif);
+    }
+
+    .card-desc {
+      font-size: 0.75rem;
+      color: var(--muted-fg);
+      line-height: 1.5;
+    }
+
+    /* Responsive Provider Tabs */
+    .provider-tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.4rem;
+    }
+
+    .provider-tab {
+      padding: 0.5rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--muted-fg);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+
     .provider-tab:hover { color: var(--fg); border-color: var(--primary); }
     .provider-tab.active { background: var(--muted); color: var(--fg); border-color: var(--primary); }
 
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    /* Form Fields */
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
     .form-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-fg); font-family: var(--font-mono); }
-    .input-row { display: flex; gap: 0.5rem; }
+    .input-row { display: flex; gap: 0.4rem; }
     .text-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); outline: none; transition: border-color 0.15s ease; }
     .text-input:focus { border-color: var(--primary); }
     .text-input::placeholder { color: var(--muted-fg); }
@@ -112,6 +319,7 @@
     .textarea-input { width: 100%; height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg); outline: none; resize: vertical; line-height: 1.45; }
     .textarea-input:focus { border-color: var(--primary); }
 
+    /* Combobox Styles */
     .combobox-wrap { position: relative; width: 100%; }
     .combobox-input-row { display: flex; position: relative; align-items: center; }
     .combobox-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.55rem 2.25rem 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); outline: none; transition: border-color 0.15s ease; }
@@ -127,7 +335,7 @@
     [data-theme="dark"] .combobox-opt.sel { background: hsla(102, 87%, 76%, 0.1); }
     .combobox-opt-tag { font-size: 0.6rem; color: var(--muted-fg); text-transform: uppercase; font-family: var(--font-mono); }
 
-    .model-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
+    .model-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.35rem; }
     .model-pill { font-size: 0.65rem; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: 0.35rem; border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg); cursor: pointer; transition: all 0.15s ease; }
     .model-pill:hover { border-color: var(--primary); color: var(--fg); }
     .model-pill.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
@@ -146,10 +354,11 @@
     .notification-bar.success { background: hsla(142, 72%, 40%, 0.08); border-color: hsla(142, 72%, 40%, 0.3); color: var(--success); }
     .notification-bar.error { background: hsla(0, 72%, 51%, 0.08); border-color: hsla(0, 72%, 51%, 0.3); color: var(--danger); }
 
+    /* Footer */
     .site-footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: auto; background: var(--card); font-size: 0.75rem; color: var(--muted-fg); }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-links { display: flex; gap: 1rem; }
-    .footer-links a { color: var(--muted-fg); text-decoration: none; }
+    .footer-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .footer-links a { color: var(--muted-fg); text-decoration: none; font-weight: 500; }
     .footer-links a:hover { color: var(--fg); }
 
     .theme-selector-group { display: inline-flex; align-items: center; padding: 0.2rem; border-radius: 9999px; background-color: var(--muted); border: 1px solid var(--border); gap: 0.15rem; }
@@ -160,50 +369,58 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Top Navigation Header (Icon-Driven) -->
   <header class="site-header">
     <div class="wrap">
       <div class="header-inner">
-        <a href="./" class="brand">
+        <a href="./" class="brand" title="Visiolog Home">
           <div class="brand-mark">V</div>
           <span class="font-serif">Visiolog</span>
           <span class="badge-tag">Settings</span>
         </a>
 
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-          <a href="./workspace.html" class="btn btn-primary" style="font-size: 0.75rem;">
-            <span>Workspace</span>
-            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <!-- Desktop & Mobile Icon Button Navigation Bar -->
+        <nav class="nav-icon-group" aria-label="Primary Navigation">
+          <a href="./workspace.html" class="nav-icon-btn" title="Workspace" aria-label="Workspace">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
           </a>
-          <a href="./docs.html" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
-            Docs
+
+          <a href="./settings.html" class="nav-icon-btn active" title="Settings" aria-label="Settings">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
           </a>
-          <a href="./" class="btn btn-ghost" style="font-size: 0.75rem;">
-            Landing
+
+          <a href="./docs.html" class="nav-icon-btn" title="Documentation" aria-label="Documentation">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
           </a>
-        </div>
+
+          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="nav-icon-btn" title="GitHub" aria-label="GitHub">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </a>
+        </nav>
       </div>
     </div>
   </header>
 
-  <!-- Main Settings Form -->
+  <!-- Main Settings Container -->
   <main class="wrap">
     <div class="settings-container">
       <div class="settings-header">
-        <h1 class="settings-title font-serif">AI Vision Configuration</h1>
-        <p class="settings-sub">Adaptable vision providers, credentials, custom model IDs, and live outbound connection testing.</p>
+        <h1 class="settings-title font-serif">Configuration</h1>
+        <p class="settings-sub">Vision engine settings, API credentials, prompts, and application reset.</p>
       </div>
 
       <div id="noticeBar" class="notification-bar" role="status"></div>
 
-      <!-- 1. Inference Provider -->
+      <!-- 1. Inference Provider Selection -->
       <section class="card">
         <div class="card-heading">
-          <div class="card-title">1. Inference Provider</div>
+          <div class="card-title">1. Provider</div>
           <span id="providerBadge" class="status-badge connected">Google Gemini</span>
         </div>
         <p class="card-desc">
-          Choose which vision engine executes tabular document OCR. All models and keys adapt dynamically.
+          Choose which vision engine executes tabular document OCR. Credentials adapt dynamically.
         </p>
 
         <div class="provider-tabs">
@@ -217,9 +434,9 @@
       <!-- 2. Endpoint & API Credentials -->
       <section class="card" id="apiKeySection">
         <div class="card-heading">
-          <div class="card-title">2. API Credentials &amp; Endpoint</div>
-          <button type="button" class="btn btn-outline" style="font-size: 0.65rem; padding: 0.25rem 0.5rem;" onclick="probeModels(true)">
-            Auto-Detect Models
+          <div class="card-title">2. Credentials</div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="probeModels(true)">
+            Detect
           </button>
         </div>
         <p class="card-desc" id="keyHelperText">
@@ -249,7 +466,7 @@
               oninput="handleKeySave(this.value)"
               autocomplete="off"
             />
-            <button type="button" class="btn btn-outline" onclick="toggleKeyVisibility()" id="toggleVisBtn">
+            <button type="button" class="btn btn-outline btn-sm" onclick="toggleKeyVisibility()" id="toggleVisBtn">
               Show
             </button>
           </div>
@@ -259,15 +476,15 @@
       <!-- 3. Model Selection & Outbound Connection Test -->
       <section class="card">
         <div class="card-heading">
-          <div class="card-title">3. Model Setup &amp; Outbound Verification</div>
+          <div class="card-title">3. Model</div>
           <span id="modelCountBadge" class="status-badge">Adaptable</span>
         </div>
         <p class="card-desc">
-          Select or type any custom model ID, then test outbound connectivity to verify valid credentials and endpoint response.
+          Select or type any custom model ID, then test outbound connectivity to verify valid credentials.
         </p>
 
         <div class="form-group">
-          <label class="form-label" for="modelInput">Active Model (Type or Select)</label>
+          <label class="form-label" for="modelInput">Active Model</label>
           <div class="combobox-wrap" id="modelCombobox">
             <div class="combobox-input-row">
               <input
@@ -289,11 +506,11 @@
           <div class="model-pills" id="modelPills"></div>
         </div>
 
-        <!-- Outbound Connection Test Action -->
-        <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.65rem;">
+        <!-- Connection Test Action -->
+        <div style="margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.5rem;">
           <button type="button" class="btn btn-primary" style="align-self: flex-start;" onclick="testOutboundConnection()" id="testConnectionBtn">
             <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span>Test Outbound Connection</span>
+            <span>Test</span>
           </button>
 
           <!-- Result Indicator Box -->
@@ -301,16 +518,16 @@
         </div>
       </section>
 
-      <!-- 4. Extraction Prompt -->
+      <!-- 4. Extraction System Prompt -->
       <section class="card">
         <div class="card-heading">
-          <div class="card-title">4. Extraction Prompt</div>
-          <button type="button" class="btn btn-ghost" style="font-size: 0.65rem; padding: 0.2rem 0.45rem;" onclick="resetPrompt()">
-            Reset to Default
+          <div class="card-title">4. Prompt</div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="resetPrompt()">
+            Reset
           </button>
         </div>
         <p class="card-desc">
-          Customize instructions passed to the vision AI (e.g. enforce specific column names, numeric formats, or note summaries).
+          Customize instructions passed to the vision AI engine.
         </p>
 
         <div class="form-group">
@@ -319,31 +536,64 @@
         </div>
       </section>
 
-      <!-- 5. Data & Cache Management -->
+      <!-- 5. History Cache Management -->
       <section class="card">
-        <div class="card-title">5. Data &amp; Cache Management</div>
+        <div class="card-title">5. History</div>
         <p class="card-desc">
-          Visiolog stores history in browser memory. Manage your local cache below.
+          Visiolog saves extracted spreadsheets in browser memory. You can clear conversion history independently.
         </p>
 
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-          <button type="button" class="btn btn-outline" style="font-size: 0.75rem;" onclick="clearHistory()">
-            Clear Conversion History
-          </button>
-          <button type="button" class="btn btn-outline" style="font-size: 0.75rem; color:var(--danger);" onclick="resetAll()">
-            Reset All Settings
+        <div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="clearHistory()">
+            Clear History
           </button>
         </div>
       </section>
 
+      <!-- 6. Application Reset / Local Storage Wipe (Type-to-Confirm Safeguard) -->
+      <section class="card card-danger">
+        <div class="card-heading">
+          <div class="card-title" style="color:var(--danger);">6. Reset Application</div>
+          <span class="status-badge" style="color:var(--danger); border-color:var(--danger);">Danger</span>
+        </div>
+        <p class="card-desc">
+          Wipes all local storage data: API credentials, custom endpoints, prompt rules, model preferences, and document history. This action cannot be undone.
+        </p>
+
+        <div class="form-group" style="margin-top:0.4rem;">
+          <label class="form-label" for="wipeConfirmInput" style="color:var(--danger);">Type "delete my data" to confirm</label>
+          <div class="input-row" style="flex-wrap:wrap;">
+            <input
+              type="text"
+              id="wipeConfirmInput"
+              class="text-input"
+              placeholder="delete my data"
+              oninput="handleWipeInputChange(this.value)"
+              autocomplete="off"
+              style="border-color:hsla(0, 72%, 51%, 0.4);"
+            />
+            <button
+              type="button"
+              id="wipeDataBtn"
+              class="btn btn-danger"
+              disabled
+              onclick="executeApplicationReset()"
+            >
+              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              <span>Wipe Data</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <!-- Navigation Actions -->
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <a href="./workspace.html" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">
-          <span>Back to Workspace</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <a href="./workspace.html" class="btn btn-primary" style="padding: 0.65rem 1.25rem;">
+          <span>Workspace</span>
           <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
         <a href="./docs.html" class="btn btn-outline">
-          <span>Read Documentation</span>
+          <span>Documentation</span>
         </a>
       </div>
     </div>
@@ -371,7 +621,7 @@
             <span>Light</span>
           </button>
           <button type="button" class="theme-btn" id="themeBtnDark" role="radio" aria-checked="false" title="Dark Mode">
-            <svg class="svg-icon svg-icon-sm" style="color: #34d399;" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            <svg class="svg-icon svg-icon-sm" style="color: #34d399;" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 0 1 1-9-9Z"/></svg>
             <span>Dark</span>
           </button>
           <button type="button" class="theme-btn" id="themeBtnAuto" role="radio" aria-checked="true" title="System Match">
@@ -383,7 +633,9 @@
     </div>
   </footer>
 
+  <!-- Application Configuration Script -->
   <script>
+    /* State Variables */
     var activeProvider = 'gemini';
     var activeModel    = 'gemini-2.5-flash';
     var knownModels    = [];
@@ -396,6 +648,13 @@
       custom: ['default-vision-model', 'gpt-4o-mini', 'llama-3.2-vision']
     };
 
+    /* Mobile Navigation */
+    function toggleMobileNav() {
+      var panel = document.getElementById('mobileNavPanel');
+      panel.classList.toggle('open');
+    }
+
+    /* Notification Banner */
     var noticeTimer = null;
     function showNotice(msg, type) {
       var bar = document.getElementById('noticeBar');
@@ -405,6 +664,7 @@
       noticeTimer = setTimeout(function() { bar.className = 'notification-bar'; }, 3500);
     }
 
+    /* Provider Switcher */
     function switchProvider(prov) {
       activeProvider = prov;
       localStorage.setItem('visiolog_provider', prov);
@@ -466,6 +726,7 @@
       }
     }
 
+    /* Key & Endpoint Persistence */
     function handleKeySave(val) {
       var trimmed = val.trim();
       if (activeProvider === 'gemini') {
@@ -494,6 +755,7 @@
       }
     }
 
+    /* Model Discovery */
     function probeModels(notify) {
       if (activeProvider === 'gemini') {
         var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
@@ -565,11 +827,9 @@
       }
     }
 
-    // Outbound Connection Test Engine
+    /* Outbound Connection Verification Engine */
     function testOutboundConnection() {
-      var btn = document.getElementById('testConnectionBtn');
       var box = document.getElementById('connectionStatusBox');
-
       box.className = 'connection-status-box testing';
       box.innerHTML = '<svg class="svg-icon spin" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>' +
         '<span>Testing outbound connection to ' + activeProvider + ' (' + activeModel + ')...</span>';
@@ -579,7 +839,7 @@
       if (activeProvider === 'gemini') {
         var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
         if (!key) {
-          showConnectionFail('No Gemini API Key provided. Enter your API key in Step 2 above.');
+          showConnectionFail('No Gemini API Key provided. Enter your API key above.');
           return;
         }
 
@@ -595,13 +855,13 @@
             }
           })
           .catch(function(err) {
-            showConnectionFail('Gemini Connection Error: ' + err.message + '. Check your API key or model name.');
+            showConnectionFail('Gemini Connection Error: ' + err.message);
           });
 
       } else if (activeProvider === 'openrouter') {
         var orKey = localStorage.getItem('visiolog_demo_openrouter_key') || '';
         if (!orKey) {
-          showConnectionFail('No OpenRouter API Key provided. Enter your key in Step 2 above.');
+          showConnectionFail('No OpenRouter API Key provided. Enter your key above.');
           return;
         }
 
@@ -617,7 +877,7 @@
             }
           })
           .catch(function(err) {
-            showConnectionFail('OpenRouter Error: ' + err.message + '. Please check your API key.');
+            showConnectionFail('OpenRouter Error: ' + err.message);
           });
 
       } else if (activeProvider === 'ollama') {
@@ -631,7 +891,7 @@
             }
           })
           .catch(function() {
-            showConnectionFail('Could not connect to Ollama at http://localhost:11434. Ensure Ollama is running and OLLAMA_ORIGINS="*" is enabled.');
+            showConnectionFail('Could not connect to Ollama at http://localhost:11434. Ensure Ollama is running.');
           });
 
       } else if (activeProvider === 'custom') {
@@ -645,11 +905,11 @@
             if (r.ok) {
               showConnectionSuccess('Connected to Custom Endpoint at ' + endpoint + ' (Latency: ' + latency + 'ms).');
             } else {
-              showConnectionSuccess('Reached endpoint at ' + endpoint + ' (Status: ' + r.status + ', Latency: ' + latency + 'ms). Ready to extract.');
+              showConnectionSuccess('Reached endpoint at ' + endpoint + ' (Status: ' + r.status + ', Latency: ' + latency + 'ms).');
             }
           })
           .catch(function(err) {
-            showConnectionFail('Failed to reach custom endpoint: ' + endpoint + '. Ensure CORS is enabled and the server is running.');
+            showConnectionFail('Failed to reach custom endpoint: ' + endpoint + '. Ensure CORS is enabled.');
           });
       }
     }
@@ -665,7 +925,7 @@
       var box = document.getElementById('connectionStatusBox');
       box.className = 'connection-status-box failed';
       box.innerHTML = '<svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>' +
-        '<div><strong>Connection Failed:</strong> ' + escHtml(msg) + '<br /><span style="font-size:0.65rem; opacity:0.85;">Action: Check your network, model identifier, or API credentials.</span></div>';
+        '<div><strong>Connection Failed:</strong> ' + escHtml(msg) + '</div>';
     }
 
     function hideConnectionStatus() {
@@ -673,6 +933,7 @@
       if (box) { box.className = 'connection-status-box'; box.innerHTML = ''; }
     }
 
+    /* Combobox Handlers */
     function handleModelInput(val) {
       var trimmed = val.trim();
       if (!trimmed) return;
@@ -695,11 +956,8 @@
 
     function toggleModelDropdown() {
       var wrap = document.getElementById('modelCombobox');
-      if (wrap.classList.contains('open')) {
-        closeModelDropdown();
-      } else {
-        openModelDropdown();
-      }
+      if (wrap.classList.contains('open')) closeModelDropdown();
+      else openModelDropdown();
     }
 
     function openModelDropdown() {
@@ -721,7 +979,7 @@
       });
 
       if (matches.length === 0) {
-        panel.innerHTML = '<div class="combobox-opt" style="color:var(--muted-fg); font-style:italic;">No preset matches. Your typed model ID will be used directly.</div>';
+        panel.innerHTML = '<div class="combobox-opt" style="color:var(--muted-fg); font-style:italic;">No preset matches. Custom typed ID will be used.</div>';
         return;
       }
 
@@ -737,10 +995,8 @@
     function populateCombobox(models) {
       knownModels = models;
       document.getElementById('modelCountBadge').textContent = models.length + ' available';
-
       var input = document.getElementById('modelInput');
       input.value = activeModel;
-
       filterDropdown('');
       renderPills();
     }
@@ -748,7 +1004,6 @@
     function renderPills() {
       var container = document.getElementById('modelPills');
       if (!container) return;
-
       var topPills = knownModels.slice(0, 4);
       container.innerHTML = topPills.map(function(m) {
         var isAct = m === activeModel;
@@ -770,21 +1025,35 @@
 
     function clearHistory() {
       localStorage.removeItem('visiolog_workspace_history');
-      showNotice('Workspace conversion history cleared.', 'success');
+      showNotice('Workspace history cleared.', 'success');
     }
 
-    function resetAll() {
-      if (confirm('Reset all Visiolog settings to default?')) {
-        localStorage.removeItem('visiolog_provider');
-        localStorage.removeItem('visiolog_model');
-        localStorage.removeItem('visiolog_prompt');
-        localStorage.removeItem('visiolog_demo_gemini_key');
-        localStorage.removeItem('visiolog_demo_openrouter_key');
-        localStorage.removeItem('visiolog_custom_endpoint');
-        localStorage.removeItem('visiolog_custom_key');
-        localStorage.removeItem('visiolog_workspace_history');
-        location.reload();
+    /* Type-to-Confirm Application Reset ("delete my data") */
+    function handleWipeInputChange(val) {
+      var btn = document.getElementById('wipeDataBtn');
+      var normalized = (val || '').trim().toLowerCase();
+      /* Validate exact match for "delete my data" */
+      if (normalized === 'delete my data') {
+        btn.disabled = false;
+      } else {
+        btn.disabled = true;
       }
+    }
+
+    function executeApplicationReset() {
+      var input = document.getElementById('wipeConfirmInput');
+      var val = (input.value || '').trim().toLowerCase();
+      if (val !== 'delete my data') return;
+
+      /* Complete LocalStorage and SessionStorage Sanitization */
+      localStorage.clear();
+      sessionStorage.clear();
+
+      showNotice('All local storage and application data wiped.', 'success');
+
+      setTimeout(function() {
+        location.reload();
+      }, 1000);
     }
 
     function escHtml(str) {
@@ -795,6 +1064,7 @@
       if (!e.target.closest('#modelCombobox')) closeModelDropdown();
     });
 
+    /* Theme Engine */
     var themeBtnLight = document.getElementById('themeBtnLight');
     var themeBtnDark  = document.getElementById('themeBtnDark');
     var themeBtnAuto  = document.getElementById('themeBtnAuto');
@@ -823,6 +1093,7 @@
     themeBtnDark.addEventListener('click', function () { applyTheme('dark'); });
     themeBtnAuto.addEventListener('click', function () { applyTheme('auto'); });
 
+    /* Initialization */
     document.addEventListener('DOMContentLoaded', function() {
       var savedProv   = localStorage.getItem('visiolog_provider') || 'gemini';
       var savedModel  = localStorage.getItem('visiolog_model') || 'gemini-2.5-flash';
