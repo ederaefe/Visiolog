@@ -275,3 +275,18 @@ The live demo (`index.html`, `demo/index.html`, and `public/demo/index.html`) op
 - **Client-Side Pre-processing**: In-memory HTML5 canvas compression reduces raw image payloads prior to transmission.
 - **Sample Document Quota**: Provides a 2-conversion free sample quota for testing before requiring user-supplied API keys.
 
+---
+
+## 12. Modular Multi-Page Demo Architecture
+
+To cleanly decouple marketing presentation from daily extraction workflows and configuration management, the standalone demo suite is organized into three specialized pages:
+
+### 12.1 Architecture Overview
+- **Landing Page (`index.html` / `demo/index.html`)**: Semantic marketing page detailing product features, 3-step extraction workflow, FAQ accordion, trust badges, and theme engine.
+- **Workspace Page (`workspace.html` / `demo/workspace.html`)**: Interactive extraction and editing hub. Features in-memory canvas image compressor, sample document loader with free quota, conversion history manager (stored locally), and editable 2D spreadsheet grid with CSV export.
+- **Settings Page (`settings.html` / `demo/settings.html`)**: Configuration center. Manages inference providers (Gemini, OpenRouter, local Ollama), API key input with show/hide masking, automated model probing, system prompt customization, and local storage cache management.
+
+### 12.2 Inter-Page State Synchronization
+All settings (provider, API keys, active model, custom prompt, conversion history, free sample quotas, and dark/light theme) synchronize seamlessly across pages via `localStorage` with zero backend server dependencies.
+
+
