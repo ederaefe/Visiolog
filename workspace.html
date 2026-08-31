@@ -346,6 +346,12 @@
       background: hsla(105, 100%, 16%, 0.05);
     }
 
+    .dropzone.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
     .dropzone-label {
       font-size: 0.85rem;
       font-weight: 700;
@@ -1367,7 +1373,25 @@
           </div>
         </div>
 
-        <!-- 2. Table Viewport -->
+        <!-- 2. Grid Scanning Animation View (Active during conversion) -->
+        <div id="gridScanningContainer" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 380px; max-height: calc(100vh - 270px); border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); position: relative; overflow: hidden; box-sizing: border-box; padding: 1rem;">
+          <div style="position: relative; max-width: 100%; max-height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.5rem; border: 1px solid var(--border); background: var(--muted); box-shadow: 0 4px 20px rgba(0,0,0,0.12);">
+            <img id="gridScanningImg" src="" alt="Scanning document preview" style="display: block; max-width: 100%; max-height: calc(100vh - 340px); object-fit: contain;" />
+            <!-- Scanning Laser Overlay & Live Progress Bar -->
+            <div id="gridScanOverlay" class="scan-overlay active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <div class="scan-line"></div>
+              <div class="scan-progress-box">
+                <div id="gridScanStatusText" class="scan-status-text">Analyzing & Extracting Table...</div>
+                <div class="scan-progress-track">
+                  <div id="gridScanProgressFill" class="scan-progress-fill"></div>
+                </div>
+                <div id="gridScanProgressPercent" class="scan-progress-percent">0%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Table Viewport -->
         <div id="tableViewport" class="table-viewport" tabindex="0">
           <table class="sheet" id="spreadsheetGrid" aria-label="Spreadsheet editor">
             <thead id="tableHead"></thead>
@@ -1375,7 +1399,7 @@
           </table>
         </div>
 
-        <!-- 3. Notes Viewport -->
+        <!-- 4. Notes Viewport -->
         <div id="notesViewport" class="notes-viewport" tabindex="0">
           <div id="notesEditor" class="notes-editor" contenteditable="true" aria-label="Extracted notes editor"></div>
         </div>
@@ -1427,13 +1451,14 @@
 
     var HISTORY_KEY       = 'visiolog_workspace_history';
     var VIEW_KEY          = 'visiolog_workspace_view';
-    var DEFAULT_PROMPT    = "You are an expert OCR tabular transcription system. Transcribe all rows from this image (logbook, visitor registry, ledger, invoice, receipt, or table) into pure, valid RFC 4180 CSV format.\n\n" +
+    var DEFAULT_PROMPT    = "You are an expert OCR tabular transcription system. Transcribe all rows from this image (logbook, visitor registry, ledger, invoice, receipt, or multi-page open book) into pure, valid RFC 4180 CSV format.\n\n" +
       "STRICT MANDATORY RULES:\n" +
       "1. Return ONLY the raw CSV text. Do NOT wrap in markdown code blocks (```csv), introductory text, conclusions, or line labels like 'Row 1:', 'Row 2:'.\n" +
-      "2. The first line MUST be the column headers (e.g. No, Full Name, Organization, Purpose, Time In, Time Out, Signature, Amount). If columns are unlabelled, infer clear concise names based on the content.\n" +
-      "3. Every record MUST be on a new line with the exact same number of columns separated by commas.\n" +
-      "4. Enclose fields in double quotes if they contain commas, spaces, or special characters.\n" +
-      "5. Transcribe handwriting, names, timestamps, and numbers verbatim. If a cell is blank, output an empty string between commas (,,).";
+      "2. The first line MUST be the column headers (e.g. Date, Name, Department, Level, Device, IMEI, Brand, Phone, Purpose, Time In, Time Out, Sign). If columns are unlabelled, infer concise descriptive names.\n" +
+      "3. TWO-PAGE SPREADS & MULTIPLE TABLES: If the image contains an open notebook or multiple side-by-side pages/tables, transcribe EVERY single row from BOTH pages sequentially (top to bottom) under unified column headers. Do NOT stop after a few rows; transcribe ALL rows from top to bottom across both pages.\n" +
+      "4. Every record MUST be on a new line with the exact same number of columns separated by commas.\n" +
+      "5. Enclose fields in double quotes if they contain commas, spaces, quotes, or special characters.\n" +
+      "6. Transcribe handwriting, names, timestamps, and numbers verbatim. If a cell is blank or not applicable, output an empty string between commas (,,).";
 
     /* Mobile Workspace Tab Switcher */
     function switchMobileWorkspaceTab(tab) {
@@ -1735,60 +1760,142 @@
     function startScanProgress(initialLabel) {
       clearInterval(scanProgressInterval);
       currentScanPercent = 10;
-      var overlay = document.getElementById('scanOverlay');
-      var fill    = document.getElementById('scanProgressFill');
-      var label   = document.getElementById('scanStatusText');
-      var percent = document.getElementById('scanProgressPercent');
+      var overlay     = document.getElementById('scanOverlay');
+      var fill        = document.getElementById('scanProgressFill');
+      var label       = document.getElementById('scanStatusText');
+      var percent     = document.getElementById('scanProgressPercent');
+
+      var gridScan    = document.getElementById('gridScanningContainer');
+      var gridImg     = document.getElementById('gridScanningImg');
+      var gridFill    = document.getElementById('gridScanProgressFill');
+      var gridLabel   = document.getElementById('gridScanStatusText');
+      var gridPercent = document.getElementById('gridScanProgressPercent');
+
+      var dropArea    = document.getElementById('dropArea');
+      var fileInput   = document.getElementById('fileInput');
+      var emptyState  = document.getElementById('emptyState');
+      var tableView   = document.getElementById('tableViewport');
+      var notesView   = document.getElementById('notesViewport');
+
+      // Lock uploading during active processing
+      if (dropArea) dropArea.classList.add('disabled');
+      if (fileInput) fileInput.disabled = true;
+
+      // Show live scanning preview inside the main grid viewport
+      if (uploadedB64 && gridImg) {
+        gridImg.src = 'data:image/jpeg;base64,' + uploadedB64;
+      }
+      if (emptyState) emptyState.style.display = 'none';
+      if (tableView)  tableView.style.display = 'none';
+      if (notesView)  notesView.style.display = 'none';
+      if (gridScan)   gridScan.style.display = 'flex';
+
+      // On mobile screens, switch to grid view to watch scan
+      if (window.innerWidth <= 768) {
+        switchMobileWorkspaceTab('grid');
+      }
 
       if (overlay) overlay.classList.add('active');
       if (fill) fill.style.width = '10%';
-      if (label) label.textContent = initialLabel || 'Downsampling & Preprocessing...';
+      if (gridFill) gridFill.style.width = '10%';
+      var statusMsg = initialLabel || 'Downsampling & Preprocessing...';
+      if (label) label.textContent = statusMsg;
+      if (gridLabel) gridLabel.textContent = statusMsg;
       if (percent) percent.textContent = '10%';
+      if (gridPercent) gridPercent.textContent = '10%';
 
       scanProgressInterval = setInterval(function() {
-        if (currentScanPercent < 88) {
+        if (currentScanPercent < 90) {
           currentScanPercent += (currentScanPercent < 35 ? 6 : (currentScanPercent < 65 ? 3 : 1));
           if (fill) fill.style.width = currentScanPercent + '%';
-          if (percent) percent.textContent = Math.round(currentScanPercent) + '%';
-          if (currentScanPercent >= 25 && currentScanPercent < 55 && label) {
-            label.textContent = 'Transmitting to Vision Engine...';
-          } else if (currentScanPercent >= 55 && currentScanPercent < 80 && label) {
-            label.textContent = 'Neural OCR & Table Extraction...';
-          } else if (currentScanPercent >= 80 && label) {
-            label.textContent = 'Reconciling Headers & Columns...';
+          if (gridFill) gridFill.style.width = currentScanPercent + '%';
+          var pctStr = Math.round(currentScanPercent) + '%';
+          if (percent) percent.textContent = pctStr;
+          if (gridPercent) gridPercent.textContent = pctStr;
+
+          var phaseText = 'Transmitting to Vision Engine...';
+          if (currentScanPercent >= 50 && currentScanPercent < 78) {
+            phaseText = 'Neural OCR & Table Extraction...';
+          } else if (currentScanPercent >= 78) {
+            phaseText = 'Reconciling Headers & Columns...';
           }
+          if (label) label.textContent = phaseText;
+          if (gridLabel) gridLabel.textContent = phaseText;
         }
-      }, 280);
+      }, 260);
     }
 
     function updateScanProgress(percentage, text) {
       currentScanPercent = percentage;
-      var fill    = document.getElementById('scanProgressFill');
-      var label   = document.getElementById('scanStatusText');
-      var percent = document.getElementById('scanProgressPercent');
+      var fill        = document.getElementById('scanProgressFill');
+      var label       = document.getElementById('scanStatusText');
+      var percent     = document.getElementById('scanProgressPercent');
+      var gridFill    = document.getElementById('gridScanProgressFill');
+      var gridLabel   = document.getElementById('gridScanStatusText');
+      var gridPercent = document.getElementById('gridScanProgressPercent');
+
+      var pctStr = Math.round(percentage) + '%';
       if (fill) fill.style.width = percentage + '%';
-      if (percent) percent.textContent = Math.round(percentage) + '%';
+      if (gridFill) gridFill.style.width = percentage + '%';
+      if (percent) percent.textContent = pctStr;
+      if (gridPercent) gridPercent.textContent = pctStr;
       if (label && text) label.textContent = text;
+      if (gridLabel && text) gridLabel.textContent = text;
     }
 
     function stopScanProgress(success) {
       clearInterval(scanProgressInterval);
-      var overlay = document.getElementById('scanOverlay');
-      var fill    = document.getElementById('scanProgressFill');
-      var percent = document.getElementById('scanProgressPercent');
-      var label   = document.getElementById('scanStatusText');
+      var overlay     = document.getElementById('scanOverlay');
+      var fill        = document.getElementById('scanProgressFill');
+      var percent     = document.getElementById('scanProgressPercent');
+      var label       = document.getElementById('scanStatusText');
+
+      var gridScan    = document.getElementById('gridScanningContainer');
+      var gridFill    = document.getElementById('gridScanProgressFill');
+      var gridPercent = document.getElementById('gridScanProgressPercent');
+      var gridLabel   = document.getElementById('gridScanStatusText');
+
+      var dropArea    = document.getElementById('dropArea');
+      var fileInput   = document.getElementById('fileInput');
+      var emptyState  = document.getElementById('emptyState');
+      var tableView   = document.getElementById('tableViewport');
+      var notesView   = document.getElementById('notesViewport');
+
+      // Re-enable uploading
+      if (dropArea) dropArea.classList.remove('disabled');
+      if (fileInput) fileInput.disabled = false;
 
       if (success) {
         if (fill) fill.style.width = '100%';
+        if (gridFill) gridFill.style.width = '100%';
         if (percent) percent.textContent = '100%';
+        if (gridPercent) gridPercent.textContent = '100%';
         if (label) label.textContent = 'Spreadsheet Populated';
+        if (gridLabel) gridLabel.textContent = 'Spreadsheet Populated';
+
         setTimeout(function() {
           if (overlay) overlay.classList.remove('active');
           if (fill) fill.style.width = '0%';
-        }, 600);
+          if (gridScan) gridScan.style.display = 'none';
+          if (currentViewMode === 'notes') {
+            if (notesView) notesView.style.display = 'block';
+          } else {
+            if (tableView) tableView.style.display = 'block';
+          }
+        }, 500);
       } else {
         if (overlay) overlay.classList.remove('active');
         if (fill) fill.style.width = '0%';
+        if (gridScan) gridScan.style.display = 'none';
+        if (activeHeaders.length > 0 && activeRows.length > 0) {
+          if (currentViewMode === 'notes') {
+            if (notesView) notesView.style.display = 'block';
+          } else {
+            if (tableView) tableView.style.display = 'block';
+          }
+        } else {
+          if (emptyState) emptyState.style.display = 'block';
+        }
       }
     }
 
@@ -1889,7 +1996,7 @@
             { inline_data: { mime_type: 'image/jpeg', data: uploadedB64 } }
           ]
         }],
-        generationConfig: { temperature: 0.1, maxOutputTokens: 4096 }
+        generationConfig: { temperature: 0.1, maxOutputTokens: 8192 }
       });
 
       var controller = new AbortController();
