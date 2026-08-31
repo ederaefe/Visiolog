@@ -147,18 +147,29 @@
       font-weight: 900;
     }
 
-    /* Icon-Driven Nav Bar */
-    .nav-icon-group {
+    /* Desktop Navigation Links (Visible on Desktop >= 768px) */
+    .desktop-nav-group {
+      display: none;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    /* Mobile Icon Navigation (Visible on Mobile < 768px) */
+    .mobile-nav-group {
       display: flex;
       align-items: center;
       gap: 0.35rem;
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav-group { display: flex; }
+      .mobile-nav-group { display: none; }
     }
 
     .nav-icon-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.35rem;
       width: 2.35rem;
       height: 2.35rem;
       border-radius: var(--radius);
@@ -167,7 +178,6 @@
       color: var(--fg);
       text-decoration: none;
       cursor: pointer;
-      position: relative;
     }
 
     .nav-icon-btn:hover {
@@ -206,17 +216,18 @@
     .btn-outline { background: var(--card); }
     .btn-ghost { border-color: transparent; background: transparent; }
     .btn-ghost:hover { background: var(--muted); }
-    .btn-icon {
-      width: 2.25rem;
-      height: 2.25rem;
-      padding: 0;
-      min-height: auto;
-      border-radius: var(--radius);
-    }
     .btn-full { width: 100%; }
     .btn-sm { font-size: 0.75rem; padding: 0.3rem 0.6rem; min-height: 32px; }
 
-    /* Mobile Workspace Mode Switcher (Icon + Compact Label) */
+    /* Responsive Text Visibility Helpers */
+    .text-desktop-only { display: none; }
+    .icon-mobile-only { display: inline-flex; }
+
+    @media (min-width: 768px) {
+      .text-desktop-only { display: inline; }
+    }
+
+    /* Mobile Workspace Mode Switcher (Icon Only on Mobile, Icon + Label on Larger Screens) */
     .mobile-view-tabs {
       display: none;
       gap: 0.35rem;
@@ -281,9 +292,7 @@
     }
 
     @media (max-width: 960px) {
-      .sidebar.tab-hidden {
-        display: none;
-      }
+      .sidebar.tab-hidden { display: none; }
     }
 
     .card {
@@ -440,7 +449,7 @@
       display: inline-block;
     }
 
-    .status-dot.offline { background: #f59e0b; }
+    .status-dot.offline { background: var(--muted-fg); }
 
     /* History List */
     .history-list {
@@ -502,9 +511,7 @@
     }
 
     @media (max-width: 960px) {
-      .main-pane.tab-hidden {
-        display: none;
-      }
+      .main-pane.tab-hidden { display: none; }
     }
 
     /* Notification / Progress Bar */
@@ -846,7 +853,7 @@
 
     .theme-btn.active { background: var(--card); color: var(--fg); }
 
-    /* SVG Icon Helpers */
+    /* Strict Monochrome SVG Icon Utilities (No Colors, No Repeat) */
     .svg-icon {
       width: 1rem;
       height: 1rem;
@@ -867,7 +874,7 @@
 </head>
 <body>
 
-  <!-- Top Navigation Header (Icon-Driven) -->
+  <!-- Top Navigation Header: Text on Desktop, Icons on Mobile -->
   <header class="site-header">
     <div class="wrap">
       <div class="header-inner">
@@ -877,29 +884,33 @@
           <span style="font-family: var(--font-serif);">Visiolog</span>
         </a>
 
-        <!-- Desktop & Mobile Icon Button Navigation Bar -->
-        <nav class="nav-icon-group" aria-label="Primary Navigation">
-          <!-- Workspace Link -->
+        <!-- Desktop Navigation Links (Text Buttons on Desktop >= 768px) -->
+        <nav class="desktop-nav-group" aria-label="Desktop Navigation">
+          <a href="./workspace.html" class="btn btn-primary btn-sm">Workspace</a>
+          <a href="./settings.html" class="btn btn-outline btn-sm">Settings</a>
+          <a href="./docs.html" class="btn btn-outline btn-sm">Docs</a>
+          <a href="./" class="btn btn-ghost btn-sm">Landing</a>
+          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" title="GitHub">GitHub</a>
+        </nav>
+
+        <!-- Mobile Navigation Group (Monochrome Icons on Mobile < 768px) -->
+        <nav class="mobile-nav-group" aria-label="Mobile Navigation">
+          <!-- Workspace Link (Icon #1: 2D Grid) -->
           <a href="./workspace.html" class="nav-icon-btn active" title="Workspace" aria-label="Workspace">
             <svg class="svg-icon" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
           </a>
 
-          <!-- Settings Link -->
+          <!-- Settings Link (Icon #2: Sliders) -->
           <a href="./settings.html" class="nav-icon-btn" title="Settings" aria-label="Settings">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
           </a>
 
-          <!-- Documentation Link -->
-          <a href="./docs.html" class="nav-icon-btn" title="Documentation" aria-label="Documentation">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+          <!-- Documentation Link (Icon #3: Book) -->
+          <a href="./docs.html" class="nav-icon-btn" title="Docs" aria-label="Documentation">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </a>
 
-          <!-- Header Theme Switcher -->
-          <button type="button" class="nav-icon-btn" onclick="toggleHeaderTheme()" title="Toggle Theme" aria-label="Toggle Theme">
-            <svg class="svg-icon" id="headerThemeIcon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-          </button>
-
-          <!-- GitHub Link -->
+          <!-- GitHub Link (Icon #4: GitHub Silhouette) -->
           <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="nav-icon-btn" title="GitHub" aria-label="GitHub">
             <svg class="svg-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
               <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
@@ -913,22 +924,29 @@
   <!-- Main Container -->
   <main class="wrap">
 
-    <!-- Mobile Workspace Tabs with Relatable Icons for Screens < 960px -->
+    <!-- Mobile Workspace Tabs with Unique Monochrome Icons for Screens < 960px -->
     <div class="mobile-view-tabs" role="tablist">
+      <!-- Tab 1: Upload (Icon #6: Upward Ingestion Tray) -->
       <button type="button" class="mobile-tab-btn active" id="mobTabUpload" onclick="switchMobileWorkspaceTab('upload')">
         <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
         <span>Upload</span>
       </button>
+
+      <!-- Tab 2: Table (Icon #7: Layered Sheets Polygon) -->
       <button type="button" class="mobile-tab-btn" id="mobTabGrid" onclick="switchMobileWorkspaceTab('grid')">
-        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         <span>Table</span>
       </button>
+
+      <!-- Tab 3: Notes (Icon #8: Document Lines) -->
       <button type="button" class="mobile-tab-btn" id="mobTabNotes" onclick="switchMobileWorkspaceTab('notes')">
-        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
         <span>Notes</span>
       </button>
+
+      <!-- Tab 4: History (Icon #9: Clock Dial) -->
       <button type="button" class="mobile-tab-btn" id="mobTabHistory" onclick="switchMobileWorkspaceTab('history')">
-        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><polyline points="12 7 12 12 15 15"/></svg>
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
         <span>History</span>
       </button>
     </div>
@@ -947,8 +965,8 @@
               <div id="modelStatusSub" style="font-size:0.65rem; color:var(--muted-fg);">In-Browser Engine</div>
             </div>
           </div>
-          <a href="./settings.html" class="nav-icon-btn btn-sm" style="width:2rem; height:2rem;" title="Setup" aria-label="Setup">
-            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          <a href="./settings.html" class="btn btn-outline btn-sm" style="font-size:0.75rem; padding:0.25rem 0.55rem;">
+            <span>Settings</span>
           </a>
         </div>
 
@@ -957,21 +975,24 @@
           <div class="card-title">
             <span>Document</span>
             <div style="display:flex; gap:0.25rem;">
+              <!-- New Button (Icon #10: Plus Cross) -->
               <button type="button" class="btn btn-ghost btn-sm" style="padding:0.2rem 0.45rem;" onclick="createBlankSheet()" title="New blank table" aria-label="New">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>New</span>
+                <span class="text-desktop-only">New</span>
               </button>
+
+              <!-- Sample Button (Icon #11: Template Layout - NO SPARKLES) -->
               <button type="button" class="btn btn-ghost btn-sm" style="padding:0.2rem 0.45rem;" onclick="loadSamplePrompt()" title="Load sample document" aria-label="Sample">
-                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-                <span>Sample</span>
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="15" x2="7.01" y2="15"/><line x1="11" y1="15" x2="13" y2="15"/></svg>
+                <span class="text-desktop-only">Sample</span>
               </button>
             </div>
           </div>
 
-          <!-- Dropzone -->
+          <!-- Dropzone (Icon #14: Image Outline) -->
           <div class="dropzone" id="dropArea" onclick="document.getElementById('fileInput').click()" role="button" tabindex="0">
-            <svg class="svg-icon svg-icon-lg" style="color: var(--primary); margin: 0 auto 0.35rem;" viewBox="0 0 24 24">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>
+            <svg class="svg-icon svg-icon-lg" style="margin: 0 auto 0.35rem;" viewBox="0 0 24 24">
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
             </svg>
             <div class="dropzone-label">Drop Document</div>
             <div class="dropzone-hint">Receipts, logs, tables (PNG, JPG, WebP)</div>
@@ -988,8 +1009,9 @@
             </div>
             <div class="doc-preview-meta">
               <input type="text" id="docTitleInput" class="doc-title-input" title="Click to rename document" onchange="handleDocRename(this.value)" />
-              <button type="button" class="btn btn-ghost btn-sm" style="color:var(--danger); padding:0.15rem 0.4rem; font-size:0.65rem;" onclick="clearCurrentFile(event)" title="Remove document" aria-label="Remove">
-                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <!-- Remove File (Icon #17: X Mark) -->
+              <button type="button" class="btn btn-ghost btn-sm" style="padding:0.15rem 0.4rem; font-size:0.65rem;" onclick="clearCurrentFile(event)" title="Remove document" aria-label="Remove">
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
           </div>
@@ -997,13 +1019,15 @@
 
         <!-- 3. Conversion Trigger Action -->
         <div style="display:flex; flex-direction:column; gap:0.5rem;" id="actionButtonsCard">
+          <!-- Convert Button (Icon #12: Execution Arrow - NO SPARKLES) -->
           <button id="convertBtn" class="btn btn-primary btn-full" style="padding: 0.8rem; font-size: 0.95rem;" onclick="processDocument()">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             <span id="convertBtnText">Convert</span>
           </button>
 
+          <!-- Retry Button (Icon #13: Refresh Arrows) -->
           <button id="retryBtn" class="btn btn-outline btn-full" style="display:none; font-size: 0.85rem; padding: 0.55rem;" onclick="processDocument()">
-            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             <span>Retry</span>
           </button>
         </div>
@@ -1013,11 +1037,15 @@
           <div class="card-title">
             <span>History</span>
             <div style="display:flex; gap:0.25rem;">
+              <!-- Export All History (Icon #22: Download Tray) -->
               <button type="button" class="btn btn-ghost btn-sm" style="padding:0.2rem 0.4rem;" onclick="exportAllHistory()" title="Export all history JSON" aria-label="Export">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                <span class="text-desktop-only">Export</span>
               </button>
+              <!-- Clear History (Icon #20: Trash Bin) -->
               <button type="button" class="btn btn-ghost btn-sm" style="padding:0.2rem 0.4rem;" onclick="clearHistory()" title="Clear history" aria-label="Clear">
-                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                <span class="text-desktop-only">Clear</span>
               </button>
             </div>
           </div>
@@ -1039,12 +1067,10 @@
           <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
             <!-- View Switcher (Table vs Notes) -->
             <div class="view-switcher-group" role="tablist" aria-label="Render Mode">
-              <button type="button" class="view-btn active" id="viewBtnTable" role="tab" aria-selected="true" onclick="setViewMode('table')" title="Spreadsheet View" aria-label="Table">
-                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+              <button type="button" class="view-btn active" id="viewBtnTable" role="tab" aria-selected="true" onclick="setViewMode('table')" title="Table View" aria-label="Table">
                 <span>Table</span>
               </button>
-              <button type="button" class="view-btn" id="viewBtnNotes" role="tab" aria-selected="false" onclick="setViewMode('notes')" title="Structured Notes View" aria-label="Notes">
-                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              <button type="button" class="view-btn" id="viewBtnNotes" role="tab" aria-selected="false" onclick="setViewMode('notes')" title="Notes View" aria-label="Notes">
                 <span>Notes</span>
               </button>
             </div>
@@ -1052,30 +1078,35 @@
             <!-- Stats Badge -->
             <span id="gridStats" class="grid-stats">0 Cols — 0 Rows</span>
 
-            <!-- Compact Search Filter Input -->
+            <!-- Compact Search Filter Input (Icon #19: Search Lens) -->
             <div class="search-filter-wrap">
-              <svg class="svg-icon svg-icon-sm" style="color:var(--muted-fg);" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               <input type="text" id="gridSearchInput" class="search-filter-input" placeholder="Search..." oninput="filterGridRows(this.value)" aria-label="Filter rows" />
             </div>
           </div>
 
-          <!-- Toolbar Actions: Sort, Clear, Copy, Export -->
+          <!-- Toolbar Actions: Sort, Clear, Copy, Export (Single Words on Desktop, Icons on Mobile) -->
           <div class="grid-actions" style="display:flex; align-items:center; gap:0.35rem; flex-wrap:wrap;">
             <div id="tableActions" style="display:flex; gap:0.3rem; align-items:center;">
+              <!-- Sort Button (Icon #18: Bidirectional Sort Arrows) -->
               <button type="button" class="btn btn-outline btn-sm" onclick="sortActiveColumn()" title="Sort active column" aria-label="Sort">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/></svg>
-                <span>Sort</span>
+                <span class="text-desktop-only">Sort</span>
               </button>
+              <!-- Clear Table (Icon #20: Trash) -->
               <button type="button" class="btn btn-ghost btn-sm" onclick="clearGrid()" title="Clear table" aria-label="Clear">
-                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/></svg>
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                <span class="text-desktop-only">Clear</span>
               </button>
             </div>
 
             <div id="notesActions" style="display:none; gap:0.3rem; align-items:center;">
+              <!-- Copy Notes (Icon #21: Double Layer Sheet) -->
               <button type="button" class="btn btn-outline btn-sm" onclick="copyNotes()" title="Copy notes" aria-label="Copy">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                <span>Copy</span>
+                <span class="text-desktop-only">Copy</span>
               </button>
+              <!-- Download Markdown (Icon #22: Download Tray) -->
               <button type="button" class="btn btn-outline btn-sm" onclick="downloadMarkdown()" title="Export Markdown" aria-label="Export Markdown">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                 <span>MD</span>
@@ -1086,7 +1117,7 @@
             <div class="export-menu-wrap" id="exportMenuWrap">
               <button type="button" class="btn btn-primary btn-sm" onclick="toggleExportMenu()" title="Export Data" aria-label="Export">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                <span>Export</span>
+                <span class="text-desktop-only">Export</span>
               </button>
               <div class="export-dropdown" id="exportDropdown">
                 <button type="button" class="export-opt" onclick="exportData('xlsx')">
@@ -1117,7 +1148,7 @@
         <!-- 1. Empty State View -->
         <div id="emptyState" class="empty-state">
           <div class="empty-icon-wrap">
-            <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+            <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
           </div>
           <h2 class="empty-title">Ready for Extraction</h2>
           <p class="empty-desc">
@@ -1130,15 +1161,12 @@
               <span>Upload</span>
             </button>
             <button type="button" class="btn btn-outline" onclick="loadSampleTemplate('invoice')">
-              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               <span>Invoice</span>
             </button>
             <button type="button" class="btn btn-outline" onclick="loadSampleTemplate('logbook')">
-              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
               <span>Logbook</span>
             </button>
             <button type="button" class="btn btn-outline" onclick="createBlankSheet()">
-              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Blank</span>
             </button>
           </div>
@@ -1220,13 +1248,6 @@
     var HISTORY_KEY       = 'visiolog_workspace_history';
     var VIEW_KEY          = 'visiolog_workspace_view';
     var DEFAULT_PROMPT    = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
-
-    /* Toggle Header Theme Quick Button */
-    function toggleHeaderTheme() {
-      var current = document.documentElement.getAttribute('data-theme') || 'light';
-      var next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-    }
 
     /* Mobile Workspace Tab Switcher */
     function switchMobileWorkspaceTab(tab) {
@@ -1453,7 +1474,7 @@
         return '<div class="file-queue-item' + (isAct ? ' active' : '') + '" onclick="selectQueuedFile(' + idx + ')">' +
           '<span style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">' + escHtml(f.name) + '</span>' +
           '<span style="color:var(--muted-fg);">' + Math.round(f.size / 1024) + ' KB</span>' +
-          '<button type="button" class="btn btn-ghost btn-sm" style="color:var(--danger); padding:0 0.25rem; font-size:0.75rem;" onclick="removeQueueFile(event, ' + idx + ')" title="Remove" aria-label="Remove">×</button>' +
+          '<button type="button" class="btn btn-ghost btn-sm" style="padding:0 0.25rem; font-size:0.75rem;" onclick="removeQueueFile(event, ' + idx + ')" title="Remove" aria-label="Remove">×</button>' +
         '</div>';
       }).join('');
     }
@@ -1566,7 +1587,7 @@
         var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
         if (!key) {
           onComplete();
-          showStatus('No Gemini API key found. Configure key in Settings.', 'error', true);
+          showStatus('No Gemini API key found. Configure in Settings.', 'error', true);
           return;
         }
         runGeminiExtractionWithPolling(key, model, prompt, 0, onComplete);
@@ -2064,7 +2085,7 @@
           '</div>' +
           '<div class="history-actions">' +
             '<button type="button" class="btn btn-outline btn-sm" style="font-size:0.65rem; padding:0.15rem 0.4rem;" onclick="loadHistoryItem(' + item.id + ')">Load</button>' +
-            '<button type="button" class="btn btn-ghost btn-sm" style="color:var(--danger); font-size:0.75rem; padding:0.15rem 0.35rem;" onclick="deleteHistoryItem(' + item.id + ')" title="Delete" aria-label="Delete">×</button>' +
+            '<button type="button" class="btn btn-ghost btn-sm" style="font-size:0.75rem; padding:0.15rem 0.35rem;" onclick="deleteHistoryItem(' + item.id + ')" title="Delete" aria-label="Delete">×</button>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -2131,10 +2152,10 @@
 
       if (hasKey) {
         dot.className = 'status-dot';
-        subEl.textContent = 'Engine connected';
+        subEl.textContent = 'Connected';
       } else {
         dot.className = 'status-dot offline';
-        subEl.textContent = 'API key required';
+        subEl.textContent = 'Key needed';
       }
     }
 
@@ -2145,13 +2166,13 @@
       bar.className = 'status-bar visible ' + (type || 'loading');
 
       var spinnerHtml = type === 'loading'
-        ? '<svg class="svg-icon spin" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>'
+        ? '<svg class="svg-icon spin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>'
         : '';
 
       var iconHtml = type === 'error'
-        ? '<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>'
+        ? '<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
         : (type === 'success'
-          ? '<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+          ? '<svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
           : spinnerHtml);
 
       var actionHtml = '';

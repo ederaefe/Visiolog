@@ -182,10 +182,42 @@ The static web client and live workspace operate entirely in the client browser:
   - *Table*: 2D spreadsheet grid icon.
   - *Notes*: Document text icon.
   - *History*: Clock history icon.
-- **Card and Toolbar Icons**: Interactive controls throughout the workspace feature intuitive icon representations for `New` (Plus), `Sample` (Sparkles), `Export` (Download tray), `Sort` (Bidirectional arrows), and `Clear` (Trash bin).
+- **Card and Toolbar Icons**: Interactive controls throughout the workspace feature intuitive icon representations for `New` (Plus), `Sample` (Template), `Export` (Download tray), `Sort` (Bidirectional arrows), and `Clear` (Trash bin).
 
 ### 8.3 Streamlined Spreadsheet Interactions
 - **Toolbar De-Cluttering**: Redundant `+ Row`, `- Row`, `+ Col`, `- Col` buttons are eliminated from the grid header bar to maximize horizontal space for live search filtering, column sorting, and multi-format export dropdowns.
 - **Direct Inline Mutation**: Users perform cell editing, row additions, and header updates directly within the 2D grid matrix via standard contenteditable interactions and keyboard shortcuts.
+
+---
+
+## 9. Desktop Text vs Mobile Icon Segregation & Strict Monochrome Icon Framework
+
+### 9.1 Desktop Text Navigation & Mobile Icon Segregation
+- **Desktop Viewport (>= 768px)**: Navigation links and primary action controls display clear, single-word typographic text labels (`Workspace`, `Settings`, `Docs`, `Landing`, `GitHub`, `New`, `Sample`, `Sort`, `Clear`, `Export`, `Copy`, `MD`).
+- **Mobile Viewport (< 768px)**: Navigation and controls collapse seamlessly into compact, touch-friendly icon buttons, eliminating viewport overflow and line wraps.
+
+### 9.2 Strict Non-Repeating Monochrome Icon System
+- **100% Unique Glyph Registry**: Every interactive control possesses a distinct, non-repeating SVG geometry:
+  - *Workspace Nav*: 2D Matrix Grid (`rect` with cross-hatched coordinates).
+  - *Settings Nav*: Multi-channel parameter adjustment sliders.
+  - *Docs Nav*: Open manual book outline.
+  - *Theme Toggle*: Radial astronomical sun/moon monochrome vector.
+  - *GitHub Repository*: Monochrome silhouette mark.
+  - *Upload Action*: Ingestion tray with upward directional arrow.
+  - *Table View Tab*: Layered tabular sheets polygon.
+  - *Notes View Tab*: Document text line register.
+  - *History Tab*: Radial analog clock dial.
+  - *New Document*: Centered geometric plus cross.
+  - *Sample Template*: Document structural matrix layout (zero sparkles).
+  - *Convert Execution*: High-voltage forward execution vector.
+  - *Retry Action*: Synchronous counter-clockwise dual-arrow loop.
+  - *Sort Action*: Bidirectional vertical sort arrows.
+  - *Search Action*: Magnifying optical lens.
+  - *Clear / Purge Action*: Waste receptacle bin.
+  - *Copy Action*: Layered dual-sheet buffer.
+  - *Export Action*: Downward delivery tray.
+- **Zero Sparkles & Zero Emojis**: Complete elimination of decorative magic wand/sparkle clusters and emojis across all source files, comments, and rendered elements.
+- **Strict Monochrome Inheritance**: All SVGs enforce `stroke="currentColor"` or `fill="currentColor"`, eliminating inline hex colors (`#f59e0b`, `#34d399`, etc.) for seamless light/dark theme synchronization.
+
 
 
