@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings — Visiolog AI Configuration</title>
-  <meta name="description" content="Configure AI vision providers, API keys, models, and extraction prompts for Visiolog." />
+  <meta name="description" content="Configure AI vision providers, API keys, custom models, and extraction prompts for Visiolog." />
 
   <!-- Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
@@ -108,19 +108,25 @@
     .textarea-input { width: 100%; height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg); outline: none; resize: vertical; line-height: 1.45; }
     .textarea-input:focus { border-color: var(--primary); }
 
-    .cselect { position: relative; width: 100%; user-select: none; }
-    .cselect-trigger { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%; padding: 0.55rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); cursor: pointer; text-align: left; transition: border-color 0.15s ease; }
-    .cselect-trigger:hover, .cselect.open .cselect-trigger { border-color: var(--primary); }
-    .cselect-trigger svg { transition: transform 0.2s ease; color: var(--muted-fg); }
-    .cselect.open .cselect-trigger svg { transform: rotate(180deg); }
-    .cselect-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .combobox-wrap { position: relative; width: 100%; }
+    .combobox-input-row { display: flex; position: relative; align-items: center; }
+    .combobox-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.55rem 2.25rem 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); outline: none; transition: border-color 0.15s ease; }
+    .combobox-input:focus { border-color: var(--primary); }
+    .combobox-btn { position: absolute; right: 0.35rem; top: 50%; transform: translateY(-50%); background: transparent; border: none; padding: 0.35rem; cursor: pointer; color: var(--muted-fg); display: flex; align-items: center; justify-content: center; }
+    .combobox-btn:hover { color: var(--fg); }
 
-    .cselect-panel { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; box-shadow: 0 8px 24px var(--shadow); z-index: 200; max-height: 200px; overflow-y: auto; display: none; scrollbar-width: thin; }
-    .cselect.open .cselect-panel { display: block; }
-    .cselect-opt { padding: 0.45rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); cursor: pointer; transition: background 0.1s ease; }
-    .cselect-opt:hover { background: var(--muted); }
-    .cselect-opt.sel { background: hsla(105, 100%, 16%, 0.08); color: var(--primary); font-weight: 700; }
-    [data-theme="dark"] .cselect-opt.sel { background: hsla(102, 87%, 76%, 0.1); }
+    .combobox-panel { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; box-shadow: 0 8px 24px var(--shadow); z-index: 200; max-height: 220px; overflow-y: auto; display: none; scrollbar-width: thin; }
+    .combobox-wrap.open .combobox-panel { display: block; }
+    .combobox-opt { padding: 0.45rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); cursor: pointer; transition: background 0.1s ease; display: flex; justify-content: space-between; align-items: center; }
+    .combobox-opt:hover { background: var(--muted); }
+    .combobox-opt.sel { background: hsla(105, 100%, 16%, 0.08); color: var(--primary); font-weight: 700; }
+    [data-theme="dark"] .combobox-opt.sel { background: hsla(102, 87%, 76%, 0.1); }
+    .combobox-opt-tag { font-size: 0.6rem; color: var(--muted-fg); text-transform: uppercase; font-family: var(--font-mono); }
+
+    .model-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
+    .model-pill { font-size: 0.65rem; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: 0.35rem; border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg); cursor: pointer; transition: all 0.15s ease; }
+    .model-pill:hover { border-color: var(--primary); color: var(--fg); }
+    .model-pill.active { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
 
     .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.65rem; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: 0.35rem; border: 1px solid var(--border); background: var(--muted); }
     .status-badge.connected { color: var(--success); border-color: hsla(142, 72%, 40%, 0.3); }
@@ -172,7 +178,7 @@
     <div class="settings-container">
       <div class="settings-header">
         <h1 class="settings-title font-serif">AI Vision Settings</h1>
-        <p class="settings-sub">Manage inference providers, API credentials, model selections, and custom prompts.</p>
+        <p class="settings-sub">Manage inference providers, API credentials, custom model IDs, and extraction prompts.</p>
       </div>
 
       <div id="noticeBar" class="notification-bar" role="status"></div>
@@ -228,25 +234,33 @@
       <section class="card">
         <div class="card-heading">
           <div class="card-title">3. Model Selection</div>
-          <span id="modelCountBadge" class="status-badge">1 model</span>
+          <span id="modelCountBadge" class="status-badge">Customizable</span>
         </div>
         <p class="card-desc">
-          Select which multimodal vision model processes your documents in the workspace.
+          Select from auto-detected vision models or type any custom model identifier directly.
         </p>
 
         <div class="form-group">
-          <label class="form-label">Active Model</label>
-          <div class="cselect" id="modelDropdown">
-            <button class="cselect-trigger" id="modelDropdownTrigger" onclick="toggleModelDropdown()" type="button" aria-haspopup="listbox" aria-expanded="false">
-              <span class="cselect-label" id="modelDropdownLabel">gemini-2.5-flash</span>
-              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
-            <div class="cselect-panel" id="modelDropdownPanel" role="listbox">
-              <div class="cselect-opt sel" data-value="gemini-2.5-flash" role="option" onclick="selectModel('gemini-2.5-flash')">
-                gemini-2.5-flash
-              </div>
+          <label class="form-label" for="modelInput">Active Model (Type or Select)</label>
+          <div class="combobox-wrap" id="modelCombobox">
+            <div class="combobox-input-row">
+              <input
+                type="text"
+                id="modelInput"
+                class="combobox-input"
+                placeholder="e.g. gemini-2.5-flash or custom model ID..."
+                oninput="handleModelInput(this.value)"
+                onclick="openModelDropdown()"
+                autocomplete="off"
+              />
+              <button type="button" class="combobox-btn" onclick="toggleModelDropdown()" aria-label="Toggle model dropdown">
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
             </div>
+            <div class="combobox-panel" id="modelDropdownPanel" role="listbox"></div>
           </div>
+
+          <div class="model-pills" id="modelPills"></div>
         </div>
       </section>
 
@@ -259,7 +273,7 @@
           </button>
         </div>
         <p class="card-desc">
-          Customize instructions passed to the vision AI (e.g. enforce specific column names or numeric formats).
+          Customize instructions passed to the vision AI (e.g. enforce specific column names, numeric formats, or note summaries).
         </p>
 
         <div class="form-group">
@@ -333,7 +347,14 @@
   <script>
     var activeProvider = 'gemini';
     var activeModel    = 'gemini-2.5-flash';
+    var knownModels    = [];
     var DEFAULT_PROMPT = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
+
+    var PRESETS = {
+      gemini: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash'],
+      openrouter: ['meta-llama/llama-3.2-11b-vision-instruct', 'qwen/qwen-2.5-vl-72b-instruct', 'google/gemini-2.5-flash', 'anthropic/claude-3.5-sonnet'],
+      ollama: ['llama3.2-vision', 'minicpm-v', 'qwen2.5-vl', 'llava']
+    };
 
     var noticeTimer = null;
     function showNotice(msg, type) {
@@ -371,14 +392,14 @@
         keyInput.value = localStorage.getItem('visiolog_demo_openrouter_key') || '';
         helper.textContent = 'Direct route to open vision models via OpenRouter.';
         badge.textContent = 'OpenRouter';
-        populateModelDropdown(['meta-llama/llama-3.2-11b-vision-instruct', 'qwen/qwen-2.5-vl-72b-instruct']);
+        populateCombobox(PRESETS.openrouter);
 
       } else if (prov === 'ollama') {
         document.getElementById('tabOllama').classList.add('active');
         keySec.style.display = 'none';
         helper.textContent = 'Connects locally to http://localhost:11434 with zero keys required.';
         badge.textContent = 'Ollama (Local)';
-        populateModelDropdown(['llama3.2-vision', 'minicpm-v', 'qwen2.5-vl']);
+        populateCombobox(PRESETS.ollama);
       }
     }
 
@@ -409,7 +430,8 @@
 
       var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
       if (!key) {
-        if (notify) showNotice('Enter a Gemini API key first.', 'error');
+        populateCombobox(PRESETS.gemini);
+        if (notify) showNotice('Enter a Gemini API key to probe your live account models.', 'error');
         return;
       }
 
@@ -437,67 +459,100 @@
           });
 
           if (valid.length > 0) {
-            populateModelDropdown(valid);
-            if (notify) showNotice('Found ' + valid.length + ' Gemini models. Selected ' + activeModel + '.', 'success');
+            populateCombobox(valid);
+            if (notify) showNotice('Found ' + valid.length + ' Gemini models. Active: ' + activeModel, 'success');
           } else {
-            populateModelDropdown(['gemini-2.5-flash', 'gemini-1.5-pro', 'gemini-1.5-flash']);
-            if (notify) showNotice('Using default models.', 'success');
+            populateCombobox(PRESETS.gemini);
+            if (notify) showNotice('Using default Gemini models.', 'success');
           }
         })
         .catch(function() {
-          populateModelDropdown(['gemini-2.5-flash', 'gemini-1.5-pro', 'gemini-1.5-flash']);
-          if (notify) showNotice('Using default Gemini models.', 'success');
+          populateCombobox(PRESETS.gemini);
+          if (notify) showNotice('Using default Gemini model list.', 'success');
         });
     }
 
-    function toggleModelDropdown() {
-      var dd   = document.getElementById('modelDropdown');
-      var trig = document.getElementById('modelDropdownTrigger');
-      var open = dd.classList.contains('open');
-
-      closeAllDropdowns();
-      if (!open) {
-        dd.classList.add('open');
-        trig.setAttribute('aria-expanded', 'true');
-      }
-    }
-
-    function closeAllDropdowns() {
-      document.querySelectorAll('.cselect.open').forEach(function(d) {
-        d.classList.remove('open');
-        var trig = d.querySelector('.cselect-trigger');
-        if (trig) trig.setAttribute('aria-expanded', 'false');
-      });
+    function handleModelInput(val) {
+      var trimmed = val.trim();
+      if (!trimmed) return;
+      activeModel = trimmed;
+      localStorage.setItem('visiolog_model', trimmed);
+      renderPills();
+      filterDropdown(trimmed);
     }
 
     function selectModel(val) {
       activeModel = val;
       localStorage.setItem('visiolog_model', val);
-      document.getElementById('modelDropdownLabel').textContent = val;
-
-      document.querySelectorAll('#modelDropdownPanel .cselect-opt').forEach(function(opt) {
-        opt.classList.toggle('sel', opt.dataset.value === val);
-      });
-
-      closeAllDropdowns();
+      document.getElementById('modelInput').value = val;
+      closeModelDropdown();
+      renderPills();
       showNotice('Active model set to ' + val, 'success');
     }
 
-    function populateModelDropdown(models) {
-      var panel = document.getElementById('modelDropdownPanel');
-      var count = document.getElementById('modelCountBadge');
-
-      panel.innerHTML = models.map(function(m) {
-        return '<div class="cselect-opt' + (m === activeModel ? ' sel' : '') + '" data-value="' + escHtml(m) + '" role="option" onclick="selectModel(\'' + m + '\')">' + escHtml(m) + '</div>';
-      }).join('');
-
-      count.textContent = models.length + ' models';
-
-      if (!models.includes(activeModel)) {
-        selectModel(models[0]);
+    function toggleModelDropdown() {
+      var wrap = document.getElementById('modelCombobox');
+      if (wrap.classList.contains('open')) {
+        closeModelDropdown();
       } else {
-        document.getElementById('modelDropdownLabel').textContent = activeModel;
+        openModelDropdown();
       }
+    }
+
+    function openModelDropdown() {
+      var wrap = document.getElementById('modelCombobox');
+      wrap.classList.add('open');
+      filterDropdown(document.getElementById('modelInput').value);
+    }
+
+    function closeModelDropdown() {
+      var wrap = document.getElementById('modelCombobox');
+      wrap.classList.remove('open');
+    }
+
+    function filterDropdown(query) {
+      var panel = document.getElementById('modelDropdownPanel');
+      var q = (query || '').toLowerCase().trim();
+      var matches = knownModels.filter(function(m) {
+        return !q || m.toLowerCase().indexOf(q) >= 0;
+      });
+
+      if (matches.length === 0) {
+        panel.innerHTML = '<div class="combobox-opt" style="color:var(--muted-fg); font-style:italic;">No preset matches. Your typed model will be used.</div>';
+        return;
+      }
+
+      panel.innerHTML = matches.map(function(m) {
+        var isSel = m === activeModel;
+        return '<div class="combobox-opt' + (isSel ? ' sel' : '') + '" role="option" onclick="selectModel(\'' + escHtml(m) + '\')">' +
+          '<span>' + escHtml(m) + '</span>' +
+          '<span class="combobox-opt-tag">' + (isSel ? 'Active' : 'Preset') + '</span>' +
+        '</div>';
+      }).join('');
+    }
+
+    function populateCombobox(models) {
+      knownModels = models;
+      document.getElementById('modelCountBadge').textContent = models.length + ' available';
+
+      var input = document.getElementById('modelInput');
+      input.value = activeModel;
+
+      filterDropdown('');
+      renderPills();
+    }
+
+    function renderPills() {
+      var container = document.getElementById('modelPills');
+      if (!container) return;
+
+      var topPills = knownModels.slice(0, 4);
+      container.innerHTML = topPills.map(function(m) {
+        var isAct = m === activeModel;
+        return '<button type="button" class="model-pill' + (isAct ? ' active' : '') + '" onclick="selectModel(\'' + escHtml(m) + '\')">' +
+          escHtml(m) +
+        '</button>';
+      }).join('');
     }
 
     function handlePromptSave(val) {
@@ -538,7 +593,7 @@
     }
 
     document.addEventListener('click', function(e) {
-      if (!e.target.closest('.cselect')) closeAllDropdowns();
+      if (!e.target.closest('#modelCombobox')) closeModelDropdown();
     });
 
     var themeBtnLight = document.getElementById('themeBtnLight');

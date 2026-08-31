@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Workspace — Visiolog Extraction Studio</title>
-  <meta name="description" content="In-browser document extraction workspace with live 2D spreadsheet editor and conversion history." />
+  <meta name="description" content="In-browser document extraction workspace with dual 2D spreadsheet and structured notes rendering." />
 
   <!-- Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
@@ -132,9 +132,14 @@
     .spin { animation: spin 0.9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    .view-switcher-group { display: inline-flex; align-items: center; padding: 0.2rem; border-radius: 0.5rem; background-color: var(--muted); border: 1px solid var(--border); gap: 0.2rem; }
+    .view-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.65rem; border-radius: 0.35rem; font-size: 0.7rem; font-weight: 700; color: var(--muted-fg); background: transparent; border: none; cursor: pointer; font-family: var(--font-mono); }
+    .view-btn:hover { color: var(--fg); }
+    .view-btn.active { background-color: var(--card); color: var(--fg); box-shadow: 0 1px 3px var(--shadow); }
+
     .grid-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
     .grid-stats { font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700; color: var(--primary); }
-    .grid-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .grid-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center; }
     .active-badge { font-size: 0.65rem; font-family: var(--font-mono); background: var(--muted); border: 1px solid var(--border); border-radius: 0.35rem; padding: 0.2rem 0.5rem; color: var(--muted-fg); }
 
     .table-viewport { overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); max-height: 520px; scrollbar-width: thin; }
@@ -144,6 +149,14 @@
     table.sheet td { padding: 0.5rem 0.85rem; border-bottom: 1px solid var(--border-sub); border-right: 1px solid var(--border-sub); white-space: nowrap; color: var(--fg); }
     table.sheet td[contenteditable="true"]:focus { outline: 2px solid var(--primary); outline-offset: -2px; background: hsla(105, 100%, 16%, 0.04); }
     table.sheet tr:hover td { background: var(--muted); }
+
+    .notes-viewport { display: none; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); padding: 1.5rem; max-height: 520px; overflow-y: auto; scrollbar-width: thin; }
+    .notes-viewport.active { display: block; }
+    .notes-editor { min-height: 300px; font-family: var(--font-sans); font-size: 0.875rem; color: var(--fg); line-height: 1.65; outline: none; white-space: pre-wrap; }
+    .notes-editor h2 { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--fg); }
+    .notes-editor h3 { font-family: var(--font-serif); font-size: 1rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.4rem; color: var(--primary); }
+    .notes-editor ul { padding-left: 1.25rem; margin-bottom: 1rem; }
+    .notes-editor li { margin-bottom: 0.35rem; }
 
     .site-footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: auto; background: var(--card); font-size: 0.75rem; color: var(--muted-fg); }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
@@ -258,27 +271,44 @@
         </div>
       </aside>
 
-      <!-- Right Main Spreadsheet Viewport -->
+      <!-- Right Main Spreadsheet & Notes Viewport -->
       <section class="main-pane">
-        <!-- Status Notification Banner -->
         <div id="statusBar" class="status-bar" role="status" aria-live="polite"></div>
 
-        <!-- Grid Toolbar -->
         <div class="grid-toolbar">
           <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <div class="view-switcher-group" role="tablist" aria-label="Render Mode">
+              <button type="button" class="view-btn active" id="viewBtnTable" role="tab" aria-selected="true" onclick="setViewMode('table')">
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+                <span>Table</span>
+              </button>
+              <button type="button" class="view-btn" id="viewBtnNotes" role="tab" aria-selected="false" onclick="setViewMode('notes')">
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Notes</span>
+              </button>
+            </div>
+
             <span id="gridStats" class="grid-stats">5 Columns — 5 Rows</span>
             <span id="activeModelBadge" class="active-badge">Gemini • gemini-2.5-flash</span>
           </div>
 
           <div class="grid-actions">
-            <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="addRow()">+ Row</button>
-            <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="downloadCsv()">Export CSV</button>
+            <div id="tableActions" style="display:flex; gap:0.35rem;">
+              <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="addRow()">+ Row</button>
+              <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="downloadCsv()">Export CSV</button>
+            </div>
+
+            <div id="notesActions" style="display:none; gap:0.35rem;">
+              <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="copyNotes()">Copy</button>
+              <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="downloadMarkdown()">Export MD</button>
+            </div>
+
             <a href="./settings.html" class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;">Settings</a>
           </div>
         </div>
 
-        <!-- Editable 2D Table Grid -->
-        <div class="table-viewport" tabindex="0">
+        <!-- Table View -->
+        <div id="tableViewport" class="table-viewport" tabindex="0">
           <table class="sheet" id="spreadsheetGrid" aria-label="Extracted spreadsheet data">
             <thead id="tableHead">
               <tr>
@@ -329,7 +359,24 @@
           </table>
         </div>
 
-        <p style="font-size: 0.7rem; color: var(--muted-fg); text-align: right;">
+        <!-- Notes View -->
+        <div id="notesViewport" class="notes-viewport" tabindex="0">
+          <div id="notesEditor" class="notes-editor" contenteditable="true" aria-label="Extracted document notes">
+            <h2>Document Summary &amp; Notes</h2>
+            <p><strong>Status:</strong> Extraction complete</p>
+            <p><strong>Extracted Line Items:</strong></p>
+            <ul>
+              <li><strong>Line 01:</strong> Office Registry Binder A4 (Qty: 12, Unit: $8.50, Total: $102.00)</li>
+              <li><strong>Line 02:</strong> High-Precision Document Scanner (Qty: 2, Unit: $140.00, Total: $280.00)</li>
+              <li><strong>Line 03:</strong> Archival Black Ink Cartridge (Qty: 5, Unit: $19.00, Total: $95.00)</li>
+              <li><strong>Line 04:</strong> Thermal Receipt Paper Box/50 (Qty: 3, Unit: $24.00, Total: $72.00)</li>
+              <li><strong>Line 05:</strong> Hardcover Field Logbook A5 (Qty: 8, Unit: $7.25, Total: $58.00)</li>
+            </ul>
+            <p><em>Click anywhere to edit or append additional notes before downloading.</em></p>
+          </div>
+        </div>
+
+        <p style="font-size: 0.7rem; color: var(--muted-fg); text-align: right;" id="footerHint">
           Click any cell to edit inline. Conversions are automatically saved to your browser history.
         </p>
       </section>
@@ -356,7 +403,7 @@
             <span>Light</span>
           </button>
           <button type="button" class="theme-btn" id="themeBtnDark" role="radio" aria-checked="false" title="Dark Mode">
-            <svg class="svg-icon svg-icon-sm" style="color: #34d399;" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            <svg class="svg-icon svg-icon-sm" style="color: #34d399;" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 0 1 1-9-9Z"/></svg>
             <span>Dark</span>
           </button>
           <button type="button" class="theme-btn" id="themeBtnAuto" role="radio" aria-checked="true" title="System Match">
@@ -370,10 +417,21 @@
 
   <!-- Workspace Script -->
   <script>
+    var currentViewMode  = 'table';
     var uploadedB64      = null;
     var uploadedFileName = 'document.jpg';
+    var activeHeaders    = ['Line', 'Item Description', 'Quantity', 'Unit Price', 'Total'];
+    var activeRows       = [
+      ['01', 'Office Registry Binder A4', '12', '$8.50', '$102.00'],
+      ['02', 'High-Precision Document Scanner', '2', '$140.00', '$280.00'],
+      ['03', 'Archival Black Ink Cartridge', '5', '$19.00', '$95.00'],
+      ['04', 'Thermal Receipt Paper Box/50', '3', '$24.00', '$72.00'],
+      ['05', 'Hardcover Field Logbook A5', '8', '$7.25', '$58.00']
+    ];
+
     var QUOTA_KEY        = 'visiolog_demo_conversions';
     var HISTORY_KEY      = 'visiolog_workspace_history';
+    var VIEW_KEY         = 'visiolog_workspace_view';
     var MAX_FREE         = 2;
     var DEFAULT_PROMPT   = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
 
@@ -426,6 +484,98 @@
         ]
       }
     };
+
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      localStorage.setItem(VIEW_KEY, mode);
+
+      var btnTable    = document.getElementById('viewBtnTable');
+      var btnNotes    = document.getElementById('viewBtnNotes');
+      var tblView     = document.getElementById('tableViewport');
+      var ntsView     = document.getElementById('notesViewport');
+      var tblActions  = document.getElementById('tableActions');
+      var ntsActions  = document.getElementById('notesActions');
+      var hint        = document.getElementById('footerHint');
+
+      if (mode === 'notes') {
+        btnTable.classList.remove('active');
+        btnTable.setAttribute('aria-selected', 'false');
+        btnNotes.classList.add('active');
+        btnNotes.setAttribute('aria-selected', 'true');
+
+        tblView.style.display = 'none';
+        ntsView.classList.add('active');
+
+        tblActions.style.display = 'none';
+        ntsActions.style.display = 'flex';
+
+        hint.textContent = 'Structured text notes view. Click to edit notes inline.';
+        generateNotesFromTable();
+
+      } else {
+        btnNotes.classList.remove('active');
+        btnNotes.setAttribute('aria-selected', 'false');
+        btnTable.classList.add('active');
+        btnTable.setAttribute('aria-selected', 'true');
+
+        ntsView.classList.remove('active');
+        tblView.style.display = 'block';
+
+        ntsActions.style.display = 'none';
+        tblActions.style.display = 'flex';
+
+        hint.textContent = 'Interactive spreadsheet view. Click any cell to edit inline.';
+      }
+    }
+
+    function generateNotesFromTable() {
+      var editor = document.getElementById('notesEditor');
+      var title = uploadedFileName || 'Extracted Document';
+
+      var html = '<h2>' + escHtml(title) + ' — Structured Notes</h2>' +
+        '<p><strong>Extracted Records:</strong> ' + activeRows.length + ' rows • ' + activeHeaders.length + ' fields</p>' +
+        '<h3>Key Record Items</h3><ul>';
+
+      activeRows.forEach(function(r) {
+        var parts = [];
+        for (var i = 0; i < activeHeaders.length; i++) {
+          if (r[i] !== undefined && r[i] !== '') {
+            parts.push('<strong>' + escHtml(activeHeaders[i]) + ':</strong> ' + escHtml(r[i]));
+          }
+        }
+        html += '<li>' + parts.join(' | ') + '</li>';
+      });
+
+      html += '</ul><h3>Notes &amp; Observations</h3>' +
+        '<p>All tabular items transcribed with high confidence. Modify or add any summary notes directly in this panel.</p>';
+
+      editor.innerHTML = html;
+    }
+
+    function copyNotes() {
+      var editor = document.getElementById('notesEditor');
+      var text = editor.innerText || editor.textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        showStatus('Notes copied to clipboard.', 'success');
+      }).catch(function() {
+        showStatus('Failed to copy to clipboard.', 'error');
+      });
+    }
+
+    function downloadMarkdown() {
+      var editor = document.getElementById('notesEditor');
+      var text = editor.innerText || editor.textContent;
+      var blob = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'visiolog_notes_' + Date.now() + '.md';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showStatus('Markdown notes downloaded.', 'success');
+    }
 
     var statusTimer = null;
     function showStatus(msg, type) {
@@ -495,7 +645,13 @@
       document.querySelectorAll('.sample-btn').forEach(function(b) { b.classList.remove('active'); });
       if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
 
+      activeHeaders = sample.headers;
+      activeRows    = sample.rows;
+      uploadedFileName = sample.name;
+
       renderTable(sample.headers, sample.rows);
+      if (currentViewMode === 'notes') generateNotesFromTable();
+
       decrementQuota();
       saveToHistory(sample.name, sample.headers, sample.rows);
       showStatus(sample.name + ' loaded into workspace.', 'success');
@@ -609,7 +765,7 @@
           renderCsvOutput(raw, uploadedFileName);
         })
         .catch(function(err) {
-          showStatus(err.message || 'Extraction failed. Check key in Settings.', 'error');
+          showStatus(err.message || 'Extraction failed. Check key/model in Settings.', 'error');
         });
     }
 
@@ -678,7 +834,12 @@
 
       var headers = parseCsvLine(lines[0]);
       var rows    = lines.slice(1).map(parseCsvLine);
+      activeHeaders = headers;
+      activeRows    = rows;
+
       renderTable(headers, rows);
+      if (currentViewMode === 'notes') generateNotesFromTable();
+
       saveToHistory(fileName || 'Document', headers, rows);
       showStatus('Extracted ' + rows.length + ' rows successfully.', 'success');
     }
@@ -822,7 +983,13 @@
       var items = getHistory();
       var found = items.find(function(i) { return i.id === id; });
       if (found) {
+        activeHeaders = found.headers;
+        activeRows    = found.data;
+        uploadedFileName = found.name;
+
         renderTable(found.headers, found.data);
+        if (currentViewMode === 'notes') generateNotesFromTable();
+
         showStatus('Loaded "' + found.name + '" from history.', 'success');
       }
     }
@@ -864,8 +1031,11 @@
 
     function updateThemeButtonsUI(activeMode) {
       themeBtnLight.classList.toggle('active', activeMode === 'light');
+      themeBtnLight.setAttribute('aria-checked', activeMode === 'light' ? 'true' : 'false');
       themeBtnDark.classList.toggle('active', activeMode === 'dark');
+      themeBtnDark.setAttribute('aria-checked', activeMode === 'dark' ? 'true' : 'false');
       themeBtnAuto.classList.toggle('active', activeMode === 'auto');
+      themeBtnAuto.setAttribute('aria-checked', activeMode === 'auto' ? 'true' : 'false');
     }
 
     themeBtnLight.addEventListener('click', function () { applyTheme('light'); });
@@ -877,6 +1047,9 @@
       renderHistory();
       syncActiveBadge();
       updateGridStats();
+
+      var savedView = localStorage.getItem(VIEW_KEY) || 'table';
+      setViewMode(savedView);
 
       var savedTheme = localStorage.getItem('visiolog_theme') || 'auto';
       updateThemeButtonsUI(savedTheme);

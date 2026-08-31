@@ -289,4 +289,20 @@ To cleanly decouple marketing presentation from daily extraction workflows and c
 ### 12.2 Inter-Page State Synchronization
 All settings (provider, API keys, active model, custom prompt, conversion history, free sample quotas, and dark/light theme) synchronize seamlessly across pages via `localStorage` with zero backend server dependencies.
 
+---
+
+## 13. Custom Model Input & Dual Rendering Engine
+
+### 13.1 Type-In Model Combobox
+The settings configuration suite features a hybrid combobox interface for model selection:
+- **Preset Auto-Detection**: Pulls available vision models dynamically from the Google Gemini API or provides curated vision models for OpenRouter and local Ollama.
+- **Arbitrary Model Identifiers**: Users can type any custom model ID directly (e.g. fine-tuned checkpoints, experimental vision releases, or custom endpoints).
+- **Persistent State**: The custom model string is validated, active-badged, and stored under `visiolog_model` in browser `localStorage`.
+
+### 13.2 Dual Rendering: Table vs. Notes Mode
+The workspace introduces an integrated view switcher allowing users to inspect extracted document data in two distinct modes:
+- **Table Mode (Spreadsheet Grid)**: Renders a 2D interactive table with `contenteditable` cells, real-time column/row counters, dynamic `+ Row` creation, and RFC 4180 CSV export.
+- **Notes Mode (Structured Document)**: Transforms tabular extractions into structured Markdown/HTML notes with formatted headers, itemized key-value bullet points, and freeform annotation areas. Includes 1-click **Copy Notes** and **Export MD** capabilities.
+
+
 
