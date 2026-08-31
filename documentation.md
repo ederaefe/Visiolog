@@ -329,6 +329,26 @@ The static web client and live workspace operate entirely in the client browser:
   - *Phase 4 (85% - 100%)*: Column reconciliation, RFC 4180 CSV parsing, and 2D spreadsheet population.
 - **Graceful Lifecycle Management**: The engine automatically clears all interval timers and resets on failure, while animating cleanly to 100% before dismissing upon successful table rendering.
 
+---
+
+## 17. Fixed Grid Viewport Containment & High-Accuracy Tabular OCR Engine
+
+### 17.1 Fixed Spreadsheet Viewport & Zero-Stretch CSS Containment
+- **Bounded Layout Architecture**: Enforced strict `min-width: 0`, `overflow: hidden`, and fixed bounding boxes on `.workspace-layout`, `.sidebar`, and `.main-pane`.
+- **Internal 2D Scrolling**: `.table-viewport` is constrained with `max-height: calc(100vh - 270px)` and independent `overflow-x: auto; overflow-y: auto;`.
+- **Sticky Column Headers**: Table header cells (`th`) are fixed to the top (`position: sticky; top: 0; z-index: 10`), allowing continuous context while scrolling through large row sets without stretching or expanding the browser window.
+
+### 17.2 Industrial Vision OCR Systemic Prompting
+- **RFC 4180 Compliance Enforced**: System prompt mandates pure CSV outputs without markdown wrappers, preamble commentary, or line prefixes.
+- **Handwritten & Registry Adaptability**: Specifically instructs vision models on extracting logbooks, visitor registries, ledgers, and financial tables with strict column parity across records.
+
+### 17.3 Resilient Multi-Delimiter Sanitizer & Column Rectification (`sanitizeAndParseTable`)
+- **Model Artifact Stripping**: Automatically strips conversational introductions, markdown code fences, and interleaved line prefixes (`Row 20:`, `Record 21:`).
+- **Dynamic Delimiter Selection**: Evaluates character frequencies across lines to detect commas (`,`), tabs (`\t`), pipes (`|`), or semicolons (`;`).
+- **Data-Row Header Inference**: Automatically detects unlabelled header rows (e.g. data rows starting with numbers or timestamps) and synthesizes standard column headers (`No, Full Name, Company, Purpose, Time In, Time Out`).
+- **Row Length Normalization**: Reconciles ragged records to guarantee consistent 2D cell matrices.
+
+
 
 
 
