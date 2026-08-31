@@ -549,17 +549,29 @@
       <section class="card">
         <div class="card-heading">
           <div class="card-title">4. Prompt</div>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="resetPrompt()">
-            Reset
-          </button>
+          <div style="display: flex; gap: 0.35rem;">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="resetPrompt()" title="Reset to default advanced prompt">
+              Reset
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" onclick="savePromptExplicit()" id="savePromptBtn">
+              Save
+            </button>
+          </div>
         </div>
         <p class="card-desc">
-          Customize instructions passed to the vision AI engine.
+          Customize instructions passed to the vision AI engine. Edit the rules below to adjust table schemas, or click Reset to reload the default advanced prompt.
         </p>
 
         <div class="form-group">
           <label class="form-label" for="promptTextarea">System Prompt</label>
-          <textarea id="promptTextarea" class="textarea-input" oninput="handlePromptSave(this.value)" aria-label="System prompt"></textarea>
+          <textarea
+            id="promptTextarea"
+            class="textarea-input"
+            rows="10"
+            style="min-height: 220px; font-family: var(--font-mono); font-size: 0.775rem; line-height: 1.5; resize: vertical;"
+            oninput="handlePromptSave(this.value)"
+            aria-label="System prompt"
+          ></textarea>
         </div>
       </section>
 
@@ -1075,13 +1087,19 @@
     }
 
     function handlePromptSave(val) {
-      localStorage.setItem('visiolog_prompt', val.trim());
+      localStorage.setItem('visiolog_prompt', val);
+    }
+
+    function savePromptExplicit() {
+      var val = document.getElementById('promptTextarea').value;
+      localStorage.setItem('visiolog_prompt', val);
+      showNotice('Extraction prompt saved.', 'success');
     }
 
     function resetPrompt() {
       document.getElementById('promptTextarea').value = DEFAULT_PROMPT;
       localStorage.setItem('visiolog_prompt', DEFAULT_PROMPT);
-      showNotice('Prompt reset to default.', 'success');
+      showNotice('Prompt reset to advanced default.', 'success');
     }
 
     function clearHistory() {
@@ -1159,7 +1177,12 @@
       initDemoNotice();
       var savedProv   = localStorage.getItem('visiolog_provider') || 'gemini';
       var savedModel  = localStorage.getItem('visiolog_model') || 'gemini-2.5-flash';
-      var savedPrompt = localStorage.getItem('visiolog_prompt') || DEFAULT_PROMPT;
+      var savedPrompt = localStorage.getItem('visiolog_prompt');
+
+      if (!savedPrompt || savedPrompt.length < 180 || savedPrompt.indexOf('STRICT MANDATORY RULES') === -1) {
+        savedPrompt = DEFAULT_PROMPT;
+        localStorage.setItem('visiolog_prompt', DEFAULT_PROMPT);
+      }
 
       activeModel = savedModel;
       document.getElementById('promptTextarea').value = savedPrompt;

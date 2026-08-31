@@ -1173,6 +1173,24 @@
           </button>
         </div>
 
+        <!-- Quick Prompt Customization Card -->
+        <div class="card" id="promptQuickCard" style="padding: 0.75rem 0.95rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="togglePromptQuickView()">
+            <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-fg);">
+              <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span>Prompt</span>
+            </div>
+            <button type="button" class="btn btn-ghost btn-sm" style="padding: 0.15rem 0.4rem; font-size: 0.7rem;" id="promptToggleBtn" aria-label="Toggle prompt editor">Edit</button>
+          </div>
+          <div id="promptQuickBody" style="display: none; margin-top: 0.65rem;">
+            <textarea id="workspacePromptTextarea" class="textarea-input" rows="7" style="width: 100%; min-height: 140px; font-family: var(--font-mono); font-size: 0.725rem; line-height: 1.45; resize: vertical; box-sizing: border-box;" oninput="handleWorkspacePromptInput(this.value)" placeholder="Extraction instructions..."></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.4rem;">
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="resetWorkspacePrompt()">Reset</button>
+              <a href="./settings.html" class="btn btn-ghost btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;">Full Settings</a>
+            </div>
+          </div>
+        </div>
+
         <!-- 4. Conversion History (CRUD: Read, Update, Delete) -->
         <div class="card" id="historyCard">
           <div class="card-title">
@@ -1749,11 +1767,43 @@
       }
     }
 
+    /* Quick Prompt Drawer Handlers */
+    function togglePromptQuickView() {
+      var body = document.getElementById('promptQuickBody');
+      var btn  = document.getElementById('promptToggleBtn');
+      var isHidden = body.style.display === 'none';
+      body.style.display = isHidden ? 'block' : 'none';
+      btn.textContent = isHidden ? 'Hide' : 'Edit';
+      if (isHidden) {
+        var p = localStorage.getItem('visiolog_prompt');
+        if (!p || p.length < 180 || p.indexOf('STRICT MANDATORY RULES') === -1) {
+          p = DEFAULT_PROMPT;
+          localStorage.setItem('visiolog_prompt', DEFAULT_PROMPT);
+        }
+        document.getElementById('workspacePromptTextarea').value = p;
+      }
+    }
+
+    function handleWorkspacePromptInput(val) {
+      localStorage.setItem('visiolog_prompt', val);
+    }
+
+    function resetWorkspacePrompt() {
+      document.getElementById('workspacePromptTextarea').value = DEFAULT_PROMPT;
+      localStorage.setItem('visiolog_prompt', DEFAULT_PROMPT);
+      showStatus('Prompt reset to advanced default.', 'success');
+    }
+
     /* OCR Extraction Router */
     function processDocument() {
       var provider = localStorage.getItem('visiolog_provider') || 'gemini';
       var model    = localStorage.getItem('visiolog_model') || 'gemini-2.5-flash';
-      var prompt   = localStorage.getItem('visiolog_prompt') || DEFAULT_PROMPT;
+      var prompt   = localStorage.getItem('visiolog_prompt');
+
+      if (!prompt || prompt.length < 180 || prompt.indexOf('STRICT MANDATORY RULES') === -1) {
+        prompt = DEFAULT_PROMPT;
+        localStorage.setItem('visiolog_prompt', DEFAULT_PROMPT);
+      }
 
       if (!uploadedB64) {
         showStatus('Please upload or drop an image first.', 'error');
