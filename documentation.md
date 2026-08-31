@@ -304,5 +304,22 @@ The workspace introduces an integrated view switcher allowing users to inspect e
 - **Table Mode (Spreadsheet Grid)**: Renders a 2D interactive table with `contenteditable` cells, real-time column/row counters, dynamic `+ Row` creation, and RFC 4180 CSV export.
 - **Notes Mode (Structured Document)**: Transforms tabular extractions into structured Markdown/HTML notes with formatted headers, itemized key-value bullet points, and freeform annotation areas. Includes 1-click **Copy Notes** and **Export MD** capabilities.
 
+---
+
+## 14. Unrestricted Browser-Side Inference & Multi-Document Processing
+
+### 14.1 Zero-Quota Client-Side Architecture
+- **Unrestricted Conversions**: All artificial conversion caps and sample quotas have been removed. Processing is completely decentralized, executing directly between the client browser and the configured AI endpoints (Gemini REST API, OpenRouter, or local Ollama).
+- **Single Standard Preloaded Dataset**: A preloaded commercial invoice sample is available for instant verification of spreadsheet and notes rendering without requiring initial uploads.
+
+### 14.2 Multi-File Upload & Queue Management
+- **Batch Document Ingestion**: Supports drag-and-drop or selection of multiple document images simultaneously.
+- **Client-Side Queue**: Queued files are displayed with file size indicators and can be selected sequentially for in-memory compression and transcription without page reloads.
+
+### 14.3 Resilient In-Browser Gemini Polling & Error Recovery
+- **Exponential Backoff**: When the Google Gemini API returns HTTP 429 (Rate Limit), the browser automatically implements exponential backoff retries (up to 3 attempts with dynamic status notifications) before failing.
+- **Abort Signal Watchdogs**: 60-second fetch abort timeouts protect against network hangs or memory stalls, guaranteeing the browser UI remains responsive.
+- **Direct Canvas Downsampling**: High-resolution scans and camera photos are scaled down proportionally to max 2048px on an offscreen HTML5 canvas before base64 encoding, preventing browser memory leaks and payload bloat.
+
 
 

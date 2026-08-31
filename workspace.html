@@ -85,7 +85,6 @@
     .svg-icon { width: 1rem; height: 1rem; stroke-width: 2; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
     .svg-icon-sm { width: 0.875rem; height: 0.875rem; }
 
-    /* Workspace Grid Layout */
     .workspace-layout { display: grid; grid-template-columns: 1fr; gap: 1.5rem; padding: 2rem 0 3rem; }
     @media (min-width: 960px) { .workspace-layout { grid-template-columns: 340px 1fr; } }
 
@@ -93,26 +92,26 @@
     .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem; }
     .card-title { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-fg); margin-bottom: 0.75rem; font-family: var(--font-mono); }
 
-    /* Dropzone */
+    /* Dropzone (Multiple Files Supported) */
     .dropzone { border: 2px dashed var(--border); border-radius: 0.75rem; padding: 1.5rem 1rem; text-align: center; cursor: pointer; background: var(--bg); transition: border-color 0.15s ease; }
     .dropzone:hover { border-color: var(--primary); }
     .dropzone-label { font-size: 0.8125rem; font-weight: 600; color: var(--fg); }
     .dropzone-hint { font-size: 0.65rem; color: var(--muted-fg); margin-top: 0.25rem; }
 
+    /* File Queue List */
+    .file-queue { display: none; flex-direction: column; gap: 0.35rem; margin-top: 0.65rem; max-height: 120px; overflow-y: auto; scrollbar-width: thin; }
+    .file-queue-item { display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 0.5rem; background: var(--muted); border-radius: 0.35rem; font-size: 0.65rem; font-family: var(--font-mono); }
+    .file-queue-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+
     .doc-preview { display: none; position: relative; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); background: #000; max-height: 140px; margin-top: 0.65rem; }
     .doc-preview img { width: 100%; height: 140px; object-fit: contain; }
     .doc-preview-meta { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.6rem; font-family: var(--font-mono); padding: 0.25rem 0.5rem; display: flex; justify-content: space-between; }
 
-    /* Sample Documents */
-    .sample-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-    .sample-btn { padding: 0.5rem; background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; cursor: pointer; text-align: left; transition: border-color 0.15s ease; }
-    .sample-btn:hover { border-color: var(--primary); }
-    .sample-btn.active { border-color: var(--primary); background: hsla(105, 100%, 16%, 0.08); }
-    .sample-name { font-size: 0.7rem; font-weight: 700; color: var(--fg); }
-    .sample-desc { font-size: 0.6rem; color: var(--muted-fg); }
-
-    .quota-row { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.65rem; background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.7rem; margin-bottom: 0.65rem; }
-    .quota-count { font-family: var(--font-mono); font-weight: 700; color: var(--primary); }
+    /* 1 Preloaded Sample */
+    .sample-card-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; cursor: pointer; text-align: left; transition: border-color 0.15s ease; }
+    .sample-card-btn:hover { border-color: var(--primary); }
+    .sample-card-title { font-size: 0.75rem; font-weight: 700; color: var(--fg); }
+    .sample-card-sub { font-size: 0.65rem; color: var(--muted-fg); margin-top: 0.15rem; }
 
     /* Converted Documents History */
     .history-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 240px; overflow-y: auto; scrollbar-width: thin; }
@@ -125,7 +124,6 @@
     .history-btn:hover { background: var(--muted); }
     .history-empty { font-size: 0.7rem; color: var(--muted-fg); text-align: center; padding: 1rem 0; font-style: italic; }
 
-    /* Main Result Pane */
     .main-pane { display: flex; flex-direction: column; gap: 0.85rem; }
 
     .status-bar { display: none; align-items: center; gap: 0.5rem; padding: 0.65rem 0.85rem; border-radius: 0.65rem; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); }
@@ -137,7 +135,6 @@
     .spin { animation: spin 0.9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* View Switcher (Table vs Notes) */
     .view-switcher-group { display: inline-flex; align-items: center; padding: 0.2rem; border-radius: 0.5rem; background-color: var(--muted); border: 1px solid var(--border); gap: 0.2rem; }
     .view-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.65rem; border-radius: 0.35rem; font-size: 0.7rem; font-weight: 700; color: var(--muted-fg); background: transparent; border: none; cursor: pointer; font-family: var(--font-mono); }
     .view-btn:hover { color: var(--fg); }
@@ -148,7 +145,6 @@
     .grid-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center; }
     .active-badge { font-size: 0.65rem; font-family: var(--font-mono); background: var(--muted); border: 1px solid var(--border); border-radius: 0.35rem; padding: 0.2rem 0.5rem; color: var(--muted-fg); }
 
-    /* Table View */
     .table-viewport { overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); max-height: 520px; scrollbar-width: thin; }
     table.sheet { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.75rem; }
     table.sheet th { background: var(--muted); color: var(--fg); font-weight: 700; padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border-sub); white-space: nowrap; text-align: left; position: sticky; top: 0; z-index: 2; }
@@ -157,7 +153,6 @@
     table.sheet td[contenteditable="true"]:focus { outline: 2px solid var(--primary); outline-offset: -2px; background: hsla(105, 100%, 16%, 0.04); }
     table.sheet tr:hover td { background: var(--muted); }
 
-    /* Notes View */
     .notes-viewport { display: none; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); padding: 1.5rem; max-height: 520px; overflow-y: auto; scrollbar-width: thin; }
     .notes-viewport.active { display: block; }
     .notes-editor { min-height: 300px; font-family: var(--font-sans); font-size: 0.875rem; color: var(--fg); line-height: 1.65; outline: none; white-space: pre-wrap; }
@@ -213,15 +208,18 @@
       <aside class="sidebar">
         <!-- 1. Upload Document -->
         <div class="card">
-          <div class="card-title">1. Upload Document</div>
+          <div class="card-title">1. Upload Documents</div>
           <div class="dropzone" onclick="document.getElementById('fileInput').click()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('fileInput').click()">
             <svg class="svg-icon" style="color: var(--muted-fg); margin-bottom: 0.35rem;" viewBox="0 0 24 24">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>
             </svg>
-            <div class="dropzone-label">Select image or drop here</div>
-            <div class="dropzone-hint">In-memory client-side compression</div>
-            <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleFileUpload(event)" />
+            <div class="dropzone-label">Select or drop documents</div>
+            <div class="dropzone-hint">Upload single or multiple images • In-browser processing</div>
+            <input type="file" id="fileInput" accept="image/*" multiple style="display:none;" onchange="handleFileUpload(event)" />
           </div>
+
+          <!-- Multi-file queue preview -->
+          <div id="fileQueue" class="file-queue"></div>
 
           <div id="docPreview" class="doc-preview">
             <img id="docPreviewImg" alt="Document preview" />
@@ -232,32 +230,16 @@
           </div>
         </div>
 
-        <!-- 2. Sample Documents (Free Quota) -->
+        <!-- 2. Preloaded Sample Document -->
         <div class="card">
-          <div class="card-title">2. Free Sample Documents</div>
-          <div class="quota-row">
-            <span style="color: var(--muted-fg);">Remaining free conversions:</span>
-            <span class="quota-count" id="quotaCount">2</span>
-          </div>
-
-          <div class="sample-grid">
-            <button class="sample-btn" onclick="loadSample('invoice', event)">
-              <div class="sample-name">Invoice</div>
-              <div class="sample-desc">Items &amp; totals</div>
-            </button>
-            <button class="sample-btn" onclick="loadSample('ledger', event)">
-              <div class="sample-name">Ledger</div>
-              <div class="sample-desc">Debit &amp; credit</div>
-            </button>
-            <button class="sample-btn" onclick="loadSample('inventory', event)">
-              <div class="sample-name">Inventory</div>
-              <div class="sample-desc">Stock register</div>
-            </button>
-            <button class="sample-btn" onclick="loadSample('receipt', event)">
-              <div class="sample-name">Receipt</div>
-              <div class="sample-desc">POS summary</div>
-            </button>
-          </div>
+          <div class="card-title">2. Preloaded Document</div>
+          <button class="sample-card-btn" onclick="loadSampleDocument(event)">
+            <div>
+              <div class="sample-card-title">Commercial Invoice Sample</div>
+              <div class="sample-card-sub">Pre-parsed items, quantities, taxes, and totals</div>
+            </div>
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
         </div>
 
         <!-- 3. Convert Action -->
@@ -281,13 +263,10 @@
 
       <!-- Right Main Spreadsheet & Notes Viewport -->
       <section class="main-pane">
-        <!-- Status Notification Banner -->
         <div id="statusBar" class="status-bar" role="status" aria-live="polite"></div>
 
-        <!-- Toolbar with View Mode Switcher -->
         <div class="grid-toolbar">
           <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-            <!-- View Switcher -->
             <div class="view-switcher-group" role="tablist" aria-label="Render Mode">
               <button type="button" class="view-btn active" id="viewBtnTable" role="tab" aria-selected="true" onclick="setViewMode('table')">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
@@ -303,15 +282,12 @@
             <span id="activeModelBadge" class="active-badge">Gemini • gemini-2.5-flash</span>
           </div>
 
-          <!-- Dynamic Action Buttons depending on View Mode -->
           <div class="grid-actions">
-            <!-- Table Actions -->
             <div id="tableActions" style="display:flex; gap:0.35rem;">
               <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="addRow()">+ Row</button>
               <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="downloadCsv()">Export CSV</button>
             </div>
 
-            <!-- Notes Actions -->
             <div id="notesActions" style="display:none; gap:0.35rem;">
               <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="copyNotes()">Copy</button>
               <button class="btn btn-outline" style="font-size: 0.7rem; padding: 0.35rem 0.65rem;" onclick="downloadMarkdown()">Export MD</button>
@@ -321,7 +297,7 @@
           </div>
         </div>
 
-        <!-- 1. Editable 2D Table Grid View -->
+        <!-- Table View -->
         <div id="tableViewport" class="table-viewport" tabindex="0">
           <table class="sheet" id="spreadsheetGrid" aria-label="Extracted spreadsheet data">
             <thead id="tableHead">
@@ -373,7 +349,7 @@
           </table>
         </div>
 
-        <!-- 2. Structured Notes View -->
+        <!-- Notes View -->
         <div id="notesViewport" class="notes-viewport" tabindex="0">
           <div id="notesEditor" class="notes-editor" contenteditable="true" aria-label="Extracted document notes">
             <h2>Document Summary &amp; Notes</h2>
@@ -431,11 +407,12 @@
 
   <!-- Workspace Script -->
   <script>
-    var currentViewMode  = 'table';
-    var uploadedB64      = null;
-    var uploadedFileName = 'document.jpg';
-    var activeHeaders    = ['Line', 'Item Description', 'Quantity', 'Unit Price', 'Total'];
-    var activeRows       = [
+    var currentViewMode   = 'table';
+    var uploadedB64       = null;
+    var uploadedFileName  = 'document.jpg';
+    var fileQueueList     = [];
+    var activeHeaders     = ['Line', 'Item Description', 'Quantity', 'Unit Price', 'Total'];
+    var activeRows        = [
       ['01', 'Office Registry Binder A4', '12', '$8.50', '$102.00'],
       ['02', 'High-Precision Document Scanner', '2', '$140.00', '$280.00'],
       ['03', 'Archival Black Ink Cartridge', '5', '$19.00', '$95.00'],
@@ -443,63 +420,22 @@
       ['05', 'Hardcover Field Logbook A5', '8', '$7.25', '$58.00']
     ];
 
-    var QUOTA_KEY        = 'visiolog_demo_conversions';
-    var HISTORY_KEY      = 'visiolog_workspace_history';
-    var VIEW_KEY         = 'visiolog_workspace_view';
-    var MAX_FREE         = 2;
-    var DEFAULT_PROMPT   = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
+    var HISTORY_KEY       = 'visiolog_workspace_history';
+    var VIEW_KEY          = 'visiolog_workspace_view';
+    var DEFAULT_PROMPT    = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
 
-    var SAMPLES = {
-      invoice: {
-        name: 'Sample Invoice',
-        headers: ['Line', 'Item Description', 'Quantity', 'Unit Price', 'Subtotal', 'VAT', 'Total'],
-        rows: [
-          ['001', 'Thermal Paper Roll 80x80mm', '24', '$3.50', '$84.00', '$6.30', '$90.30'],
-          ['002', 'Premium A4 Registry Ledger', '6', '$12.00', '$72.00', '$5.40', '$77.40'],
-          ['003', 'Optical Document Scanner', '1', '$149.00', '$149.00', '$11.18', '$160.18'],
-          ['004', 'Archival Black Ink Cartridge', '10', '$18.50', '$185.00', '$13.88', '$198.88'],
-          ['005', 'Hardcover Field Logbook A5', '15', '$7.25', '$108.75', '$8.16', '$116.91'],
-        ]
-      },
-      ledger: {
-        name: 'Sample Ledger',
-        headers: ['Date', 'Description', 'Debit', 'Credit', 'Balance'],
-        rows: [
-          ['01 Aug 2026', 'Opening Balance', '', '', '$4,200.00'],
-          ['03 Aug 2026', 'Supplier Payment — Ink Co', '$380.00', '', '$3,820.00'],
-          ['07 Aug 2026', 'Invoice #1042 Receipt', '', '$1,100.00', '$4,920.00'],
-          ['12 Aug 2026', 'Utility Bill August', '$215.00', '', '$4,705.00'],
-          ['19 Aug 2026', 'Client Retainer — Q3', '', '$2,500.00', '$7,205.00'],
-          ['26 Aug 2026', 'Office Supplies', '$88.50', '', '$7,116.50'],
-        ]
-      },
-      inventory: {
-        name: 'Sample Inventory',
-        headers: ['SKU', 'Product', 'Category', 'In Stock', 'Reserved', 'Available', 'Reorder'],
-        rows: [
-          ['SK-001', 'Thermal Paper Roll', 'Consumables', '240', '40', '200', '50'],
-          ['SK-002', 'Black Ink Cartridge XL', 'Consumables', '85', '10', '75', '20'],
-          ['SK-003', 'A4 Ledger Hardcover', 'Stationery', '50', '5', '45', '15'],
-          ['SK-004', 'USB-C Scanner Cable', 'Accessories', '30', '0', '30', '10'],
-          ['SK-005', 'Label Maker Tape 24mm', 'Consumables', '120', '20', '100', '30'],
-        ]
-      },
-      receipt: {
-        name: 'Sample Receipt',
-        headers: ['Item', 'Qty', 'Price', 'Discount', 'Net'],
-        rows: [
-          ['Americano (Large)', '2', '$4.80', '$0.00', '$4.80'],
-          ['Club Sandwich', '1', '$12.50', '$1.25', '$11.25'],
-          ['Mineral Water 500ml', '3', '$2.00', '$0.00', '$6.00'],
-          ['Mixed Pastry Plate', '1', '$8.00', '$0.80', '$7.20'],
-          ['— SUBTOTAL —', '', '', '', '$29.25'],
-          ['— SERVICE 10% —', '', '', '', '$2.93'],
-          ['— TOTAL —', '', '', '', '$32.18'],
-        ]
-      }
+    var SAMPLE_DOC = {
+      name: 'Commercial Invoice Sample',
+      headers: ['Line', 'Item Description', 'Quantity', 'Unit Price', 'Subtotal', 'VAT (7.5%)', 'Total'],
+      rows: [
+        ['001', 'Thermal Paper Roll 80x80mm', '24', '$3.50', '$84.00', '$6.30', '$90.30'],
+        ['002', 'Premium A4 Registry Ledger', '6', '$12.00', '$72.00', '$5.40', '$77.40'],
+        ['003', 'Optical Document Scanner', '1', '$149.00', '$149.00', '$11.18', '$160.18'],
+        ['004', 'Archival Black Ink Cartridge', '10', '$18.50', '$185.00', '$13.88', '$198.88'],
+        ['005', 'Hardcover Field Logbook A5', '15', '$7.25', '$108.75', '$8.16', '$116.91'],
+      ]
     };
 
-    // View Switcher (Table vs Notes)
     function setViewMode(mode) {
       currentViewMode = mode;
       localStorage.setItem(VIEW_KEY, mode);
@@ -545,7 +481,7 @@
 
     function generateNotesFromTable() {
       var editor = document.getElementById('notesEditor');
-      var title = uploadedFileName || 'Extracted Document';
+      var title  = uploadedFileName || 'Extracted Document';
 
       var html = '<h2>' + escHtml(title) + ' — Structured Notes</h2>' +
         '<p><strong>Extracted Records:</strong> ' + activeRows.length + ' rows • ' + activeHeaders.length + ' fields</p>' +
@@ -579,10 +515,10 @@
 
     function downloadMarkdown() {
       var editor = document.getElementById('notesEditor');
-      var text = editor.innerText || editor.textContent;
-      var blob = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
-      var url  = URL.createObjectURL(blob);
-      var a    = document.createElement('a');
+      var text   = editor.innerText || editor.textContent;
+      var blob   = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
+      var url    = URL.createObjectURL(blob);
+      var a      = document.createElement('a');
       a.href     = url;
       a.download = 'visiolog_notes_' + Date.now() + '.md';
       document.body.appendChild(a);
@@ -592,7 +528,6 @@
       showStatus('Markdown notes downloaded.', 'success');
     }
 
-    // Status Notification Bar
     var statusTimer = null;
     function showStatus(msg, type) {
       var bar = document.getElementById('statusBar');
@@ -630,55 +565,49 @@
         .replace(/"/g, '&quot;');
     }
 
-    function getQuota() {
-      var v = parseInt(localStorage.getItem(QUOTA_KEY), 10);
-      return isNaN(v) ? MAX_FREE : v;
-    }
+    function loadSampleDocument(evt) {
+      activeHeaders    = SAMPLE_DOC.headers;
+      activeRows       = SAMPLE_DOC.rows;
+      uploadedFileName = SAMPLE_DOC.name;
 
-    function decrementQuota() {
-      var current = getQuota();
-      var next = Math.max(0, current - 1);
-      localStorage.setItem(QUOTA_KEY, String(next));
-      updateQuotaDisplay();
-      return next;
-    }
-
-    function updateQuotaDisplay() {
-      var el = document.getElementById('quotaCount');
-      if (el) el.textContent = String(getQuota());
-    }
-
-    function loadSample(type, evt) {
-      var sample = SAMPLES[type];
-      if (!sample) return;
-
-      var remaining = getQuota();
-      if (remaining <= 0) {
-        showStatus('Free sample quota exhausted. Go to Settings to configure your API key.', 'error');
-        return;
-      }
-
-      document.querySelectorAll('.sample-btn').forEach(function(b) { b.classList.remove('active'); });
-      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
-
-      activeHeaders = sample.headers;
-      activeRows    = sample.rows;
-      uploadedFileName = sample.name;
-
-      renderTable(sample.headers, sample.rows);
+      renderTable(SAMPLE_DOC.headers, SAMPLE_DOC.rows);
       if (currentViewMode === 'notes') generateNotesFromTable();
 
-      decrementQuota();
-      saveToHistory(sample.name, sample.headers, sample.rows);
-      showStatus(sample.name + ' loaded into workspace.', 'success');
+      saveToHistory(SAMPLE_DOC.name, SAMPLE_DOC.headers, SAMPLE_DOC.rows);
+      showStatus(SAMPLE_DOC.name + ' loaded into workspace.', 'success');
     }
 
     function handleFileUpload(evt) {
-      var file = evt.target.files && evt.target.files[0];
-      if (!file) return;
+      var files = Array.from(evt.target.files || []);
+      if (files.length === 0) return;
 
+      fileQueueList = files;
+      var qEl = document.getElementById('fileQueue');
+
+      if (files.length > 1) {
+        qEl.style.display = 'flex';
+        qEl.innerHTML = files.map(function(f, idx) {
+          return '<div class="file-queue-item" onclick="selectQueuedFile(' + idx + ')">' +
+            '<span class="file-queue-name">' + escHtml(f.name) + '</span>' +
+            '<span>' + Math.round(f.size / 1024) + ' KB</span>' +
+          '</div>';
+        }).join('');
+      } else {
+        qEl.style.display = 'none';
+      }
+
+      loadQueuedFile(files[0]);
+    }
+
+    function selectQueuedFile(idx) {
+      if (fileQueueList[idx]) {
+        loadQueuedFile(fileQueueList[idx]);
+      }
+    }
+
+    function loadQueuedFile(file) {
       uploadedFileName = file.name;
-      showStatus('Compressing "' + file.name + '" in browser memory...', 'loading');
+      showStatus('Processing "' + file.name + '" in browser memory...', 'loading');
 
       compressImage(file, 2048, 0.85, function(result) {
         if (!result) {
@@ -740,15 +669,15 @@
       if (provider === 'gemini') {
         var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
         if (!key) {
-          showStatus('No Gemini key found. Go to Settings to enter your API key.', 'error');
+          showStatus('No Gemini key found. Go to Settings to configure your API key.', 'error');
           return;
         }
-        runGeminiExtraction(key, model, prompt);
+        runGeminiExtractionWithPolling(key, model, prompt, 0);
 
       } else if (provider === 'openrouter') {
         var orKey = localStorage.getItem('visiolog_demo_openrouter_key') || '';
         if (!orKey) {
-          showStatus('No OpenRouter key found. Go to Settings to enter your key.', 'error');
+          showStatus('No OpenRouter key found. Go to Settings to configure your key.', 'error');
           return;
         }
         runOpenRouterExtraction(orKey, model, prompt);
@@ -758,8 +687,10 @@
       }
     }
 
-    function runGeminiExtraction(key, model, prompt) {
-      showStatus('Analyzing document with ' + model + '...', 'loading');
+    // Client-Side Gemini Polling with Exponential Backoff
+    function runGeminiExtractionWithPolling(key, model, prompt, retryCount) {
+      var maxRetries = 3;
+      showStatus('Analyzing document with ' + model + ' in browser...', 'loading');
 
       var url  = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key;
       var body = JSON.stringify({
@@ -772,16 +703,41 @@
         generationConfig: { temperature: 0.1, maxOutputTokens: 4096 }
       });
 
-      fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body })
-        .then(function(r) { return r.json(); })
+      var controller = new AbortController();
+      var timeoutId = setTimeout(function() { controller.abort(); }, 60000);
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body,
+        signal: controller.signal
+      })
+        .then(function(r) {
+          clearTimeout(timeoutId);
+          if (r.status === 429 && retryCount < maxRetries) {
+            var delay = Math.pow(2, retryCount + 1) * 1000;
+            showStatus('Rate limit reached. Retrying in ' + (delay / 1000) + 's...', 'loading');
+            setTimeout(function() {
+              runGeminiExtractionWithPolling(key, model, prompt, retryCount + 1);
+            }, delay);
+            return null;
+          }
+          return r.json();
+        })
         .then(function(data) {
+          if (!data) return;
           if (data.error) throw new Error(data.error.message || 'Gemini API error');
           var text = (((data.candidates || [])[0] || {}).content || {});
           var raw  = (text.parts || []).map(function(p) { return p.text || ''; }).join('');
           renderCsvOutput(raw, uploadedFileName);
         })
         .catch(function(err) {
-          showStatus(err.message || 'Extraction failed. Check key/model in Settings.', 'error');
+          clearTimeout(timeoutId);
+          if (err.name === 'AbortError') {
+            showStatus('Request timed out. Please retry with a smaller image or faster model.', 'error');
+          } else {
+            showStatus(err.message || 'Extraction failed. Check model & key in Settings.', 'error');
+          }
         });
     }
 
@@ -1059,7 +1015,6 @@
     themeBtnAuto.addEventListener('click', function () { applyTheme('auto'); });
 
     document.addEventListener('DOMContentLoaded', function() {
-      updateQuotaDisplay();
       renderHistory();
       syncActiveBadge();
       updateGridStats();

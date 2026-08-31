@@ -296,9 +296,6 @@
           <button type="button" class="btn btn-outline" style="font-size: 0.75rem;" onclick="clearHistory()">
             Clear Conversion History
           </button>
-          <button type="button" class="btn btn-outline" style="font-size: 0.75rem;" onclick="resetQuota()">
-            Reset Sample Quota (2)
-          </button>
           <button type="button" class="btn btn-outline" style="font-size: 0.75rem; color:var(--danger);" onclick="resetAll()">
             Reset All Settings
           </button>
@@ -575,11 +572,6 @@
       showNotice('Workspace conversion history cleared.', 'success');
     }
 
-    function resetQuota() {
-      localStorage.setItem('visiolog_demo_conversions', '2');
-      showNotice('Free sample quota reset to 2.', 'success');
-    }
-
     function resetAll() {
       if (confirm('Reset all Visiolog settings to default?')) {
         localStorage.removeItem('visiolog_provider');
@@ -587,7 +579,6 @@
         localStorage.removeItem('visiolog_prompt');
         localStorage.removeItem('visiolog_demo_gemini_key');
         localStorage.removeItem('visiolog_demo_openrouter_key');
-        localStorage.removeItem('visiolog_demo_conversions');
         localStorage.removeItem('visiolog_workspace_history');
         location.reload();
       }
