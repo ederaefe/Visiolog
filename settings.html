@@ -657,7 +657,13 @@
     var activeProvider = 'gemini';
     var activeModel    = 'gemini-2.5-flash';
     var knownModels    = [];
-    var DEFAULT_PROMPT = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
+    var DEFAULT_PROMPT = "You are an expert OCR tabular transcription system. Transcribe all rows from this image (logbook, visitor registry, ledger, invoice, receipt, or table) into pure, valid RFC 4180 CSV format.\n\n" +
+      "STRICT MANDATORY RULES:\n" +
+      "1. Return ONLY the raw CSV text. Do NOT wrap in markdown code blocks (```csv), introductory text, conclusions, or line labels like 'Row 1:', 'Row 2:'.\n" +
+      "2. The first line MUST be the column headers (e.g. No, Full Name, Organization, Purpose, Time In, Time Out, Signature, Amount). If columns are unlabelled, infer clear concise names based on the content.\n" +
+      "3. Every record MUST be on a new line with the exact same number of columns separated by commas.\n" +
+      "4. Enclose fields in double quotes if they contain commas, spaces, or special characters.\n" +
+      "5. Transcribe handwriting, names, timestamps, and numbers verbatim. If a cell is blank, output an empty string between commas (,,).";
 
     var PRESETS = {
       gemini: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash'],

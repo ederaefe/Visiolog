@@ -274,13 +274,17 @@
       grid-template-columns: 1fr;
       gap: 1rem;
       padding: 1rem 0 3rem;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     @media (min-width: 960px) {
       .workspace-layout {
-        grid-template-columns: 340px 1fr;
+        grid-template-columns: minmax(300px, 340px) minmax(0, 1fr);
         gap: 1.25rem;
         padding: 1.25rem 0 3rem;
+        align-items: start;
       }
     }
 
@@ -289,6 +293,10 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     @media (max-width: 960px) {
@@ -301,6 +309,9 @@
       border-radius: var(--radius);
       padding: 1rem;
       box-shadow: 0 1px 4px var(--shadow);
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .card-title {
@@ -598,11 +609,19 @@
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      min-height: 580px;
+      min-height: 600px;
+      max-height: calc(100vh - 120px);
       box-shadow: 0 1px 4px var(--shadow);
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     @media (max-width: 960px) {
+      .main-pane {
+        max-height: none;
+      }
       .main-pane.tab-hidden { display: none; }
     }
 
@@ -819,32 +838,44 @@
       color: var(--primary);
     }
 
-    /* Spreadsheet Table Viewport */
+    /* Spreadsheet Table Viewport (Fixed Scrollable Canvas) */
     .table-viewport {
       display: none;
       flex: 1;
-      overflow: auto;
+      overflow-x: auto;
+      overflow-y: auto;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--card);
       -webkit-overflow-scrolling: touch;
-      max-height: 600px;
+      max-height: calc(100vh - 270px);
+      min-height: 380px;
+      min-width: 0;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     table.sheet {
-      width: 100%;
-      border-collapse: collapse;
+      width: max-content;
+      min-width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
       font-size: 0.8125rem;
       font-family: var(--font-mono);
-      min-width: 480px;
     }
 
     table.sheet th, table.sheet td {
-      border: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
       padding: 0.55rem 0.75rem;
       text-align: left;
-      min-width: 110px;
+      min-width: 120px;
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       outline: none;
+      box-sizing: border-box;
     }
 
     table.sheet th {
@@ -853,9 +884,11 @@
       color: var(--fg);
       position: sticky;
       top: 0;
-      z-index: 2;
+      z-index: 10;
       cursor: pointer;
       user-select: none;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 1px 0 var(--border);
     }
 
     table.sheet th:hover { background: hsla(105, 100%, 16%, 0.1); }
@@ -1350,7 +1383,13 @@
 
     var HISTORY_KEY       = 'visiolog_workspace_history';
     var VIEW_KEY          = 'visiolog_workspace_view';
-    var DEFAULT_PROMPT    = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
+    var DEFAULT_PROMPT    = "You are an expert OCR tabular transcription system. Transcribe all rows from this image (logbook, visitor registry, ledger, invoice, receipt, or table) into pure, valid RFC 4180 CSV format.\n\n" +
+      "STRICT MANDATORY RULES:\n" +
+      "1. Return ONLY the raw CSV text. Do NOT wrap in markdown code blocks (```csv), introductory text, conclusions, or line labels like 'Row 1:', 'Row 2:'.\n" +
+      "2. The first line MUST be the column headers (e.g. No, Full Name, Organization, Purpose, Time In, Time Out, Signature, Amount). If columns are unlabelled, infer clear concise names based on the content.\n" +
+      "3. Every record MUST be on a new line with the exact same number of columns separated by commas.\n" +
+      "4. Enclose fields in double quotes if they contain commas, spaces, or special characters.\n" +
+      "5. Transcribe handwriting, names, timestamps, and numbers verbatim. If a cell is blank, output an empty string between commas (,,).";
 
     /* Mobile Workspace Tab Switcher */
     function switchMobileWorkspaceTab(tab) {
@@ -1928,19 +1967,153 @@
         });
     }
 
-    /* RFC 4180 CSV Parser & Grid Rendering Core */
-    function renderCsvOutput(raw, fileName) {
-      var cleaned = raw.replace(/```[a-z]*\n?/gi, '').replace(/```/g, '').trim();
-      var lines   = cleaned.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
+    /* Industrial-Grade Tabular OCR Sanitizer & Multi-Delimiter Parser */
+    function sanitizeAndParseTable(raw) {
+      if (!raw || typeof raw !== 'string') return { headers: [], rows: [] };
 
-      if (lines.length < 2) {
+      // 1. Strip markdown fences and conversational intro/outro text
+      var cleaned = raw
+        .replace(/```[a-z]*\r?\n?/gi, '')
+        .replace(/```/g, '')
+        .trim();
+
+      var rawLines = cleaned.split(/\r?\n/);
+      var normalizedLines = [];
+
+      for (var i = 0; i < rawLines.length; i++) {
+        var line = rawLines[i].trim();
+        if (!line) continue;
+
+        // Skip conversational commentary lines
+        if (/^(here is|note:|table:|below is|extracted:|summary:|record count:)/i.test(line)) {
+          continue;
+        }
+
+        // If line is ONLY "Row 20:" or "Record 21:", check if next line exists and merge, or skip
+        if (/^(row|record|item|entry)\s*\d+:\s*$/i.test(line)) {
+          if (i + 1 < rawLines.length) {
+            rawLines[i + 1] = rawLines[i + 1].trim();
+          }
+          continue;
+        }
+
+        // Strip leading "Row 20:\s*" or "Record 20:\s*" or "- "
+        line = line.replace(/^(row|record|item|entry)\s*\d+:\s*/i, '');
+        line = line.replace(/^[-*•]\s+/, '');
+
+        if (line.trim().length > 0) {
+          normalizedLines.push(line.trim());
+        }
+      }
+
+      if (normalizedLines.length === 0) {
+        return { headers: [], rows: [] };
+      }
+
+      // 2. Smart Delimiter Detection across non-empty lines
+      var commaCount = 0;
+      var tabCount   = 0;
+      var pipeCount  = 0;
+      var semiCount  = 0;
+
+      normalizedLines.forEach(function(l) {
+        commaCount += (l.match(/,/g) || []).length;
+        tabCount   += (l.match(/\t/g) || []).length;
+        pipeCount  += (l.match(/\|/g) || []).length;
+        semiCount  += (l.match(/;/g) || []).length;
+      });
+
+      var delimiter = ',';
+      if (tabCount > commaCount && tabCount > pipeCount && tabCount > semiCount) {
+        delimiter = '\t';
+      } else if (pipeCount > commaCount && pipeCount > tabCount && pipeCount > semiCount) {
+        delimiter = '|';
+      } else if (semiCount > commaCount && semiCount > tabCount && semiCount > pipeCount) {
+        delimiter = ';';
+      }
+
+      // 3. Parse lines using chosen delimiter
+      var parsedRows = [];
+      normalizedLines.forEach(function(l) {
+        // Skip markdown separator lines like |---|---|
+        if (/^[\s|:-]+$/.test(l)) return;
+
+        var cells = [];
+        if (delimiter === ',') {
+          cells = parseCsvLine(l);
+        } else if (delimiter === '\t') {
+          cells = l.split('\t').map(function(c) { return c.trim(); });
+        } else if (delimiter === '|') {
+          cells = l.split('|').map(function(c) { return c.trim(); }).filter(function(c, idx, arr) {
+            if ((idx === 0 || idx === arr.length - 1) && c === '') return false;
+            return true;
+          });
+        } else {
+          cells = l.split(';').map(function(c) { return c.trim(); });
+        }
+
+        if (cells.length > 0) {
+          parsedRows.push(cells);
+        }
+      });
+
+      if (parsedRows.length === 0) {
+        return { headers: [], rows: [] };
+      }
+
+      // 4. Column Count Reconciliation & Header Detection
+      var headers = parsedRows[0];
+      var rows = parsedRows.slice(1);
+
+      var firstLineIsData = /^\d+:\d+\s*(am|pm)/i.test((headers[0] || '').trim()) || 
+                            /^\d+$/.test((headers[0] || '').trim()) ||
+                            /^\d{1,4}[-/]\d{1,2}[-/]\d{1,4}/.test((headers[0] || '').trim());
+
+      if (rows.length === 0 && parsedRows.length > 0) {
+        headers = headers.map(function(h, idx) { return 'Column ' + (idx + 1); });
+        rows = [parsedRows[0]];
+      } else if (firstLineIsData && parsedRows.length > 0) {
+        var colCount = Math.max.apply(null, parsedRows.map(function(r) { return r.length; }));
+        var inferredHeaders = ['No', 'Full Name', 'Company', 'Purpose', 'Time In', 'Time Out', 'Remarks', 'Column 8', 'Column 9', 'Column 10'];
+        headers = inferredHeaders.slice(0, colCount);
+        while (headers.length < colCount) {
+          headers.push('Column ' + (headers.length + 1));
+        }
+        rows = parsedRows;
+      }
+
+      var maxCols = headers.length;
+      rows.forEach(function(r) {
+        if (r.length > maxCols) maxCols = r.length;
+      });
+
+      while (headers.length < maxCols) {
+        headers.push('Column ' + (headers.length + 1));
+      }
+
+      // Normalize all row lengths to match headers.length
+      var finalRows = rows.map(function(r) {
+        var rowCopy = r.slice(0, maxCols);
+        while (rowCopy.length < maxCols) {
+          rowCopy.push('');
+        }
+        return rowCopy;
+      });
+
+      return { headers: headers, rows: finalRows };
+    }
+
+    function renderCsvOutput(raw, fileName) {
+      var parsed = sanitizeAndParseTable(raw);
+      var headers = parsed.headers;
+      var rows    = parsed.rows;
+
+      if (!headers || headers.length === 0 || !rows || rows.length === 0) {
         stopScanProgress(false);
-        showStatus('Could not parse a valid table. Try adjusting the prompt in Settings.', 'error', true);
+        showStatus('Could not parse table data. Check key or adjust prompt in Settings.', 'error', true);
         return;
       }
 
-      var headers = parseCsvLine(lines[0]);
-      var rows    = lines.slice(1).map(parseCsvLine);
       activeHeaders = headers;
       activeRows    = rows;
 
@@ -1949,7 +2122,7 @@
 
       saveToHistory(fileName || 'Document', headers, rows);
       stopScanProgress(true);
-      showStatus('Extracted ' + rows.length + ' rows.', 'success');
+      showStatus('Extracted ' + rows.length + ' rows (' + headers.length + ' columns).', 'success');
     }
 
     function parseCsvLine(line) {
