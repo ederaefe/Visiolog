@@ -126,3 +126,18 @@ services:
 - **100% Data Sovereignty**: All documents, metadata, extracted spreadsheets, and notes reside strictly on the host system.
 - **Zero External Telemetry**: No tracking beacons, analytics scripts, or unprompted network calls.
 - **Air-Gapped Operation**: Full operational support in completely offline / air-gapped intranet environments when running local Ollama inference.
+
+---
+
+## 6. Client-Side Browser Engine & Search Discovery Protocol
+
+### 6.1 Pure Client-Side Architecture
+The static web client and live workspace operate entirely in the client browser:
+- **Zero-Storage Execution**: Document image downsampling and client-side preprocessing are performed in memory via HTML5 Canvas.
+- **Direct-to-Endpoint Inference**: Browser calls out directly to configured vision inference endpoints (Gemini REST, OpenRouter, local Ollama, or OpenAI-compatible custom endpoints) without intermediate application servers.
+- **Client-Side State Storage**: User API keys, custom model identifiers, extraction prompts, and conversion history are persisted in browser `localStorage`.
+
+### 6.2 Search Engine & Crawler Optimization
+- **Standardized Directives**: `robots.txt` explicitly allows full crawling for standard user agents (`Googlebot`, `Bingbot`, `Slurp`, `DuckDuckBot`, `Baiduspider`, `YandexBot`).
+- **Sitemap Manifest**: `sitemap.xml` provides full coverage with change frequencies and priorities for all public entrypoints (`/`, `/workspace.html`, `/settings.html`, `/docs.html`, `/privacy.html`, `/terms.html`, `/contact.html`).
+- **Canonical Meta Tags**: Each page contains strict OpenGraph, Twitter Card, and Canonical link tags for indexation.
