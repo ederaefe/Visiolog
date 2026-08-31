@@ -2038,8 +2038,66 @@
             }
             throw new Error(errMsg);
           }
-          var text = (((data.candidates || [])[0] || {}).content || {});
+          var candidate = ((data.candidates || [])[0] || {});
+          var finishReason = candidate.finishReason || 'STOP';
+          var text = (candidate.content || {});
           var raw  = (text.parts || []).map(function(p) { return p.text || ''; }).join('');
+
+          // Multi-session continuation: If generation reached token limit or was truncated
+          if (finishReason === 'MAX_TOKENS' || finishReason === 'LENGTH') {
+            showStatus('Session 1 complete. Requesting Session 2 for remaining rows...', 'loading');
+            updateScanProgress(60, 'Session 2: Continuing row extraction...');
+
+            var session2Body = JSON.stringify({
+              contents: [
+                {
+                  role: 'user',
+                  parts: [
+                    { text: prompt },
+                    { inline_data: { mime_type: 'image/jpeg', data: uploadedB64 } }
+                  ]
+                },
+                {
+                  role: 'model',
+                  parts: [
+                    { text: raw }
+                  ]
+                },
+                {
+                  role: 'user',
+                  parts: [
+                    { text: 'Continue transcribing the remaining rows from where you stopped. Do NOT repeat column headers. Start directly with the next row in pure CSV format.' }
+                  ]
+                }
+              ],
+              generationConfig: { temperature: 0.1, maxOutputTokens: 8192 }
+            });
+
+            fetch(url, {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json',
+                'x-goog-api-key': cleanKey
+              },
+              body: session2Body
+            })
+              .then(function(r2) { return r2.json(); })
+              .then(function(data2) {
+                if (onDone) onDone();
+                var candidate2 = ((data2.candidates || [])[0] || {});
+                var text2 = (candidate2.content || {});
+                var raw2  = (text2.parts || []).map(function(p) { return p.text || ''; }).join('');
+                var combined = raw.trim() + '\n' + raw2.trim();
+                renderCsvOutput(combined, uploadedFileName);
+              })
+              .catch(function() {
+                if (onDone) onDone();
+                renderCsvOutput(raw, uploadedFileName);
+              });
+            return;
+          }
+
+          if (onDone) onDone();
           renderCsvOutput(raw, uploadedFileName);
         })
         .catch(function(err) {
@@ -2076,10 +2134,60 @@
       })
         .then(function(r) { return r.json(); })
         .then(function(data) {
+          if (data.error) {
+            if (onDone) onDone();
+            throw new Error(data.error.message || 'OpenRouter error');
+          }
+          var choice = ((data.choices || [])[0] || {});
+          var finishReason = choice.finish_reason || 'stop';
+          var raw = (choice.message || {}).content || '';
+
+          if (finishReason === 'length') {
+            showStatus('Session 1 complete. Requesting Session 2 for remaining rows...', 'loading');
+            updateScanProgress(60, 'Session 2: Continuing row extraction...');
+
+            var session2Body = JSON.stringify({
+              model: model || 'meta-llama/llama-3.2-11b-vision-instruct',
+              messages: [
+                {
+                  role: 'user',
+                  content: [
+                    { type: 'text', text: prompt },
+                    { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + uploadedB64 } }
+                  ]
+                },
+                {
+                  role: 'assistant',
+                  content: raw
+                },
+                {
+                  role: 'user',
+                  content: 'Continue transcribing the remaining rows from where you stopped. Do NOT repeat column headers. Start directly with the next row in pure CSV format.'
+                }
+              ]
+            });
+
+            fetch('https://openrouter.ai/api/v1/chat/completions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+              body: session2Body
+            })
+              .then(function(r2) { return r2.json(); })
+              .then(function(data2) {
+                if (onDone) onDone();
+                var raw2 = ((((data2.choices || [])[0] || {}).message || {}).content) || '';
+                var combined = raw.trim() + '\n' + raw2.trim();
+                renderCsvOutput(combined, uploadedFileName);
+              })
+              .catch(function() {
+                if (onDone) onDone();
+                renderCsvOutput(raw, uploadedFileName);
+              });
+            return;
+          }
+
           if (onDone) onDone();
-          if (data.error) throw new Error(data.error.message || 'OpenRouter error');
-          var raw = ((data.choices || [])[0] || {}).message || {};
-          renderCsvOutput(raw.content || '', uploadedFileName);
+          renderCsvOutput(raw, uploadedFileName);
         })
         .catch(function(err) {
           stopScanProgress(false);
