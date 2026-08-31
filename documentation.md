@@ -364,6 +364,19 @@ The static web client and live workspace operate entirely in the client browser:
 - **In-Context Customization**: Embedded directly within the workspace sidebar (`#promptQuickCard`), allowing users to inspect and adjust prompt rules for specific document batches without leaving the conversion workspace.
 - **Bidirectional Synchronization**: Modifications made in either the workspace quick drawer or the settings page synchronize transparently through `localStorage`.
 
+---
+
+## 19. Dark Mode Primary Color Customization (`#6B9700`) & Subtle Prompt Reset Actions
+
+### 19.1 Dark Theme Green Calibration (`#6B9700`)
+- **Primary Color Variable**: Set dark mode `--primary: #6B9700;` across all application stylesheets and static demo templates (`index.html`, `workspace.html`, `demo.html`, `settings.html`, `docs.html`, `contact.html`, `privacy.html`, `terms.html`, `globals.css`).
+- **Foreground Contrast**: Paired with `--primary-foreground: #ffffff;` (or `--primary-fg: #ffffff;`) to guarantee high-contrast legibility across buttons, badges, brand marks, and active tab pills in dark mode.
+
+### 19.2 Subtle Reset Icon Action
+- **Monochrome SVG Reload Icon**: Replaced plain text reset buttons with clean, subtle reset icon buttons (`<svg><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span>Reset</span>`).
+- **Unified Single Source of Truth**: Both Settings and Workspace prompt editors anchor directly to the high-level advanced systemic prompt template.
+
+
 
 
 

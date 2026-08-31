@@ -113,9 +113,9 @@
   --popover: hsl(0, 0%, 20%);
   /* Elevated Popover #333333 */
   --popover-foreground: hsl(0, 0%, 100%);
-  --primary: hsl(102, 87%, 76%);
-  /* Glowing Light Green on Dark #B4F292 */
-  --primary-foreground: hsl(214, 31%, 17%);
+  --primary: #6B9700;
+  /* Dark Mode Primary Green #6B9700 */
+  --primary-foreground: hsl(0, 0%, 100%);
   --secondary: hsl(0, 0%, 24%);
   /* Elevated Hover #3D3D3D */
   --secondary-foreground: hsl(0, 0%, 100%);
@@ -123,15 +123,15 @@
   /* Dark Slate Muted #383838 */
   --muted-foreground: hsl(0, 0%, 75%);
   /* Bright Readable Gray Text #BFBFBF */
-  --accent: hsl(105, 100%, 16%);
-  /* Dark Spruce Forest Green Accent */
+  --accent: #6B9700;
+  /* Accent Green */
   --accent-foreground: hsl(0, 0%, 100%);
   --destructive: hsl(0, 75%, 50%);
   --border: hsl(0, 0%, 27%);
   /* High-Contrast Slate Border #444444 */
   --input: hsl(0, 0%, 27%);
-  --ring: hsl(102, 87%, 76%);
-  --chart-1: hsl(102, 87%, 76%);
+  --ring: #6B9700;
+  --chart-1: #6B9700;
   --chart-2: hsl(0, 0%, 100%);
   --chart-3: hsl(105, 100%, 16%);
   --chart-4: hsl(0, 0%, 30%);
