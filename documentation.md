@@ -312,6 +312,24 @@ The static web client and live workspace operate entirely in the client browser:
 - **Multi-Header Key Transmission**: All client-side REST calls to Google Generative Language API (`/v1beta/models/...:generateContent`) transmit the trimmed API key via the `x-goog-api-key` header in addition to the encoded URL query parameter.
 - **Intelligent Error Guidance**: Explicitly intercepts Google Cloud Gateway 401/403/OAuth2 error payloads, translating cryptic `"Expected OAuth 2 access token..."` exceptions into actionable instructions pointing users to Google AI Studio (`aistudio.google.com/app/apikey`) for valid `AIzaSy...` keys.
 
+---
+
+## 16. In-Image Scanning Laser Overlay & Real-Time Extraction Progress Engine
+
+### 16.1 In-Image Scanning Laser Overlay
+- **Visual OCR Feedback**: During document extraction, an animated scanning laser line (`.scan-line`) sweeps vertically across the uploaded document thumbnail (`.doc-preview-img-wrap`).
+- **Accessible Motion**: Integrated `@media (prefers-reduced-motion: reduce)` rules to eliminate sweeping motion for vestibular-sensitive users.
+- **Micro-Progress Box**: Encapsulated within the overlay is a live progress card displaying the current stage label, an animated fill track (`.scan-progress-fill`), and percentage readouts (`0%` -> `100%`).
+
+### 16.2 Real-Time Multi-Phase Progress Engine
+- **Inference Lifecycle Progression**:
+  - *Phase 1 (10% - 25%)*: Canvas image downsampling, quality optimization, and EXIF alignment.
+  - *Phase 2 (25% - 55%)*: Payload packaging and network transmission to the selected vision provider (Gemini, OpenRouter, Ollama, Custom).
+  - *Phase 3 (55% - 85%)*: Neural OCR inference and tabular structure analysis with simulated heartbeat ticks.
+  - *Phase 4 (85% - 100%)*: Column reconciliation, RFC 4180 CSV parsing, and 2D spreadsheet population.
+- **Graceful Lifecycle Management**: The engine automatically clears all interval timers and resets on failure, while animating cleanly to 100% before dismissing upon successful table rendering.
+
+
 
 
 
