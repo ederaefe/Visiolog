@@ -1,311 +1,366 @@
 <!DOCTYPE html>
-<html lang="en" class="dark" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Visiolog Live Demo | Instant Document-to-Spreadsheet Engine</title>
-  <meta name="description" content="Convert paper logbooks, receipts, and tables to interactive digital spreadsheets directly in your browser with client-side privacy." />
+  <title>Visiolog Demo — In-Browser Extraction Studio</title>
+  <meta name="description" content="Try Visiolog live in your browser. Convert paper documents, receipts, and scanned tables into interactive spreadsheets with zero signup." />
 
-  <link rel="icon" href="/icon?v=2.0.0" type="image/png" />
-  <link rel="apple-touch-icon" href="/apple-icon?v=2.0.0" />
+  <!-- Inline SVG Favicon to eliminate missing asset errors -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
 
-  <!-- Google Fonts: Fraunces (Serif Heading) & Inter (Sans Body) & JetBrains Mono -->
+  <!-- Typography: Fraunces (Headings), Inter (Body), JetBrains Mono (Code/Grid) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Synchronous Head Theme Detection -->
+  <!-- Synchronous theme evaluation to prevent visual flashing -->
   <script>
     (function () {
-      var storedTheme = localStorage.getItem('visiolog_theme');
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.setAttribute('data-theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
+      // Check stored preference or system preference
+      var stored = localStorage.getItem('visiolog_theme');
+      var isDark = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     })();
   </script>
 
   <style>
-    /* CSS Root Theme Tokens */
+    /* Design Tokens */
     :root {
-      --background: hsl(70, 60%, 96%);
-      --foreground: hsl(214, 35%, 10%);
-      --card: hsl(70, 50%, 98%);
-      --card-foreground: hsl(214, 35%, 10%);
-      --primary: hsl(105, 100%, 16%);
-      --primary-foreground: hsl(70, 60%, 96%);
-      --secondary: hsl(70, 30%, 90%);
-      --muted: hsl(70, 30%, 92%);
-      --muted-foreground: hsl(214, 15%, 45%);
-      --border: hsl(70, 30%, 88%);
-      --border-subtle: hsl(70, 30%, 92%);
-      --shadow-color: rgba(0, 0, 0, 0.05);
-      --font-serif: 'Fraunces', Georgia, serif;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --bg:          hsl(70, 60%, 96%);
+      --fg:          hsl(214, 35%, 10%);
+      --card:        hsl(70, 50%, 98%);
+      --muted:       hsl(70, 20%, 90%);
+      --muted-fg:    hsl(214, 25%, 30%);
+      --primary:     hsl(105, 100%, 16%);
+      --primary-fg:  hsl(70, 60%, 98%);
+      --accent:      hsl(102, 87%, 76%);
+      --border:      hsla(105, 100%, 16%, 0.16);
+      --border-sub:  hsla(105, 100%, 16%, 0.06);
+      --shadow:      rgba(13, 82, 0, 0.08);
+      --danger:      hsl(0, 72%, 51%);
+      --success:     hsl(142, 72%, 40%);
+      --font-sans:   'Inter', system-ui, sans-serif;
+      --font-serif:  'Fraunces', Georgia, serif;
+      --font-mono:   'JetBrains Mono', monospace;
+      --radius:      0.75rem;
     }
 
-    html.dark {
-      --background: hsl(214, 35%, 10%);
-      --foreground: hsl(70, 60%, 96%);
-      --card: hsl(214, 30%, 13%);
-      --card-foreground: hsl(70, 60%, 96%);
-      --primary: hsl(102, 87%, 76%);
-      --primary-foreground: hsl(214, 35%, 10%);
-      --secondary: hsl(214, 25%, 18%);
-      --muted: hsl(214, 25%, 16%);
-      --muted-foreground: hsl(214, 15%, 65%);
-      --border: hsl(214, 25%, 20%);
-      --border-subtle: hsl(214, 25%, 16%);
-      --shadow-color: rgba(0, 0, 0, 0.35);
+    [data-theme="dark"] {
+      --bg:          hsl(0, 0%, 13%);
+      --fg:          hsl(0, 0%, 98%);
+      --card:        hsl(0, 0%, 18%);
+      --muted:       hsl(0, 0%, 22%);
+      --muted-fg:    hsl(0, 0%, 68%);
+      --primary:     hsl(102, 87%, 72%);
+      --primary-fg:  hsl(214, 31%, 12%);
+      --accent:      hsl(105, 100%, 16%);
+      --border:      hsl(0, 0%, 26%);
+      --border-sub:  hsl(0, 0%, 20%);
+      --shadow:      rgba(0, 0, 0, 0.4);
+      --danger:      hsl(0, 72%, 60%);
+      --success:     hsl(142, 72%, 50%);
     }
 
-    * {
+    /* Core Resets */
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background-color: var(--background);
-      color: var(--foreground);
       font-family: var(--font-sans);
-      min-height: 100vh;
+      background: var(--bg);
+      color: var(--fg);
       line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     .font-serif { font-family: var(--font-serif); }
-    .font-mono { font-family: var(--font-mono); }
+    .font-mono  { font-family: var(--font-mono); }
 
-    .container {
+    .wrap {
       width: 100%;
-      max-width: 78rem;
+      max-width: 1140px;
       margin: 0 auto;
       padding: 0 1.25rem;
     }
 
-    /* Site Header */
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      width: 100%;
-      background-color: hsla(70, 60%, 96%, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+    /* Generic SVG Icon Utility */
+    .icon {
+      width: 1rem;
+      height: 1rem;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      flex-shrink: 0;
+      vertical-align: middle;
     }
+    .icon-sm { width: 0.875rem; height: 0.875rem; }
+    .icon-lg { width: 1.25rem; height: 1.25rem; }
 
-    html.dark .site-header {
-      background-color: hsla(214, 35%, 10%, 0.85);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 4rem;
-    }
-
-    .brand-link {
-      display: flex;
-      align-items: center;
-      gap: 0.625rem;
-      text-decoration: none;
-      color: var(--foreground);
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .brand-logo {
-      width: 2rem;
-      height: 2rem;
-      border-radius: 0.5rem;
-      object-fit: cover;
-    }
-
-    .badge-demo {
-      font-size: 0.6875rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.2rem 0.55rem;
-      border-radius: 9999px;
-      background-color: hsla(105, 100%, 16%, 0.1);
-      color: var(--primary);
-      border: 1px solid var(--border);
-    }
-
-    html.dark .badge-demo {
-      background-color: hsla(102, 87%, 76%, 0.15);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    /* Buttons */
+    /* Button Styling */
     .btn {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      font-size: 0.8125rem;
+      gap: 0.4rem;
+      font-family: var(--font-sans);
       font-weight: 600;
+      font-size: 0.8125rem;
+      border-radius: var(--radius);
       padding: 0.5rem 1rem;
-      border-radius: 0.75rem;
-      cursor: pointer;
-      transition: all 0.15s ease;
       text-decoration: none;
+      cursor: pointer;
       border: 1px solid transparent;
+      background: transparent;
+      color: var(--fg);
+      transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+      white-space: nowrap;
     }
+
+    .btn:active { transform: scale(0.97); }
 
     .btn-primary {
-      background-color: var(--primary);
-      color: var(--primary-foreground);
-      box-shadow: 0 1px 3px var(--shadow-color);
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-color: var(--primary);
     }
-
-    .btn-primary:hover {
-      opacity: 0.92;
-      transform: translateY(-1px);
-    }
+    .btn-primary:hover { opacity: 0.88; }
 
     .btn-outline {
-      background-color: transparent;
+      background: var(--card);
       border-color: var(--border);
-      color: var(--foreground);
+      color: var(--fg);
+    }
+    .btn-outline:hover { background: var(--muted); }
+
+    .btn-ghost { color: var(--muted-fg); }
+    .btn-ghost:hover { color: var(--fg); }
+
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* Section 1: Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
-    .btn-outline:hover {
-      background-color: var(--muted);
-      border-color: var(--muted-foreground);
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.75rem;
+      gap: 1rem;
     }
 
-    /* Hero Banner */
-    .hero-section {
-      padding: 3rem 0 2rem;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .brand-mark {
+      width: 2rem;
+      height: 2rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-radius: 0.45rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .brand-name { font-family: var(--font-serif); }
+
+    .badge-demo {
+      background: hsla(102, 87%, 76%, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.15rem 0.5rem;
+    }
+
+    [data-theme="dark"] .badge-demo {
+      background: hsla(102, 87%, 76%, 0.12);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Section 2: Demo Hero */
+    .demo-hero {
+      padding: 3.5rem 0 2.5rem;
       text-align: center;
+      border-bottom: 1px solid var(--border-sub);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, hsla(105, 100%, 16%, 0.06) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    [data-theme="dark"] .demo-hero::before {
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, hsla(102, 87%, 76%, 0.05) 0%, transparent 100%);
     }
 
     .hero-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.35rem 0.85rem;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
       border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background-color: var(--muted);
-      color: var(--primary);
       border: 1px solid var(--border);
+      background: hsla(105, 100%, 16%, 0.06);
+      color: var(--primary);
+      font-size: 0.6875rem;
+      font-weight: 700;
       margin-bottom: 1.25rem;
+      font-family: var(--font-mono);
+    }
+
+    [data-theme="dark"] .hero-pill {
+      background: hsla(102, 87%, 76%, 0.1);
     }
 
     .hero-title {
-      font-size: clamp(2rem, 4.5vw, 3rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-      max-width: 50rem;
-      margin-left: auto;
-      margin-right: auto;
+      font-size: 2.25rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+      position: relative;
     }
 
-    .hero-highlight {
+    @media (min-width: 640px) { .hero-title { font-size: 3rem; } }
+
+    .hero-hl {
       color: var(--primary);
       font-style: italic;
     }
 
-    .hero-description {
+    .hero-sub {
       font-size: 1rem;
-      color: var(--muted-foreground);
-      max-width: 40rem;
-      margin: 0 auto 1.5rem;
+      color: var(--muted-fg);
+      max-width: 38rem;
+      margin: 0 auto 1.75rem;
       line-height: 1.6;
+      position: relative;
     }
 
-    /* Quota Banner */
-    .quota-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.35rem 0.85rem;
-      border-radius: 9999px;
-      background-color: var(--card);
-      border: 1px solid var(--border);
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      justify-content: center;
       font-size: 0.75rem;
-      color: var(--muted-foreground);
-      margin-bottom: 2rem;
+      color: var(--muted-fg);
+      font-weight: 500;
+      position: relative;
     }
 
-    .quota-val {
-      color: var(--primary);
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Section 3: Studio Section */
+    .studio-section {
+      padding: 2.5rem 0 4rem;
+    }
+
+    .studio-label {
+      display: block;
+      font-size: 0.6875rem;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 0.35rem;
       font-family: var(--font-mono);
     }
 
-    /* Studio Main Container */
-    .studio-wrapper {
-      max-width: 74rem;
-      margin: 0 auto;
-      background-color: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 1.5rem;
-      box-shadow: 0 8px 30px var(--shadow-color);
-      overflow: hidden;
-      text-align: left;
+    .studio-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      color: var(--fg);
+      letter-spacing: -0.01em;
     }
 
-    .studio-header {
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      background-color: var(--muted);
-    }
-
-    .studio-body {
+    .studio-grid {
       display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 1.5rem;
-      padding: 1.5rem;
-    }
-
-    @media (max-width: 960px) {
-      .studio-body {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Left Control Sidebar */
-    .control-pane {
-      display: flex;
-      flex-direction: column;
+      grid-template-columns: 1fr;
       gap: 1.25rem;
     }
 
-    .pane-section-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted-foreground);
-      margin-bottom: 0.5rem;
+    @media (min-width: 900px) {
+      .studio-grid { grid-template-columns: 320px 1fr; }
     }
 
+    /* Left Control Pane */
+    .control-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .pane-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+
+    .pane-title {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted-fg);
+      margin-bottom: 0.65rem;
+      font-family: var(--font-mono);
+    }
+
+    /* Samples */
     .sample-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -313,62 +368,95 @@
     }
 
     .sample-btn {
-      background: var(--background);
+      padding: 0.5rem;
+      background: var(--muted);
       border: 1px solid var(--border);
-      border-radius: 0.75rem;
-      padding: 0.65rem;
-      text-align: left;
+      border-radius: 0.5rem;
       cursor: pointer;
-      transition: all 0.15s ease;
-      color: var(--foreground);
+      text-align: left;
+      transition: border-color 0.15s ease, background 0.15s ease;
     }
 
-    .sample-btn:hover, .sample-btn.active {
+    .sample-btn:hover { border-color: var(--primary); }
+
+    .sample-btn.active {
       border-color: var(--primary);
-      background-color: var(--muted);
+      background: hsla(105, 100%, 16%, 0.06);
     }
 
-    .sample-btn-title {
-      font-size: 0.8125rem;
-      font-weight: 700;
+    [data-theme="dark"] .sample-btn.active {
+      background: hsla(102, 87%, 76%, 0.08);
     }
 
-    .sample-btn-desc {
+    .sample-name {
       font-size: 0.6875rem;
-      color: var(--muted-foreground);
-      margin-top: 0.15rem;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 0.1rem;
     }
 
-    /* Upload & Document Preview */
-    .dropzone-box {
+    .sample-desc {
+      font-size: 0.6rem;
+      color: var(--muted-fg);
+    }
+
+    .quota-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 0.65rem;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 0.6875rem;
+    }
+
+    .quota-label { color: var(--muted-fg); font-weight: 500; }
+    .quota-count {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Dropzone */
+    .dropzone {
       border: 2px dashed var(--border);
-      border-radius: 1rem;
-      padding: 1.5rem 1rem;
+      border-radius: 0.75rem;
+      padding: 1.25rem 0.75rem;
       text-align: center;
-      background-color: var(--background);
       cursor: pointer;
       transition: border-color 0.15s ease;
-      position: relative;
+      background: var(--bg);
     }
 
-    .dropzone-box:hover {
-      border-color: var(--primary);
+    .dropzone:hover { border-color: var(--primary); }
+
+    .dropzone-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--fg);
     }
 
-    .doc-preview-container {
+    .dropzone-hint {
+      font-size: 0.625rem;
+      color: var(--muted-fg);
+      margin-top: 0.2rem;
+    }
+
+    .doc-preview {
       display: none;
       position: relative;
-      margin-top: 0.5rem;
-      border-radius: 0.75rem;
+      border-radius: 0.5rem;
       overflow: hidden;
       border: 1px solid var(--border);
       background: #000;
-      max-height: 140px;
+      max-height: 130px;
+      margin-top: 0.5rem;
     }
 
-    .doc-preview-img {
+    .doc-preview img {
       width: 100%;
-      height: 140px;
+      height: 130px;
       object-fit: contain;
     }
 
@@ -377,847 +465,1582 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0,0,0,0.72);
       color: #fff;
-      font-size: 0.6875rem;
+      font-size: 0.6rem;
       font-family: var(--font-mono);
-      padding: 0.25rem 0.5rem;
+      padding: 0.2rem 0.45rem;
       display: flex;
       justify-content: space-between;
     }
 
-    /* Provider & Key Configuration */
-    .key-box {
-      background-color: var(--background);
+    /* Collapsible Settings Drawer */
+    .settings-toggle-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.6rem 0.85rem;
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 0.875rem;
-      padding: 0.875rem;
+      border-radius: var(--radius);
+      color: var(--fg);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
     }
 
+    .settings-toggle-btn:hover {
+      border-color: var(--primary);
+      background: var(--muted);
+    }
+
+    .settings-toggle-btn .chevron-icon {
+      transition: transform 0.2s ease;
+      color: var(--muted-fg);
+    }
+
+    .settings-toggle-btn.open .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    .settings-summary-badge {
+      font-size: 0.6rem;
+      font-family: var(--font-mono);
+      color: var(--muted-fg);
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 0.35rem;
+      padding: 0.15rem 0.45rem;
+      margin-left: auto;
+      margin-right: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
+    }
+
+    .settings-panel {
+      display: none;
+      flex-direction: column;
+      gap: 0.85rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      animation: fadeIn 0.15s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .settings-panel.open {
+      display: flex;
+    }
+
+    /* Provider Tabs */
     .provider-tabs {
       display: flex;
-      gap: 0.35rem;
-      margin-bottom: 0.65rem;
+      gap: 0.3rem;
+      margin-bottom: 0.6rem;
     }
 
-    .provider-tab-btn {
+    .provider-tab {
       flex: 1;
-      padding: 0.3rem 0.5rem;
-      font-size: 0.6875rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
+      padding: 0.3rem 0.4rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      border-radius: 0.4rem;
       border: 1px solid var(--border);
       background: transparent;
-      color: var(--muted-foreground);
+      color: var(--muted-fg);
       cursor: pointer;
-      text-align: center;
+      transition: all 0.1s ease;
+      font-family: var(--font-mono);
     }
 
-    .provider-tab-btn.active {
-      background: var(--card);
-      color: var(--foreground);
+    .provider-tab:hover { color: var(--fg); }
+    .provider-tab.active {
+      background: var(--muted);
+      color: var(--fg);
       border-color: var(--primary);
-      font-weight: 700;
     }
 
     .key-row {
       display: flex;
+      gap: 0.35rem;
+    }
+
+    .key-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.6875rem;
+      font-family: var(--font-mono);
+      color: var(--fg);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .key-input:focus { border-color: var(--primary); }
+    .key-input::placeholder { color: var(--muted-fg); }
+
+    /* Custom UI Dropdown */
+    .cselect {
+      position: relative;
+      width: 100%;
+      user-select: none;
+    }
+
+    .cselect-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      width: 100%;
+      padding: 0.45rem 0.65rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--fg);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s ease;
+    }
+
+    .cselect-trigger:hover,
+    .cselect.open .cselect-trigger { border-color: var(--primary); }
+
+    .cselect-trigger svg {
+      transition: transform 0.2s ease;
+      color: var(--muted-fg);
+      flex-shrink: 0;
+    }
+
+    .cselect.open .cselect-trigger svg { transform: rotate(180deg); }
+
+    .cselect-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .cselect-panel {
+      position: absolute;
+      top: calc(100% + 3px);
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      box-shadow: 0 8px 24px var(--shadow);
+      z-index: 300;
+      max-height: 180px;
+      overflow-y: auto;
+      display: none;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .cselect.open .cselect-panel { display: block; }
+
+    .cselect-opt {
+      padding: 0.4rem 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--fg);
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+
+    .cselect-opt:hover { background: var(--muted); }
+
+    .cselect-opt.sel {
+      background: hsla(105, 100%, 16%, 0.08);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    [data-theme="dark"] .cselect-opt.sel {
+      background: hsla(102, 87%, 76%, 0.1);
+    }
+
+    .model-row { margin-top: 0.6rem; }
+    .model-row-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted-fg);
+      margin-bottom: 0.25rem;
+      font-family: var(--font-mono);
+    }
+
+    .provider-helper {
+      font-size: 0.6rem;
+      color: var(--muted-fg);
+      margin-top: 0.35rem;
+      line-height: 1.4;
+    }
+
+    /* Editable Prompt Editor */
+    .prompt-box {
+      display: flex;
+      flex-direction: column;
       gap: 0.4rem;
     }
 
-    .key-input-field {
-      flex: 1;
-      background-color: var(--card);
+    .prompt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .prompt-textarea {
+      width: 100%;
+      height: 72px;
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 0.5rem;
-      padding: 0.45rem 0.65rem;
-      color: var(--foreground);
+      padding: 0.45rem 0.6rem;
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.65rem;
+      color: var(--fg);
+      resize: vertical;
       outline: none;
+      line-height: 1.4;
+      transition: border-color 0.15s ease;
     }
 
-    .key-input-field:focus {
-      border-color: var(--primary);
-    }
+    .prompt-textarea:focus { border-color: var(--primary); }
 
-    /* Right Result Panel: Interactive Grid */
+    /* Right Result Pane */
     .result-pane {
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      gap: 0.75rem;
     }
+
+    .status-bar {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.85rem;
+      border-radius: 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+    }
+
+    .status-bar.visible { display: flex; }
+
+    .status-bar.loading {
+      background: hsla(105, 100%, 16%, 0.06);
+      border-color: var(--border);
+      color: var(--fg);
+    }
+
+    [data-theme="dark"] .status-bar.loading {
+      background: hsla(102, 87%, 76%, 0.06);
+    }
+
+    .status-bar.error {
+      background: hsla(0, 72%, 51%, 0.07);
+      border-color: hsla(0, 72%, 51%, 0.3);
+      color: var(--danger);
+    }
+
+    .status-bar.success {
+      background: hsla(142, 72%, 40%, 0.07);
+      border-color: hsla(142, 72%, 40%, 0.3);
+      color: var(--success);
+    }
+
+    .spin {
+      animation: spin 0.9s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .grid-toolbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.75rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .grid-stats {
-      font-size: 0.75rem;
-      color: var(--muted-foreground);
+      font-size: 0.6875rem;
       font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .grid-actions {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .model-badge {
+      font-size: 0.6rem;
+      font-family: var(--font-mono);
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 0.35rem;
+      padding: 0.2rem 0.45rem;
+      color: var(--muted-fg);
     }
 
     .table-viewport {
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      background-color: var(--background);
       overflow: auto;
-      max-height: 480px;
-      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--card);
+      max-height: 440px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
     }
 
-    table.demo-grid {
+    table.sheet {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.75rem;
       font-family: var(--font-mono);
+      font-size: 0.6875rem;
     }
 
-    table.demo-grid th {
-      background-color: var(--muted);
-      color: var(--foreground);
-      padding: 0.625rem 0.875rem;
+    table.sheet th {
+      background: var(--muted);
+      color: var(--fg);
       font-weight: 700;
+      padding: 0.5rem 0.75rem;
       border-bottom: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      border-right: 1px solid var(--border-sub);
       white-space: nowrap;
       text-align: left;
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
 
-    table.demo-grid td {
-      padding: 0.5rem 0.875rem;
-      border-bottom: 1px solid var(--border);
-      border-right: 1px solid var(--border);
+    table.sheet th[contenteditable="true"]:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+    }
+
+    table.sheet td {
+      padding: 0.4rem 0.75rem;
+      border-bottom: 1px solid var(--border-sub);
+      border-right: 1px solid var(--border-sub);
       white-space: nowrap;
-      color: var(--foreground);
-      outline: none;
+      color: var(--fg);
     }
 
-    table.demo-grid td:focus {
-      background-color: hsla(105, 100%, 16%, 0.1);
-      box-shadow: inset 0 0 0 1.5px var(--primary);
+    table.sheet td[contenteditable="true"]:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+      background: hsla(105, 100%, 16%, 0.04);
     }
 
-    table.demo-grid tr:hover td {
-      background-color: var(--muted);
+    table.sheet tr:hover td { background: var(--muted); }
+
+    /* Section 4: How It Works */
+    .how-section {
+      padding: 4rem 0;
+      background: var(--card);
+      border-top: 1px solid var(--border-sub);
+      border-bottom: 1px solid var(--border-sub);
     }
 
-    /* Status Notifications */
-    .status-msg {
-      padding: 0.625rem 1rem;
-      border-radius: 0.5rem;
-      font-size: 0.75rem;
-      margin-bottom: 0.75rem;
-      display: none;
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
     }
 
-    .status-loading {
-      background-color: hsla(105, 100%, 16%, 0.1);
-      border: 1px solid var(--primary);
+    @media (min-width: 640px) { .how-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .how-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .how-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: hsla(105, 100%, 16%, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
       color: var(--primary);
-      display: block;
+      margin-bottom: 0.4rem;
     }
 
-    .status-error {
-      background-color: rgba(239, 68, 68, 0.1);
-      border: 1px solid #ef4444;
-      color: #ef4444;
-      display: block;
+    [data-theme="dark"] .how-icon { background: hsla(102, 87%, 76%, 0.1); }
+
+    .how-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--fg);
     }
 
-    /* Site Footer */
+    .how-text {
+      font-size: 0.75rem;
+      color: var(--muted-fg);
+      line-height: 1.55;
+    }
+
+    /* Section 5: Footer */
     .site-footer {
       border-top: 1px solid var(--border);
-      padding: 2.5rem 0;
-      background-color: var(--card);
-      margin-top: 4rem;
+      padding: 1.75rem 0;
+      background: var(--card);
+      margin-top: auto;
     }
 
     .footer-inner {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      font-size: 0.8125rem;
-      color: var(--muted-foreground);
+      flex-direction: column;
+      gap: 1.25rem;
+      font-size: 0.75rem;
+      color: var(--muted-fg);
     }
+
+    @media (min-width: 640px) {
+      .footer-inner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .footer-brand-mark {
+      width: 1.25rem;
+      height: 1.25rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-radius: 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 0.7rem;
+      font-weight: 900;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .footer-links a {
+      color: var(--muted-fg);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover { color: var(--fg); }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem;
+      border-radius: 9999px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      gap: 0.15rem;
+    }
+
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--muted-fg);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .theme-btn:hover { color: var(--fg); }
+    .theme-btn.active { background: var(--card); color: var(--fg); box-shadow: 0 1px 3px var(--shadow); }
+
+    .section-eyebrow {
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 0.35rem;
+      font-family: var(--font-mono);
+    }
+
+    .section-heading {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--fg);
+      letter-spacing: -0.015em;
+    }
+
+    @media (min-width: 640px) { .section-heading { font-size: 2rem; } }
   </style>
 </head>
 <body>
 
-  <!-- Top Sticky Navigation Header -->
+  <!-- Section 1: Header -->
   <header class="site-header">
-    <div class="container">
-      <div class="nav-inner">
+    <div class="wrap">
+      <div class="header-inner">
         <!-- Brand Link -->
-        <a href="/" class="brand-link">
-          <img src="/logo.png?v=2.0.0" alt="Visiolog" class="brand-logo" />
-          <span class="font-serif">Visiolog</span>
+        <a href="../" class="brand" title="Back to Visiolog">
+          <div class="brand-mark" aria-hidden="true">V</div>
+          <span class="brand-name">Visiolog</span>
           <span class="badge-demo">Demo</span>
         </a>
 
-        <!-- Action Controls -->
-        <div class="nav-actions">
-          <button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;" onclick="toggleTheme()">Theme</button>
-          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn btn-outline">GitHub</a>
-          <a href="/" class="btn btn-primary">Full Platform</a>
+        <!-- Header Actions -->
+        <div class="header-actions">
+          <button class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;" onclick="toggleSettings()" type="button" title="Configure Keys and Model">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Settings</span>
+          </button>
+          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size: 0.75rem;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            GitHub
+          </a>
+          <a href="../" class="btn btn-primary" style="font-size: 0.75rem;">
+            Landing
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- Hero Banner Section -->
-    <section class="hero-section">
-      <div class="container">
-        <!-- Tagline Pill -->
+    <!-- Section 2: Demo Hero -->
+    <section class="demo-hero">
+      <div class="wrap">
         <div class="hero-pill">
-          <span class="font-mono">Live In-Browser Extraction Studio</span>
+          <svg class="icon icon-sm" style="color: var(--primary);" viewBox="0 0 24 24">
+            <polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/>
+          </svg>
+          Live In-Browser Extraction Studio
         </div>
 
-        <!-- Primary Title Heading -->
         <h1 class="hero-title font-serif">
-          Transform Paper Logbooks &amp; Scans into <span class="hero-highlight">Digital Spreadsheets</span>
+          Paper Docs to <span class="hero-hl">Spreadsheets</span>
         </h1>
 
-        <!-- Subtitle Description -->
-        <p class="hero-description">
-          Experience instant tabular OCR directly in your browser. Choose preloaded sample ledgers or provide your own key for custom document conversions.
+        <p class="hero-sub">
+          Test live tabular extraction directly in your browser. Zero backend, zero tracking, and no authentication required. Convert preloaded samples free or open Settings to enter your own key.
         </p>
 
-        <!-- Quota & Privacy Info -->
-        <div class="quota-badge">
-          <span>Demo Quota:</span>
-          <span id="quotaDisplay" class="quota-val">2 Free Samples</span>
-          <span>•</span>
-          <span id="activeModelBadge">Live Model Discovery Active</span>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <svg class="icon icon-sm" style="color: var(--primary);" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            2 free sample conversions
+          </div>
+          <div class="hero-meta-item">
+            <svg class="icon icon-sm" style="color: var(--primary);" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            API keys stored locally
+          </div>
+          <div class="hero-meta-item">
+            <svg class="icon icon-sm" style="color: var(--primary);" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            Export to CSV
+          </div>
+          <div class="hero-meta-item">
+            <svg class="icon icon-sm" style="color: var(--primary);" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            Images stay in memory
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Studio Section -->
+    <section class="studio-section">
+      <div class="wrap">
+        <div style="margin-bottom: 1.5rem;">
+          <span class="studio-label font-mono">Studio</span>
+          <h2 class="studio-title font-serif">Extraction Workspace</h2>
         </div>
 
-        <!-- Main Interactive Studio Container -->
-        <div class="studio-wrapper">
-          <div class="studio-header">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span class="font-serif" style="font-weight: 700; font-size: 0.95rem;">Interactive Studio</span>
-              <span style="font-size: 0.6875rem; color: var(--muted-foreground);">(Editable Cells • Client Memory Only)</span>
-            </div>
-            <div style="display: flex; gap: 0.5rem;">
-              <button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.3rem 0.75rem;" onclick="addRow()">
-                Add Row
-              </button>
-              <button type="button" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.3rem 0.75rem;" onclick="downloadCsv()">
-                Download CSV
-              </button>
-            </div>
-          </div>
-
-          <div class="studio-body">
-            <!-- Left Control Sidebar -->
-            <div class="control-pane">
-              <!-- 1. Preloaded Samples -->
-              <div>
-                <p class="pane-section-title">1. Test Preloaded Samples (Zero Key)</p>
-                <div class="sample-grid">
-                  <button type="button" class="sample-btn active" onclick="loadSample('sales')">
-                    <div class="sample-btn-title">Store Invoice</div>
-                    <div class="sample-btn-desc">5-column receipt log</div>
-                  </button>
-                  <button type="button" class="sample-btn" onclick="loadSample('inventory')">
-                    <div class="sample-btn-title">Lab Registry</div>
-                    <div class="sample-btn-desc">5-column test matrix</div>
-                  </button>
-                </div>
+        <div class="studio-grid">
+          <!-- Left Control Pane -->
+          <div class="control-pane">
+            <!-- 1. Sample Documents -->
+            <div class="pane-card">
+              <div class="pane-title">1. Sample Documents</div>
+              <div class="quota-row" style="margin-bottom: 0.65rem;">
+                <span class="quota-label">Free conversions</span>
+                <span class="quota-count" id="quotaCount">2</span>
               </div>
 
-              <!-- 2. Single-File Upload Dropzone with In-Memory Compression -->
-              <div>
-                <p class="pane-section-title">2. Or Upload Document</p>
-                <div class="dropzone-box" onclick="document.getElementById('fileInput').click()">
-                  <p style="font-size: 0.8125rem; font-weight: 600;">Select Document Image</p>
-                  <p style="font-size: 0.6875rem; color: var(--muted-foreground); margin-top: 0.25rem;">Auto-compressed in browser memory</p>
-                  <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileUpload(event)" />
-                </div>
-                <!-- Document Thumbnail Preview -->
-                <div id="docPreviewBox" class="doc-preview-container">
-                  <img id="docPreviewImg" class="doc-preview-img" alt="Document Preview" />
-                  <div class="doc-preview-meta">
-                    <span id="docPreviewName">document.jpg</span>
-                    <span id="docPreviewDim">1920x1080</span>
-                  </div>
-                </div>
+              <div class="sample-grid">
+                <button class="sample-btn" onclick="loadSample('invoice', event)">
+                  <div class="sample-name">Invoice</div>
+                  <div class="sample-desc">Items and totals</div>
+                </button>
+                <button class="sample-btn" onclick="loadSample('ledger', event)">
+                  <div class="sample-name">Ledger</div>
+                  <div class="sample-desc">Debit and credit</div>
+                </button>
+                <button class="sample-btn" onclick="loadSample('inventory', event)">
+                  <div class="sample-name">Inventory</div>
+                  <div class="sample-desc">Stock log</div>
+                </button>
+                <button class="sample-btn" onclick="loadSample('receipt', event)">
+                  <div class="sample-name">Receipt</div>
+                  <div class="sample-desc">POS summary</div>
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. Upload Document -->
+            <div class="pane-card">
+              <div class="pane-title">2. Upload Document</div>
+              <div class="dropzone" onclick="document.getElementById('fileInput').click()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('fileInput').click()">
+                <svg class="icon" style="color: var(--muted-fg); margin-bottom: 0.35rem;" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>
+                </svg>
+                <div class="dropzone-label">Select image or drop here</div>
+                <div class="dropzone-hint">Compressed in browser memory</div>
+                <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="handleFileUpload(event)" />
               </div>
 
-              <!-- 3. Multi-Provider BYOK Key Configuration -->
-              <div class="key-box">
-                <p class="pane-section-title" style="margin-bottom: 0.35rem;">Inference Provider (BYOK)</p>
-                
-                <!-- Provider Selector Tabs -->
+              <div id="docPreview" class="doc-preview">
+                <img id="docPreviewImg" alt="Document preview" />
+                <div class="doc-preview-meta">
+                  <span id="docPreviewName">document.jpg</span>
+                  <span id="docPreviewDim">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Collapsible Settings Toggle Button -->
+            <button class="settings-toggle-btn" onclick="toggleSettings()" type="button" aria-expanded="false" id="settingsToggleBtn">
+              <span style="display:flex; align-items:center; gap:0.4rem;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+              </span>
+              <span id="settingsStatusSummary" class="settings-summary-badge">Gemini • gemini-2.5-flash</span>
+              <svg class="icon icon-sm chevron-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+
+            <!-- 4. Collapsible Settings Panel (Keys, Model, Prompt) -->
+            <div id="settingsPanel" class="settings-panel">
+              <!-- Inference Provider Selector -->
+              <div>
+                <div class="pane-title" style="margin-bottom: 0.4rem;">Inference Provider</div>
                 <div class="provider-tabs">
-                  <button type="button" class="provider-tab-btn active" id="tabGemini" onclick="switchProvider('gemini')">Gemini</button>
-                  <button type="button" class="provider-tab-btn" id="tabOpenRouter" onclick="switchProvider('openrouter')">OpenRouter</button>
-                  <button type="button" class="provider-tab-btn" id="tabOllama" onclick="switchProvider('ollama')">Ollama</button>
+                  <button class="provider-tab active" id="tabGemini" onclick="switchProvider('gemini')">Gemini</button>
+                  <button class="provider-tab" id="tabOpenRouter" onclick="switchProvider('openrouter')">OpenRouter</button>
+                  <button class="provider-tab" id="tabOllama" onclick="switchProvider('ollama')">Ollama</button>
                 </div>
 
-                <!-- Key Input Row -->
-                <div class="key-row" id="keyInputRow">
-                  <input type="password" id="apiKeyInput" class="key-input-field" placeholder="AIzaSy... (Gemini Key)" oninput="handleKeyChange(this.value)" />
-                  <button type="button" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.65rem;" onclick="probeModelDiscovery(true)">
+                <!-- API Key Row -->
+                <div id="keyInputRow" class="key-row">
+                  <input
+                    type="password"
+                    id="apiKeyInput"
+                    class="key-input"
+                    placeholder="AIzaSy... (Gemini API Key)"
+                    oninput="handleKeyChange(this.value)"
+                    autocomplete="off"
+                  />
+                  <button class="btn btn-outline" style="font-size: 0.6875rem; padding: 0.35rem 0.6rem; white-space: nowrap;" onclick="probeModels(true)">
                     Detect
                   </button>
                 </div>
 
-                <!-- Model Selector: populated after live API discovery for Gemini -->
-                <div id="modelSelectorRow" style="margin-top: 0.65rem;">
-                  <p class="pane-section-title" style="margin-bottom: 0.3rem;">Model</p>
-                  <select id="modelSelect" onchange="discoveredLatestModel = this.value; document.getElementById('activeModelBadge').textContent = 'Using: ' + this.value;" style="width: 100%; background-color: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.45rem 0.65rem; color: var(--foreground); font-family: var(--font-mono); font-size: 0.75rem; outline: none; cursor: pointer;">
-                    <option value="gemini-2.5-flash">gemini-2.5-flash (default)</option>
-                  </select>
+                <!-- Custom UI Model Selector Dropdown -->
+                <div id="modelSelectorRow" class="model-row">
+                  <div class="model-row-label">Model</div>
+                  <div class="cselect" id="modelDropdown">
+                    <button class="cselect-trigger" id="modelDropdownTrigger" onclick="toggleModelDropdown()" type="button" aria-haspopup="listbox" aria-expanded="false">
+                      <span class="cselect-label" id="modelDropdownLabel">gemini-2.5-flash</span>
+                      <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="cselect-panel" id="modelDropdownPanel" role="listbox">
+                      <div class="cselect-opt sel" data-value="gemini-2.5-flash" role="option" onclick="selectModel('gemini-2.5-flash')">
+                        gemini-2.5-flash
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <p id="providerHelperText" style="font-size: 0.6875rem; color: var(--muted-foreground); margin-top: 0.35rem;">
-                  Keys remain strictly in browser localStorage and connect directly to Google's API.
+                <p class="provider-helper" id="providerHelper">
+                  Connects directly to Google Gemini REST API. Stored exclusively in browser localStorage.
                 </p>
               </div>
 
-              <!-- Convert Action Button -->
-              <button type="button" class="btn btn-primary" style="padding: 0.75rem; font-size: 0.9rem;" onclick="processDocument()">
-                Convert to Spreadsheet
-              </button>
-            </div>
-
-            <!-- Right Result Grid Panel -->
-            <div class="result-pane">
-              <!-- Live Notification / Progress Status -->
-              <div id="statusMsg" class="status-msg"></div>
-
-              <div class="grid-toolbar">
-                <span id="gridDimensions" class="grid-stats">5 Columns • 5 Rows</span>
-                <span style="font-size: 0.6875rem; color: var(--muted-foreground);">Click cells to edit values</span>
-              </div>
-
-              <!-- Interactive Spreadsheet Table -->
-              <div class="table-viewport">
-                <table class="demo-grid" id="spreadsheetGrid">
-                  <thead id="tableHead">
-                    <tr>
-                      <th>Line</th>
-                      <th>Item Description</th>
-                      <th>Quantity</th>
-                      <th>Unit Price</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tableBody">
-                    <tr>
-                      <td contenteditable="true">01</td>
-                      <td contenteditable="true">Office Registry Binder A4</td>
-                      <td contenteditable="true">12</td>
-                      <td contenteditable="true">$8.50</td>
-                      <td contenteditable="true">$102.00</td>
-                    </tr>
-                    <tr>
-                      <td contenteditable="true">02</td>
-                      <td contenteditable="true">High-Precision Document Scanner Feed</td>
-                      <td contenteditable="true">2</td>
-                      <td contenteditable="true">$140.00</td>
-                      <td contenteditable="true">$280.00</td>
-                    </tr>
-                    <tr>
-                      <td contenteditable="true">03</td>
-                      <td contenteditable="true">Archival Black Ink Cartridge</td>
-                      <td contenteditable="true">5</td>
-                      <td contenteditable="true">$19.00</td>
-                      <td contenteditable="true">$95.00</td>
-                    </tr>
-                    <tr>
-                      <td contenteditable="true">04</td>
-                      <td contenteditable="true">Thermal Receipt Paper (Box of 50)</td>
-                      <td contenteditable="true">3</td>
-                      <td contenteditable="true">$24.00</td>
-                      <td contenteditable="true">$72.00</td>
-                    </tr>
-                    <tr>
-                      <td contenteditable="true">05</td>
-                      <td contenteditable="true">Microfiber Document Cleaning Cloth</td>
-                      <td contenteditable="true">8</td>
-                      <td contenteditable="true">$3.50</td>
-                      <td contenteditable="true">$28.00</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <!-- Editable System Prompt -->
+              <div class="prompt-box" style="border-top: 1px solid var(--border-sub); padding-top: 0.75rem;">
+                <div class="prompt-header">
+                  <div class="pane-title" style="margin-bottom: 0;">Extraction Prompt</div>
+                  <button class="btn btn-ghost" style="font-size: 0.6rem; padding: 0.15rem 0.4rem;" onclick="resetPrompt()">Reset</button>
+                </div>
+                <textarea id="promptTextarea" class="prompt-textarea" aria-label="Extraction prompt">Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.</textarea>
               </div>
             </div>
+
+            <!-- Convert Button -->
+            <button class="btn btn-primary btn-full" style="padding: 0.8rem; font-size: 0.9rem;" onclick="processDocument()">
+              <svg class="icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              Convert to Spreadsheet
+            </button>
+          </div>
+
+          <!-- Right Result Pane -->
+          <div class="result-pane">
+            <!-- In-App Status Bar (No native alert popups) -->
+            <div id="statusBar" class="status-bar" role="status" aria-live="polite"></div>
+
+            <!-- Grid Toolbar -->
+            <div class="grid-toolbar">
+              <div style="display:flex; align-items:center; gap:0.5rem;">
+                <span id="gridStats" class="grid-stats">5 Columns — 5 Rows</span>
+                <span id="activeModelBadge" class="model-badge" title="Active inference model">gemini-2.5-flash</span>
+              </div>
+              <div class="grid-actions">
+                <button class="btn btn-outline" style="font-size: 0.6875rem; padding: 0.3rem 0.65rem;" onclick="toggleSettings()">Settings</button>
+                <button class="btn btn-outline" style="font-size: 0.6875rem; padding: 0.3rem 0.65rem;" onclick="addRow()">+ Row</button>
+                <button class="btn btn-outline" style="font-size: 0.6875rem; padding: 0.3rem 0.65rem;" onclick="downloadCsv()">Export CSV</button>
+              </div>
+            </div>
+
+            <!-- Editable Table Grid -->
+            <div class="table-viewport" tabindex="0">
+              <table class="sheet" id="spreadsheetGrid" aria-label="Extracted spreadsheet data">
+                <thead id="tableHead">
+                  <tr>
+                    <th contenteditable="true">Line</th>
+                    <th contenteditable="true">Item Description</th>
+                    <th contenteditable="true">Quantity</th>
+                    <th contenteditable="true">Unit Price</th>
+                    <th contenteditable="true">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody">
+                  <tr>
+                    <td contenteditable="true">01</td>
+                    <td contenteditable="true">Office Registry Binder A4</td>
+                    <td contenteditable="true">12</td>
+                    <td contenteditable="true">$8.50</td>
+                    <td contenteditable="true">$102.00</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">02</td>
+                    <td contenteditable="true">High-Precision Document Scanner</td>
+                    <td contenteditable="true">2</td>
+                    <td contenteditable="true">$140.00</td>
+                    <td contenteditable="true">$280.00</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">03</td>
+                    <td contenteditable="true">Archival Black Ink Cartridge</td>
+                    <td contenteditable="true">5</td>
+                    <td contenteditable="true">$19.00</td>
+                    <td contenteditable="true">$95.00</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">04</td>
+                    <td contenteditable="true">Thermal Receipt Paper Box/50</td>
+                    <td contenteditable="true">3</td>
+                    <td contenteditable="true">$24.00</td>
+                    <td contenteditable="true">$72.00</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">05</td>
+                    <td contenteditable="true">Hardcover Field Logbook A5</td>
+                    <td contenteditable="true">8</td>
+                    <td contenteditable="true">$7.25</td>
+                    <td contenteditable="true">$58.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p style="font-size: 0.6875rem; color: var(--muted-fg); text-align: right;">
+              Click cells to edit values. Click Export CSV to download.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: How It Works -->
+    <section class="how-section">
+      <div class="wrap">
+        <div style="text-align: center;">
+          <span class="section-eyebrow">Architecture</span>
+          <h2 class="section-heading font-serif">Client-Side Architecture</h2>
+        </div>
+
+        <div class="how-grid">
+          <div class="how-card">
+            <div class="how-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/>
+              </svg>
+            </div>
+            <div class="how-title font-serif">Free Quota</div>
+            <p class="how-text">
+              Two preloaded sample documents convert immediately without any API key. The quota tracks purely in your browser localStorage.
+            </p>
+          </div>
+
+          <div class="how-card">
+            <div class="how-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="how-title font-serif">Direct BYOK Inference</div>
+            <p class="how-text">
+              Provide your own Google Gemini or OpenRouter key. Keys stay strictly in browser memory and transmit directly to the inference endpoint.
+            </p>
+          </div>
+
+          <div class="how-card">
+            <div class="how-icon">
+              <svg class="icon icon-lg" viewBox="0 0 24 24">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/>
+              </svg>
+            </div>
+            <div class="how-title font-serif">Edit &amp; Export</div>
+            <p class="how-text">
+              Extracted cells are fully editable. Custom prompts allow extracting specialized formats like JSON, key-value summaries, or standard CSV.
+            </p>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Site Footer -->
+  <!-- Section 5: Footer -->
   <footer class="site-footer">
-    <div class="container">
+    <div class="wrap">
       <div class="footer-inner">
-        <div>
-          <span class="font-serif" style="font-weight: 700; color: var(--foreground);">Visiolog</span> — Inks to Insights
+        <div class="footer-brand">
+          <div class="footer-brand-mark" aria-hidden="true">V</div>
+          <span class="font-serif" style="font-weight: 700; color: var(--fg);">Visiolog</span>
+          <span>&copy; <span id="footerYear"></span> — Demo</span>
         </div>
-        <div>
-          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" style="color: var(--muted-foreground); text-decoration: none; margin-right: 1rem;">GitHub</a>
-          <a href="mailto:elrazortheodore@gmail.com" style="color: var(--muted-foreground); text-decoration: none;">Support</a>
+
+        <div class="footer-links">
+          <a href="../">Landing</a>
+          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="../#faq">FAQ</a>
+          <a href="../contact">Contact</a>
+        </div>
+
+        <div class="theme-toggle" role="radiogroup" aria-label="Color theme">
+          <button class="theme-btn" id="themeLight" onclick="setTheme('light')" title="Light mode">
+            <svg class="icon icon-sm" style="color: #f59e0b;" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+            </svg>
+            Light
+          </button>
+          <button class="theme-btn" id="themeDark" onclick="setTheme('dark')" title="Dark mode">
+            <svg class="icon icon-sm" style="color: #34d399;" viewBox="0 0 24 24">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+            Dark
+          </button>
+          <button class="theme-btn" id="themeAuto" onclick="setTheme('auto')" title="System default">
+            <svg class="icon icon-sm" style="color: #60a5fa;" viewBox="0 0 24 24">
+              <rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>
+            </svg>
+            Auto
+          </button>
         </div>
       </div>
     </div>
   </footer>
 
+  <!-- Application Logic -->
   <script>
-    // Sample datasets for instant conversion without API keys
-    const SAMPLES = {
-      sales: {
-        headers: ['Line', 'Item Description', 'Quantity', 'Unit Price', 'Total'],
+    // State
+    var activeProvider = 'gemini';
+    var activeModel    = 'gemini-2.5-flash';
+    var uploadedB64    = null;
+
+    var QUOTA_KEY = 'visiolog_demo_conversions';
+    var MAX_FREE  = 2;
+
+    var DEFAULT_PROMPT = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
+
+    var SAMPLES = {
+      invoice: {
+        headers: ['Line', 'Item Description', 'Quantity', 'Unit Price', 'Subtotal', 'VAT', 'Total'],
         rows: [
-          ['01', 'Office Registry Binder A4', '12', '$8.50', '$102.00'],
-          ['02', 'High-Precision Document Scanner Feed', '2', '$140.00', '$280.00'],
-          ['03', 'Archival Black Ink Cartridge', '5', '$19.00', '$95.00'],
-          ['04', 'Thermal Receipt Paper (Box of 50)', '3', '$24.00', '$72.00'],
-          ['05', 'Microfiber Document Cleaning Cloth', '8', '$3.50', '$28.00']
+          ['001', 'Thermal Paper Roll 80x80mm', '24', '$3.50', '$84.00', '$6.30', '$90.30'],
+          ['002', 'Premium A4 Registry Ledger', '6', '$12.00', '$72.00', '$5.40', '$77.40'],
+          ['003', 'Optical Document Scanner', '1', '$149.00', '$149.00', '$11.18', '$160.18'],
+          ['004', 'Archival Black Ink Cartridge', '10', '$18.50', '$185.00', '$13.88', '$198.88'],
+          ['005', 'Hardcover Field Logbook A5', '15', '$7.25', '$108.75', '$8.16', '$116.91'],
+        ]
+      },
+      ledger: {
+        headers: ['Date', 'Description', 'Debit', 'Credit', 'Balance'],
+        rows: [
+          ['01 Aug 2026', 'Opening Balance', '', '', '$4,200.00'],
+          ['03 Aug 2026', 'Supplier Payment — Ink Co', '$380.00', '', '$3,820.00'],
+          ['07 Aug 2026', 'Invoice #1042 Receipt', '', '$1,100.00', '$4,920.00'],
+          ['12 Aug 2026', 'Utility Bill August', '$215.00', '', '$4,705.00'],
+          ['19 Aug 2026', 'Client Retainer — Q3', '', '$2,500.00', '$7,205.00'],
+          ['26 Aug 2026', 'Office Supplies', '$88.50', '', '$7,116.50'],
         ]
       },
       inventory: {
-        headers: ['Sample ID', 'Patient Code', 'Collection Date', 'Test Type', 'Result Matrix'],
+        headers: ['SKU', 'Product', 'Category', 'In Stock', 'Reserved', 'Available', 'Reorder'],
         rows: [
-          ['SMP-901', 'PT-4821', '2026-08-30', 'Complete Blood Count', 'Nominal (WBC 6.2)'],
-          ['SMP-902', 'PT-9932', '2026-08-30', 'Lipid Panel Profile', 'HDL 52 / LDL 110'],
-          ['SMP-903', 'PT-1044', '2026-08-31', 'Electrolyte Electrolysis', 'K+ 4.1 / Na+ 139'],
-          ['SMP-904', 'PT-8821', '2026-08-31', 'Hepatic Function Screen', 'ALT 22 / AST 19'],
-          ['SMP-905', 'PT-7712', '2026-08-31', 'Serum Glucose Fasting', '94 mg/dL']
+          ['SK-001', 'Thermal Paper Roll', 'Consumables', '240', '40', '200', '50'],
+          ['SK-002', 'Black Ink Cartridge XL', 'Consumables', '85', '10', '75', '20'],
+          ['SK-003', 'A4 Ledger Hardcover', 'Stationery', '50', '5', '45', '15'],
+          ['SK-004', 'USB-C Scanner Cable', 'Accessories', '30', '0', '30', '10'],
+          ['SK-005', 'Label Maker Tape 24mm', 'Consumables', '120', '20', '100', '30'],
+        ]
+      },
+      receipt: {
+        headers: ['Item', 'Qty', 'Price', 'Discount', 'Net'],
+        rows: [
+          ['Americano (Large)', '2', '$4.80', '$0.00', '$4.80'],
+          ['Club Sandwich', '1', '$12.50', '$1.25', '$11.25'],
+          ['Mineral Water 500ml', '3', '$2.00', '$0.00', '$6.00'],
+          ['Mixed Pastry Plate', '1', '$8.00', '$0.80', '$7.20'],
+          ['— SUBTOTAL —', '', '', '', '$29.25'],
+          ['— SERVICE 10% —', '', '', '', '$2.93'],
+          ['— TOTAL —', '', '', '', '$32.18'],
         ]
       }
     };
 
-    // State
-    let activeProvider = 'gemini';
-    let remainingFreeConversions = parseInt(localStorage.getItem('visiolog_demo_conversions') || '2', 10);
-    let uploadedCompressedBase64 = null;
-    let discoveredLatestModel = 'gemini-2.5-flash';
+    // Notification Bar
+    var statusTimer = null;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      updateQuotaDisplay();
-      initSavedKeys();
-      loadSample('sales');
-    });
+    function showStatus(msg, type) {
+      var bar = document.getElementById('statusBar');
+      bar.className = 'status-bar visible ' + (type || 'loading');
 
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.contains('dark');
-      if (isDark) {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('visiolog_theme', 'light');
-      } else {
-        document.documentElement.classList.add('dark');
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('visiolog_theme', 'dark');
+      var spinnerHtml = type === 'loading'
+        ? '<svg class="icon spin" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>'
+        : '';
+
+      var iconHtml = type === 'error'
+        ? '<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>'
+        : (type === 'success'
+          ? '<svg class="icon" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>'
+          : spinnerHtml);
+
+      bar.innerHTML = iconHtml + '<span>' + escHtml(msg) + '</span>';
+
+      if (type === 'success') {
+        clearTimeout(statusTimer);
+        statusTimer = setTimeout(hideStatus, 2500);
       }
+    }
+
+    function hideStatus() {
+      var bar = document.getElementById('statusBar');
+      bar.className = 'status-bar';
+      bar.innerHTML = '';
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Settings Toggle
+    function toggleSettings() {
+      var panel = document.getElementById('settingsPanel');
+      var btn   = document.getElementById('settingsToggleBtn');
+      var isOpen = panel.classList.contains('open');
+
+      if (isOpen) {
+        panel.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        panel.classList.add('open');
+        btn.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function updateSettingsBadge() {
+      var badge = document.getElementById('settingsStatusSummary');
+      if (!badge) return;
+
+      var provName = activeProvider === 'gemini' ? 'Gemini' : (activeProvider === 'openrouter' ? 'OpenRouter' : 'Ollama');
+      badge.textContent = provName + ' • ' + activeModel;
+    }
+
+    // Quota Functions
+    function getQuota() {
+      var v = parseInt(localStorage.getItem(QUOTA_KEY), 10);
+      return isNaN(v) ? MAX_FREE : v;
+    }
+
+    function decrementQuota() {
+      var current = getQuota();
+      var next = Math.max(0, current - 1);
+      localStorage.setItem(QUOTA_KEY, String(next));
+      updateQuotaDisplay();
+      return next;
     }
 
     function updateQuotaDisplay() {
-      const display = document.getElementById('quotaDisplay');
-      if (remainingFreeConversions > 0) {
-        display.textContent = `${remainingFreeConversions} Free Sample${remainingFreeConversions === 1 ? '' : 's'}`;
-      } else {
-        display.textContent = '0 Free Samples (Key Required)';
-      }
+      var el = document.getElementById('quotaCount');
+      if (el) el.textContent = String(getQuota());
     }
 
-    function initSavedKeys() {
-      const savedGemini = localStorage.getItem('visiolog_demo_gemini_key') || '';
-      if (savedGemini) {
-        document.getElementById('apiKeyInput').value = savedGemini;
-        probeModelDiscovery(false);
+    // Sample Loader
+    function loadSample(type, evt) {
+      var sample = SAMPLES[type];
+      if (!sample) return;
+
+      var remaining = getQuota();
+      if (remaining <= 0) {
+        showStatus('Free quota exhausted. Open Settings above to enter a Gemini API key.', 'error');
+        return;
       }
+
+      document.querySelectorAll('.sample-btn').forEach(function(b) { b.classList.remove('active'); });
+      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+
+      renderTable(sample.headers, sample.rows);
+      decrementQuota();
+      showStatus('Sample loaded.', 'success');
     }
 
+    // Table Rendering
+    function renderTable(headers, rows) {
+      var thead = document.getElementById('tableHead');
+      var tbody = document.getElementById('tableBody');
+
+      thead.innerHTML = '<tr>' + headers.map(function(h) {
+        return '<th contenteditable="true">' + escHtml(h) + '</th>';
+      }).join('') + '</tr>';
+
+      tbody.innerHTML = rows.map(function(row) {
+        return '<tr>' + row.map(function(cell) {
+          return '<td contenteditable="true">' + escHtml(cell) + '</td>';
+        }).join('') + '</tr>';
+      }).join('');
+
+      updateGridStats();
+    }
+
+    function updateGridStats() {
+      var cols  = document.querySelectorAll('#tableHead th').length;
+      var rows  = document.querySelectorAll('#tableBody tr').length;
+      var stats = document.getElementById('gridStats');
+      if (stats) stats.textContent = cols + ' Columns — ' + rows + ' Rows';
+    }
+
+    function addRow() {
+      var tbody  = document.getElementById('tableBody');
+      var colCnt = document.querySelectorAll('#tableHead th').length || 5;
+      var tr     = document.createElement('tr');
+      for (var i = 0; i < colCnt; i++) {
+        var td = document.createElement('td');
+        td.contentEditable = 'true';
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+      updateGridStats();
+      tr.querySelector('td').focus();
+    }
+
+    function downloadCsv() {
+      var headers = Array.from(document.querySelectorAll('#tableHead th')).map(function(th) {
+        return '"' + th.innerText.trim().replace(/"/g, '""') + '"';
+      });
+
+      var rows = Array.from(document.querySelectorAll('#tableBody tr')).map(function(tr) {
+        return Array.from(tr.querySelectorAll('td')).map(function(td) {
+          return '"' + td.innerText.trim().replace(/"/g, '""') + '"';
+        }).join(',');
+      });
+
+      var csv  = [headers.join(',')].concat(rows).join('\r\n');
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'visiolog_export.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // Prompt Reset
+    function resetPrompt() {
+      document.getElementById('promptTextarea').value = DEFAULT_PROMPT;
+      showStatus('Prompt reset to default.', 'success');
+    }
+
+    // In-Memory Canvas Compression
+    function handleFileUpload(evt) {
+      var file = evt.target.files && evt.target.files[0];
+      if (!file) return;
+
+      showStatus('Compressing "' + file.name + '" in browser memory...', 'loading');
+
+      compressImage(file, 2048, 0.85, function(result) {
+        if (!result) {
+          showStatus('Could not process image.', 'error');
+          return;
+        }
+        uploadedB64 = result.base64;
+
+        var preview = document.getElementById('docPreview');
+        var img     = document.getElementById('docPreviewImg');
+        var nameEl  = document.getElementById('docPreviewName');
+        var dimEl   = document.getElementById('docPreviewDim');
+        img.src     = result.dataUrl;
+        nameEl.textContent = file.name;
+        dimEl.textContent  = result.width + 'x' + result.height + ' (' + result.sizeKb + ' KB)';
+        preview.style.display = 'block';
+
+        showStatus('"' + file.name + '" loaded (' + result.sizeKb + ' KB). Ready to convert.', 'success');
+      });
+    }
+
+    function compressImage(file, maxDim, quality, callback) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          var w = img.width, h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+            else       { w = Math.round(w * maxDim / h); h = maxDim; }
+          }
+          var canvas = document.createElement('canvas');
+          canvas.width  = w;
+          canvas.height = h;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          var dataUrl = canvas.toDataURL('image/jpeg', quality);
+          var base64  = dataUrl.replace(/^data:image\/jpeg;base64,/, '');
+          var sizeKb  = Math.round(base64.length * 0.75 / 1024);
+          callback({ base64: base64, dataUrl: dataUrl, width: w, height: h, sizeKb: sizeKb });
+        };
+        img.onerror = function() { callback(null); };
+        img.src = e.target.result;
+      };
+      reader.onerror = function() { callback(null); };
+      reader.readAsDataURL(file);
+    }
+
+    // Provider Tabs
     function switchProvider(provider) {
       activeProvider = provider;
-      document.querySelectorAll('.provider-tab-btn').forEach(b => b.classList.remove('active'));
-      
-      const keyInput = document.getElementById('apiKeyInput');
-      const helper = document.getElementById('providerHelperText');
-      const keyRow = document.getElementById('keyInputRow');
-      const modelSelectorRow = document.getElementById('modelSelectorRow');
+      document.querySelectorAll('.provider-tab').forEach(function(t) { t.classList.remove('active'); });
+
+      var keyRow   = document.getElementById('keyInputRow');
+      var keyInput = document.getElementById('apiKeyInput');
+      var helper   = document.getElementById('providerHelper');
+      var modelRow = document.getElementById('modelSelectorRow');
 
       if (provider === 'gemini') {
         document.getElementById('tabGemini').classList.add('active');
         keyRow.style.display = 'flex';
-        modelSelectorRow.style.display = 'block';
+        modelRow.style.display = 'block';
         keyInput.placeholder = 'AIzaSy... (Gemini API Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_gemini_key') || '';
-        helper.textContent = 'Keys connect directly to Google Gemini REST endpoints.';
-        probeModelDiscovery(false);
+        helper.textContent = 'Connects directly to Google Gemini REST API. Stored exclusively in browser localStorage.';
+        probeModels(false);
+
       } else if (provider === 'openrouter') {
         document.getElementById('tabOpenRouter').classList.add('active');
         keyRow.style.display = 'flex';
-        modelSelectorRow.style.display = 'none';
+        modelRow.style.display = 'none';
         keyInput.placeholder = 'sk-or-v1-... (OpenRouter Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_openrouter_key') || '';
-        helper.textContent = 'Uses meta-llama/llama-3.2-11b-vision-instruct on OpenRouter.';
-        document.getElementById('activeModelBadge').textContent = 'OpenRouter Multimodal';
+        helper.textContent = 'Routes to meta-llama/llama-3.2-11b-vision via OpenRouter. Key stored in browser.';
+        activeModel = 'llama-3.2-11b-vision';
+        document.getElementById('activeModelBadge').textContent = 'OpenRouter';
+
       } else if (provider === 'ollama') {
         document.getElementById('tabOllama').classList.add('active');
         keyRow.style.display = 'none';
-        modelSelectorRow.style.display = 'none';
-        helper.textContent = 'Air-gapped local inference at http://localhost:11434 with zero keys.';
-        document.getElementById('activeModelBadge').textContent = 'Local Ollama Vision';
+        modelRow.style.display = 'none';
+        helper.textContent = 'Uses llama3.2-vision locally at http://localhost:11434 with zero keys.';
+        activeModel = 'llama3.2-vision';
+        document.getElementById('activeModelBadge').textContent = 'Ollama (local)';
       }
+
+      updateSettingsBadge();
     }
 
-    function handleKeyChange(key) {
-      const trimmed = key.trim();
+    function handleKeyChange(value) {
+      var key = value.trim();
       if (activeProvider === 'gemini') {
-        localStorage.setItem('visiolog_demo_gemini_key', trimmed);
-        if (trimmed.length > 20) probeModelDiscovery(false);
+        localStorage.setItem('visiolog_demo_gemini_key', key);
+        if (key.length > 20) probeModels(false);
       } else if (activeProvider === 'openrouter') {
-        localStorage.setItem('visiolog_demo_openrouter_key', trimmed);
+        localStorage.setItem('visiolog_demo_openrouter_key', key);
       }
     }
 
-    // Live Google API Model Discovery
-    async function probeModelDiscovery(showNotification) {
+    // Model Discovery
+    function probeModels(notify) {
       if (activeProvider !== 'gemini') return;
-      const apiKey = localStorage.getItem('visiolog_demo_gemini_key') || '';
-      if (!apiKey) {
-        if (showNotification) showStatus('Please input a Google Gemini key first.', 'error');
+
+      var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
+      if (!key) {
+        if (notify) showStatus('Enter a Gemini API key in Settings first.', 'error');
         return;
       }
 
-      if (showNotification) showStatus('Querying Google API for latest vision model...', 'loading');
+      if (notify) showStatus('Discovering available Gemini models...', 'loading');
 
-      try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-        const data = await response.json();
+      fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + key)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.error) throw new Error(data.error.message || 'API error');
 
-        if (data.error) throw new Error(data.error.message || 'Failed to list models');
-
-        if (Array.isArray(data.models) && data.models.length > 0) {
-          const validModels = data.models
-            .filter(m => {
-              const name = m.name || '';
-              const supportsGen = Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.includes('generateContent');
-              return supportsGen && name.includes('gemini') && (name.includes('flash') || name.includes('pro'));
+          var valid = (data.models || [])
+            .filter(function(m) {
+              var n = (m.name || '');
+              var sup = Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.indexOf('generateContent') >= 0;
+              return sup && n.indexOf('gemini') >= 0 && (n.indexOf('flash') >= 0 || n.indexOf('pro') >= 0);
             })
-            .map(m => m.name.replace('models/', ''));
+            .map(function(m) { return m.name.replace('models/', ''); });
 
-          validModels.sort((a, b) => {
-            const extractVersion = (str) => {
-              const match = str.match(/gemini-(\d+(?:\.\d+)?)/);
+          valid.sort(function(a, b) {
+            var extract = function(s) {
+              var match = s.match(/gemini-(\d+(?:\.\d+)?)/);
               return match ? parseFloat(match[1]) : 0;
             };
-            return extractVersion(b) - extractVersion(a);
+            return extract(b) - extract(a);
           });
 
-          if (validModels.length > 0) {
-            // Populate the model selector <select> with all discovered models
-            const selectEl = document.getElementById('modelSelect');
-            const prevSelection = selectEl.value;
-            selectEl.innerHTML = validModels
-              .map(m => `<option value="${m}"${m === prevSelection ? ' selected' : ''}>${m}</option>`)
-              .join('');
-
-            // Use current dropdown value as active model
-            discoveredLatestModel = selectEl.value;
-            document.getElementById('activeModelBadge').textContent = `Using: ${discoveredLatestModel}`;
-            if (showNotification) {
-              showStatus(`Discovered ${validModels.length} models. Selected: ${discoveredLatestModel}`, 'loading');
-              setTimeout(() => hideStatus(), 2000);
-            }
-            return;
+          if (valid.length > 0) {
+            populateModelDropdown(valid);
+            if (notify) showStatus('Found ' + valid.length + ' models. Selected ' + activeModel + '.', 'success');
+          } else {
+            setFallbackModel();
+            if (notify) showStatus('Using default model gemini-2.5-flash.', 'success');
           }
-        }
-      } catch (err) {
-        console.warn('Model discovery fallback:', err.message);
-      }
+          updateSettingsBadge();
+        })
+        .catch(function() {
+          setFallbackModel();
+          if (notify) showStatus('Using default model gemini-2.5-flash.', 'success');
+          updateSettingsBadge();
+        });
+    }
 
-      discoveredLatestModel = 'gemini-2.5-flash';
-      document.getElementById('activeModelBadge').textContent = `Using: ${discoveredLatestModel}`;
-      if (showNotification) {
-        showStatus(`Using active model ${discoveredLatestModel}`, 'loading');
-        setTimeout(() => hideStatus(), 1500);
+    function setFallbackModel() {
+      activeModel = 'gemini-2.5-flash';
+      document.getElementById('modelDropdownLabel').textContent = activeModel;
+      document.getElementById('activeModelBadge').textContent = activeModel;
+      updateSettingsBadge();
+    }
+
+    // Custom UI Dropdown
+    function toggleModelDropdown() {
+      var dd   = document.getElementById('modelDropdown');
+      var trig = document.getElementById('modelDropdownTrigger');
+      var open = dd.classList.contains('open');
+
+      closeAllDropdowns();
+
+      if (!open) {
+        dd.classList.add('open');
+        trig.setAttribute('aria-expanded', 'true');
       }
     }
 
-    // High-Speed In-Memory HTML5 Canvas Compression
-    async function compressImageToCanvas(file, maxDimension = 2048, quality = 0.85) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          let width = img.width;
-          let height = img.height;
-
-          if (width > maxDimension || height > maxDimension) {
-            if (width > height) {
-              height = Math.round((height * maxDimension) / width);
-              width = maxDimension;
-            } else {
-              width = Math.round((width * maxDimension) / height);
-              height = maxDimension;
-            }
-          }
-
-          const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-
-          const dataUrl = canvas.toDataURL('image/jpeg', quality);
-          const base64 = dataUrl.split(',')[1];
-          resolve({ base64, dataUrl, width, height, sizeKb: Math.round(base64.length * 0.75 / 1024) });
-        };
-        img.onerror = reject;
-        img.src = URL.createObjectURL(file);
+    function closeAllDropdowns() {
+      document.querySelectorAll('.cselect.open').forEach(function(d) {
+        d.classList.remove('open');
+        var trig = d.querySelector('.cselect-trigger');
+        if (trig) trig.setAttribute('aria-expanded', 'false');
       });
     }
 
-    async function handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    function selectModel(value) {
+      activeModel = value;
+      document.getElementById('modelDropdownLabel').textContent = value;
+      document.getElementById('activeModelBadge').textContent = value;
 
-      showStatus(`Compressing and loading "${file.name}" in memory...`, 'loading');
-
-      try {
-        const result = await compressImageToCanvas(file);
-        uploadedCompressedBase64 = result.base64;
-
-        // Show thumbnail preview
-        document.getElementById('docPreviewImg').src = result.dataUrl;
-        document.getElementById('docPreviewName').textContent = file.name;
-        document.getElementById('docPreviewDim').textContent = `${result.width}x${result.height} (${result.sizeKb} KB)`;
-        document.getElementById('docPreviewBox').style.display = 'block';
-
-        showStatus(`"${file.name}" loaded (${result.sizeKb} KB in memory). Ready to convert.`, 'loading');
-        setTimeout(() => hideStatus(), 2000);
-      } catch (err) {
-        showStatus('Failed to process image file.', 'error');
-      }
-    }
-
-    function loadSample(type) {
-      const sample = SAMPLES[type];
-      if (!sample) return;
-
-      document.querySelectorAll('.sample-btn').forEach(c => c.classList.remove('active'));
-      event?.currentTarget?.classList.add('active');
-
-      renderTable(sample.headers, sample.rows);
-      showStatus('Sample loaded.', 'loading');
-      setTimeout(() => hideStatus(), 1000);
-    }
-
-    function renderTable(headers, rows) {
-      const thead = document.getElementById('tableHead');
-      const tbody = document.getElementById('tableBody');
-
-      thead.innerHTML = '<tr>' + headers.map(h => `<th contenteditable="true">${escapeHtml(h)}</th>`).join('') + '</tr>';
-      tbody.innerHTML = rows.map(r => '<tr>' + r.map(c => `<td contenteditable="true">${escapeHtml(c)}</td>`).join('') + '</tr>').join('');
-
-      document.getElementById('gridDimensions').textContent = `${headers.length} Columns • ${rows.length} Rows`;
-    }
-
-    function addRow() {
-      const tbody = document.getElementById('tableBody');
-      const colCount = document.querySelectorAll('#tableHead th').length || 5;
-      const tr = document.createElement('tr');
-      let cells = '';
-      for (let i = 0; i < colCount; i++) {
-        cells += '<td contenteditable="true"></td>';
-      }
-      tr.innerHTML = cells;
-      tbody.appendChild(tr);
-
-      const rowsCount = tbody.querySelectorAll('tr').length;
-      document.getElementById('gridDimensions').textContent = `${colCount} Columns • ${rowsCount} Rows`;
-      tr.querySelector('td')?.focus();
-    }
-
-    function extractCurrentTableData() {
-      const headers = Array.from(document.querySelectorAll('#tableHead th')).map(th => th.innerText.trim());
-      const rows = Array.from(document.querySelectorAll('#tableBody tr')).map(tr => {
-        return Array.from(tr.querySelectorAll('td')).map(td => td.innerText.trim());
+      document.querySelectorAll('#modelDropdownPanel .cselect-opt').forEach(function(opt) {
+        opt.classList.toggle('sel', opt.dataset.value === value);
       });
-      return [headers, ...rows];
+
+      updateSettingsBadge();
+      closeAllDropdowns();
     }
 
-    async function processDocument() {
-      // Always read the currently selected model from the dropdown (user may have changed it)
-      const selectedModel = document.getElementById('modelSelect')?.value;
-      if (selectedModel) discoveredLatestModel = selectedModel;
+    function populateModelDropdown(models) {
+      var panel = document.getElementById('modelDropdownPanel');
 
-      // 1. Custom Upload Processing
-      if (uploadedCompressedBase64) {
-        const prompt = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
+      panel.innerHTML = models.map(function(m) {
+        return '<div class="cselect-opt' + (m === activeModel ? ' sel' : '') + '" data-value="' + escHtml(m) + '" role="option" onclick="selectModel(\'' + m + '\')">' + escHtml(m) + '</div>';
+      }).join('');
 
-        if (activeProvider === 'gemini') {
-          const apiKey = localStorage.getItem('visiolog_demo_gemini_key') || '';
-          if (!apiKey) {
-            showStatus('Please input your Google Gemini API key above for custom document conversions.', 'error');
-            return;
-          }
+      if (!models.includes(activeModel)) {
+        selectModel(models[0]);
+      } else {
+        document.getElementById('modelDropdownLabel').textContent = activeModel;
+        document.getElementById('activeModelBadge').textContent = activeModel;
+      }
+    }
 
-          await probeModelDiscovery(false);
-          showStatus(`Analyzing document with ${discoveredLatestModel}...`, 'loading');
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.cselect')) closeAllDropdowns();
+    });
 
-          try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${discoveredLatestModel}:generateContent?key=${apiKey}`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{
-                  parts: [
-                    { text: prompt },
-                    { inline_data: { mime_type: "image/jpeg", data: uploadedCompressedBase64 } }
-                  ]
-                }]
-              })
-            });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeAllDropdowns();
+    });
 
-            const data = await response.json();
-            if (data.error) throw new Error(data.error.message || 'API request failed');
+    // Conversion Execution
+    function processDocument() {
+      var modelInput = document.getElementById('modelDropdownLabel');
+      if (modelInput && activeProvider === 'gemini') {
+        activeModel = modelInput.textContent.trim() || activeModel;
+      }
 
-            const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            parseAndRenderCsv(text);
-            showStatus(`Conversion completed successfully using ${discoveredLatestModel}.`, 'loading');
-            setTimeout(() => hideStatus(), 2000);
-          } catch (err) {
-            showStatus(`Error during transcription: ${err.message}`, 'error');
-          }
-        } else if (activeProvider === 'openrouter') {
-          const apiKey = localStorage.getItem('visiolog_demo_openrouter_key') || '';
-          if (!apiKey) {
-            showStatus('Please input your OpenRouter API key above.', 'error');
-            return;
-          }
-
-          showStatus('Analyzing document with OpenRouter Vision...', 'loading');
-
-          try {
-            const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-              },
-              body: JSON.stringify({
-                model: 'meta-llama/llama-3.2-11b-vision-instruct',
-                messages: [{
-                  role: 'user',
-                  content: [
-                    { type: 'text', text: prompt },
-                    { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${uploadedCompressedBase64}` } }
-                  ]
-                }]
-              })
-            });
-
-            const data = await response.json();
-            if (data.error) throw new Error(data.error.message || 'OpenRouter request failed');
-
-            const text = data.choices?.[0]?.message?.content || '';
-            parseAndRenderCsv(text);
-            showStatus('Conversion completed via OpenRouter.', 'loading');
-            setTimeout(() => hideStatus(), 2000);
-          } catch (err) {
-            showStatus(`Error: ${err.message}`, 'error');
-          }
-        } else if (activeProvider === 'ollama') {
-          showStatus('Sending document to local Ollama (http://localhost:11434)...', 'loading');
-
-          try {
-            const response = await fetch('http://localhost:11434/api/chat', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                model: 'llama3.2-vision',
-                stream: false,
-                messages: [{
-                  role: 'user',
-                  content: prompt,
-                  images: [uploadedCompressedBase64]
-                }]
-              })
-            });
-
-            const data = await response.json();
-            if (data.error) throw new Error(data.error);
-
-            const text = data.message?.content || '';
-            parseAndRenderCsv(text);
-            showStatus('Conversion completed via local Ollama.', 'loading');
-            setTimeout(() => hideStatus(), 2000);
-          } catch (err) {
-            showStatus('Failed to connect to local Ollama. Ensure Ollama is running on port 11434 with llama3.2-vision pulled.', 'error');
-          }
-        }
+      if (!uploadedB64) {
+        showStatus('Select or drop an image first.', 'error');
         return;
       }
 
-      // 2. Preloaded Sample Conversion (Decrements Demo Quota)
-      if (remainingFreeConversions > 0) {
-        remainingFreeConversions--;
-        localStorage.setItem('visiolog_demo_conversions', remainingFreeConversions.toString());
-        updateQuotaDisplay();
-        showStatus('Converted sample using demo quota.', 'loading');
-        setTimeout(() => hideStatus(), 1500);
-      } else {
-        showStatus('Free quota used. Select an inference provider above and enter your key to convert custom documents.', 'error');
+      // Read custom user editable prompt
+      var prompt = document.getElementById('promptTextarea').value.trim() || DEFAULT_PROMPT;
+
+      if (activeProvider === 'gemini') {
+        var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
+        if (!key) {
+          showStatus('Open Settings to enter your Gemini API key.', 'error');
+          var panel = document.getElementById('settingsPanel');
+          if (panel && !panel.classList.contains('open')) toggleSettings();
+          return;
+        }
+        runGeminiExtraction(key, prompt);
+
+      } else if (activeProvider === 'openrouter') {
+        var orKey = localStorage.getItem('visiolog_demo_openrouter_key') || '';
+        if (!orKey) {
+          showStatus('Open Settings to enter your OpenRouter key.', 'error');
+          var panel = document.getElementById('settingsPanel');
+          if (panel && !panel.classList.contains('open')) toggleSettings();
+          return;
+        }
+        runOpenRouterExtraction(orKey, prompt);
+
+      } else if (activeProvider === 'ollama') {
+        runOllamaExtraction(prompt);
       }
     }
 
-    function parseAndRenderCsv(csvText) {
-      const clean = csvText.replace(/```(?:csv)?/gi, '').replace(/```/g, '').trim();
-      const lines = clean.split('\n').map(l => l.trim()).filter(Boolean);
-      if (lines.length === 0) return;
+    function runGeminiExtraction(key, prompt) {
+      showStatus('Analyzing document with ' + activeModel + '...', 'loading');
 
-      const parsedRows = lines.map(line => {
-        return line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/^"|"$/g, '').trim());
+      var url  = 'https://generativelanguage.googleapis.com/v1beta/models/' + activeModel + ':generateContent?key=' + key;
+      var body = JSON.stringify({
+        contents: [{
+          parts: [
+            { text: prompt },
+            { inline_data: { mime_type: 'image/jpeg', data: uploadedB64 } }
+          ]
+        }],
+        generationConfig: { temperature: 0.1, maxOutputTokens: 4096 }
       });
 
-      const headers = parsedRows[0];
-      const rows = parsedRows.slice(1);
+      fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.error) throw new Error(data.error.message || 'Gemini API error');
+          var text = (((data.candidates || [])[0] || {}).content || {});
+          var raw  = (text.parts || []).map(function(p) { return p.text || ''; }).join('');
+          renderCsvOutput(raw);
+        })
+        .catch(function(err) {
+          showStatus(err.message || 'Extraction failed. Check key in Settings.', 'error');
+        });
+    }
+
+    function runOpenRouterExtraction(key, prompt) {
+      showStatus('Analyzing with OpenRouter vision model...', 'loading');
+
+      var body = JSON.stringify({
+        model: 'meta-llama/llama-3.2-11b-vision-instruct',
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + uploadedB64 } }
+          ]
+        }]
+      });
+
+      fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+        body: body
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.error) throw new Error(data.error.message || 'OpenRouter error');
+          var raw = ((data.choices || [])[0] || {}).message || {};
+          renderCsvOutput(raw.content || '');
+        })
+        .catch(function(err) {
+          showStatus(err.message || 'OpenRouter extraction failed.', 'error');
+        });
+    }
+
+    function runOllamaExtraction(prompt) {
+      showStatus('Sending to local Ollama (localhost:11434)...', 'loading');
+
+      var body = JSON.stringify({
+        model: 'llama3.2-vision',
+        messages: [{
+          role: 'user',
+          content: prompt,
+          images: [uploadedB64]
+        }],
+        stream: false
+      });
+
+      fetch('http://localhost:11434/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var raw = ((data.message || {}).content) || '';
+          renderCsvOutput(raw);
+        })
+        .catch(function() {
+          showStatus('Could not reach Ollama at localhost:11434.', 'error');
+        });
+    }
+
+    function renderCsvOutput(raw) {
+      var cleaned = raw.replace(/```[a-z]*\n?/gi, '').replace(/```/g, '').trim();
+      var lines   = cleaned.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
+
+      if (lines.length < 2) {
+        showStatus('Could not parse a valid table. Try adjusting prompt in Settings or image.', 'error');
+        return;
+      }
+
+      var headers = parseCsvLine(lines[0]);
+      var rows    = lines.slice(1).map(parseCsvLine);
       renderTable(headers, rows);
+      showStatus('Extracted ' + rows.length + ' rows successfully.', 'success');
     }
 
-    function downloadCsv() {
-      const data = extractCurrentTableData();
-      if (data.length === 0) return;
-
-      const csvContent = data.map(r => r.map(c => `"${c.replace(/"/g, '""')}"`).join(',')).join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `visiolog_export_${Date.now()}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
+    function parseCsvLine(line) {
+      var result  = [];
+      var cell    = '';
+      var inQuote = false;
+      for (var i = 0; i < line.length; i++) {
+        var ch = line[i];
+        if (inQuote) {
+          if (ch === '"') {
+            if (line[i + 1] === '"') { cell += '"'; i++; }
+            else inQuote = false;
+          } else {
+            cell += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuote = true;
+          } else if (ch === ',') {
+            result.push(cell.trim()); cell = '';
+          } else {
+            cell += ch;
+          }
+        }
+      }
+      result.push(cell.trim());
+      return result;
     }
 
-    function showStatus(msg, type) {
-      const banner = document.getElementById('statusMsg');
-      banner.textContent = msg;
-      banner.className = `status-msg status-${type}`;
+    // Theme Switcher
+    function setTheme(mode) {
+      var isDark;
+      if (mode === 'dark')  { localStorage.setItem('visiolog_theme', 'dark'); isDark = true; }
+      else if (mode === 'light') { localStorage.setItem('visiolog_theme', 'light'); isDark = false; }
+      else { localStorage.removeItem('visiolog_theme'); isDark = window.matchMedia('(prefers-color-scheme: dark)').matches; }
+
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      syncThemeButtons(mode);
     }
 
-    function hideStatus() {
-      document.getElementById('statusMsg').style.display = 'none';
+    function syncThemeButtons(active) {
+      ['light', 'dark', 'auto'].forEach(function(m) {
+        var btn = document.getElementById('theme' + m.charAt(0).toUpperCase() + m.slice(1));
+        if (btn) btn.classList.toggle('active', m === active);
+      });
     }
 
-    function escapeHtml(str) {
-      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
+    // Lifecycle
+    document.addEventListener('DOMContentLoaded', function() {
+      var yearEl = document.getElementById('footerYear');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      updateQuotaDisplay();
+
+      var saved = localStorage.getItem('visiolog_theme');
+      syncThemeButtons(saved || 'auto');
+
+      var savedKey = localStorage.getItem('visiolog_demo_gemini_key') || '';
+      if (savedKey) {
+        var keyInput = document.getElementById('apiKeyInput');
+        if (keyInput) keyInput.value = savedKey;
+        probeModels(false);
+      }
+
+      updateSettingsBadge();
+      updateGridStats();
+    });
   </script>
 </body>
 </html>
