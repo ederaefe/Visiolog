@@ -296,6 +296,23 @@ The static web client and live workspace operate entirely in the client browser:
 ### 14.2 Node.js 22 CI Runner Upgrade
 - **Supabase v2 LTS Compatibility**: Upgraded GitHub Actions CI workflow (`.github/workflows/ci.yml`) to Node.js 22, satisfying modern `@supabase/supabase-js` LTS requirements and eliminating deprecation warnings.
 
+---
+
+## 15. Workspace Clean Canvas, One-Time Notice Dismissal & API Authentication Hardening
+
+### 15.1 Removal of Obsolete Hardcoded Demo Presets
+- **Clean Ingestion Surface**: Completely removed hardcoded sample invoices, logbooks, and preset mock buttons from the workspace dropzone, empty state, and document controls.
+- **Direct Action Workflows**: Users are presented with focused, unambiguous primary entry points: `Upload` (local file picker) and `Blank` (empty editable spreadsheet).
+
+### 15.2 One-Time Dismissible Live Demo Architectural Notice
+- **Session & Local Persistence**: The Live Demo Architecture Notice is initialized conditionally via `initDemoNotice()` checking `localStorage.getItem('visiolog_demo_notice_dismissed')`.
+- **Non-Intrusive Ergonomics**: When first loaded, it renders an accessible alert banner (`role="region"`). Clicking the close button (`X`) immediately hides the element and persists the dismissed state, preventing UI clutter on subsequent page views and spreadsheet sessions.
+
+### 15.3 Google Gemini API Authentication Hardening
+- **Multi-Header Key Transmission**: All client-side REST calls to Google Generative Language API (`/v1beta/models/...:generateContent`) transmit the trimmed API key via the `x-goog-api-key` header in addition to the encoded URL query parameter.
+- **Intelligent Error Guidance**: Explicitly intercepts Google Cloud Gateway 401/403/OAuth2 error payloads, translating cryptic `"Expected OAuth 2 access token..."` exceptions into actionable instructions pointing users to Google AI Studio (`aistudio.google.com/app/apikey`) for valid `AIzaSy...` keys.
+
+
 
 
 
