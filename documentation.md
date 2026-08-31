@@ -284,6 +284,19 @@ The static web client and live workspace operate entirely in the client browser:
   - Explaining that the client-side live demo is a lightweight, zero-backend demonstration built to mirror the visual ergonomics, interaction flow, and spreadsheet editing mechanics of the real platform while running 100% locally in-browser with bring-your-own-key settings.
   - Directing users to the full production documentation to explore enterprise multi-tenant pipelines, Supabase PostgreSQL synchronization, schema rule enforcement, and cloud vector storage.
 
+---
+
+## 14. Next.js App Router Native Prerendering & Node.js 22 CI Upgrade
+
+### 14.1 Native TSX Prerendering (`/privacy`, `/terms`, `/`)
+- **Eliminated Filesystem Dependencies**: Replaced fragile `fs.readFileSync` calls in `src/app/privacy/page.tsx` and `src/app/terms/page.tsx` with self-contained, native React TSX components featuring responsive layout, accessibility badges, and dark mode support.
+- **Robust Route Handling**: Hardened `src/app/route.ts` to gracefully check file existence before attempting to read local standalone HTML files, falling back to authenticated Next.js dashboard redirects (`/projects` or `/auth`).
+- **Zero Prerender Errors**: All 23 static and dynamic routes compile and prerender cleanly during `next build`.
+
+### 14.2 Node.js 22 CI Runner Upgrade
+- **Supabase v2 LTS Compatibility**: Upgraded GitHub Actions CI workflow (`.github/workflows/ci.yml`) to Node.js 22, satisfying modern `@supabase/supabase-js` LTS requirements and eliminating deprecation warnings.
+
+
 
 
 
