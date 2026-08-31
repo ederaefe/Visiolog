@@ -375,6 +375,98 @@
       cursor: zoom-out;
     }
 
+    /* Scanning Laser Overlay & Live Progress Bar */
+    .scan-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+      gap: 0.5rem;
+      z-index: 10;
+      backdrop-filter: blur(2px);
+      pointer-events: none;
+    }
+
+    .scan-overlay.active {
+      display: flex;
+    }
+
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary), 0 0 16px var(--primary);
+      animation: scanSweep 1.8s ease-in-out infinite alternate;
+      z-index: 11;
+    }
+
+    @keyframes scanSweep {
+      0% { top: 2%; opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { top: 96%; opacity: 0.4; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scan-line {
+        animation: none;
+        display: none;
+      }
+    }
+
+    .scan-progress-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      width: 90%;
+      max-width: 210px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      z-index: 12;
+    }
+
+    .scan-status-text {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--fg);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.35rem;
+    }
+
+    .scan-progress-track {
+      width: 100%;
+      height: 6px;
+      background: var(--muted);
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .scan-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      border-radius: 9999px;
+      transition: width 0.25s ease;
+    }
+
+    .scan-progress-percent {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted-fg);
+      margin-top: 0.25rem;
+      font-weight: 600;
+    }
+
     .doc-preview-meta {
       display: flex;
       align-items: center;
@@ -1011,6 +1103,17 @@
           <div id="docPreview" class="doc-preview">
             <div class="doc-preview-img-wrap" onclick="toggleImageZoom()">
               <img id="docPreviewImg" alt="Document thumbnail" title="Click to zoom image" />
+              <!-- Scanning Laser Overlay & Live Progress Bar -->
+              <div id="scanOverlay" class="scan-overlay" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="scan-line"></div>
+                <div class="scan-progress-box">
+                  <div id="scanStatusText" class="scan-status-text">Scanning Image...</div>
+                  <div class="scan-progress-track">
+                    <div id="scanProgressFill" class="scan-progress-fill"></div>
+                  </div>
+                  <div id="scanProgressPercent" class="scan-progress-percent">0%</div>
+                </div>
+              </div>
             </div>
             <div class="doc-preview-meta">
               <input type="text" id="docTitleInput" class="doc-title-input" title="Click to rename document" onchange="handleDocRename(this.value)" />
@@ -1543,6 +1646,70 @@
       reader.readAsDataURL(file);
     }
 
+    /* Real-Time Vision Scanning & Progress Engine */
+    var scanProgressInterval = null;
+    var currentScanPercent   = 0;
+
+    function startScanProgress(initialLabel) {
+      clearInterval(scanProgressInterval);
+      currentScanPercent = 10;
+      var overlay = document.getElementById('scanOverlay');
+      var fill    = document.getElementById('scanProgressFill');
+      var label   = document.getElementById('scanStatusText');
+      var percent = document.getElementById('scanProgressPercent');
+
+      if (overlay) overlay.classList.add('active');
+      if (fill) fill.style.width = '10%';
+      if (label) label.textContent = initialLabel || 'Downsampling & Preprocessing...';
+      if (percent) percent.textContent = '10%';
+
+      scanProgressInterval = setInterval(function() {
+        if (currentScanPercent < 88) {
+          currentScanPercent += (currentScanPercent < 35 ? 6 : (currentScanPercent < 65 ? 3 : 1));
+          if (fill) fill.style.width = currentScanPercent + '%';
+          if (percent) percent.textContent = Math.round(currentScanPercent) + '%';
+          if (currentScanPercent >= 25 && currentScanPercent < 55 && label) {
+            label.textContent = 'Transmitting to Vision Engine...';
+          } else if (currentScanPercent >= 55 && currentScanPercent < 80 && label) {
+            label.textContent = 'Neural OCR & Table Extraction...';
+          } else if (currentScanPercent >= 80 && label) {
+            label.textContent = 'Reconciling Headers & Columns...';
+          }
+        }
+      }, 280);
+    }
+
+    function updateScanProgress(percentage, text) {
+      currentScanPercent = percentage;
+      var fill    = document.getElementById('scanProgressFill');
+      var label   = document.getElementById('scanStatusText');
+      var percent = document.getElementById('scanProgressPercent');
+      if (fill) fill.style.width = percentage + '%';
+      if (percent) percent.textContent = Math.round(percentage) + '%';
+      if (label && text) label.textContent = text;
+    }
+
+    function stopScanProgress(success) {
+      clearInterval(scanProgressInterval);
+      var overlay = document.getElementById('scanOverlay');
+      var fill    = document.getElementById('scanProgressFill');
+      var percent = document.getElementById('scanProgressPercent');
+      var label   = document.getElementById('scanStatusText');
+
+      if (success) {
+        if (fill) fill.style.width = '100%';
+        if (percent) percent.textContent = '100%';
+        if (label) label.textContent = 'Spreadsheet Populated';
+        setTimeout(function() {
+          if (overlay) overlay.classList.remove('active');
+          if (fill) fill.style.width = '0%';
+        }, 600);
+      } else {
+        if (overlay) overlay.classList.remove('active');
+        if (fill) fill.style.width = '0%';
+      }
+    }
+
     /* OCR Extraction Router */
     function processDocument() {
       var provider = localStorage.getItem('visiolog_provider') || 'gemini';
@@ -1559,14 +1726,17 @@
       convertBtn.disabled = true;
       convertText.textContent = 'Converting...';
 
+      startScanProgress('Preprocessing & Transmitting...');
+
       function onComplete() {
         convertBtn.disabled = false;
         convertText.textContent = 'Convert';
       }
 
       if (provider === 'gemini') {
-        var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
+        var key = (localStorage.getItem('visiolog_demo_gemini_key') || '').trim();
         if (!key) {
+          stopScanProgress(false);
           onComplete();
           showStatus('No Gemini API key found. Configure in Settings.', 'error', true);
           return;
@@ -1574,8 +1744,9 @@
         runGeminiExtractionWithPolling(key, model, prompt, 0, onComplete);
 
       } else if (provider === 'openrouter') {
-        var orKey = localStorage.getItem('visiolog_demo_openrouter_key') || '';
+        var orKey = (localStorage.getItem('visiolog_demo_openrouter_key') || '').trim();
         if (!orKey) {
+          stopScanProgress(false);
           onComplete();
           showStatus('No OpenRouter key found. Configure in Settings.', 'error', true);
           return;
@@ -1638,6 +1809,7 @@
           if (onDone) onDone();
           var data = res.data;
           if (!res.ok || (data && data.error)) {
+            stopScanProgress(false);
             var errMsg = (data && data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status + ' Error');
             if (errMsg.indexOf('authentication credentials') >= 0 || errMsg.indexOf('API key not valid') >= 0 || res.status === 401 || res.status === 403) {
               throw new Error('Invalid Gemini API Key: Please verify your Google AI Studio key (starts with AIzaSy...) in Settings.');
@@ -1650,6 +1822,7 @@
         })
         .catch(function(err) {
           clearTimeout(timeoutId);
+          stopScanProgress(false);
           if (onDone) onDone();
           if (err.name === 'AbortError') {
             showStatus('Request timed out. Please retry with a smaller image.', 'error', true);
@@ -1687,6 +1860,7 @@
           renderCsvOutput(raw.content || '', uploadedFileName);
         })
         .catch(function(err) {
+          stopScanProgress(false);
           if (onDone) onDone();
           showStatus(err.message || 'OpenRouter extraction failed.', 'error', true);
         });
@@ -1714,6 +1888,7 @@
           renderCsvOutput(raw, uploadedFileName);
         })
         .catch(function() {
+          stopScanProgress(false);
           if (onDone) onDone();
           showStatus('Could not reach Ollama at localhost:11434.', 'error', true);
         });
@@ -1722,7 +1897,7 @@
     /* Provider 4: Custom Endpoint Ingestion */
     function runCustomExtraction(model, prompt, onDone) {
       var endpoint = (localStorage.getItem('visiolog_custom_endpoint') || 'http://localhost:8000/v1').replace(/\/+$/, '');
-      var cKey     = localStorage.getItem('visiolog_custom_key') || '';
+      var cKey     = (localStorage.getItem('visiolog_custom_key') || '').trim();
       showStatus('Sending to custom endpoint...', 'loading');
 
       var headers = { 'Content-Type': 'application/json' };
@@ -1748,6 +1923,7 @@
           renderCsvOutput(raw.content || '', uploadedFileName);
         })
         .catch(function(err) {
+          stopScanProgress(false);
           if (onDone) onDone();
           showStatus('Custom endpoint error: ' + (err.message || 'Connection failed'), 'error', true);
         });
@@ -1759,6 +1935,7 @@
       var lines   = cleaned.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
 
       if (lines.length < 2) {
+        stopScanProgress(false);
         showStatus('Could not parse a valid table. Try adjusting the prompt in Settings.', 'error', true);
         return;
       }
@@ -1772,6 +1949,7 @@
       setViewMode(currentViewMode);
 
       saveToHistory(fileName || 'Document', headers, rows);
+      stopScanProgress(true);
       showStatus('Extracted ' + rows.length + ' rows.', 'success');
     }
 
