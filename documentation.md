@@ -252,6 +252,7 @@ For technical inquiries, enterprise deployments, bug reports, or feature request
 
 ---
 
+
 ## 10. Step-by-Step Setup Guides (20 Steps Each)
 
 For users deploying optional cloud services, refer to the dedicated 20-step configuration manuals:
@@ -260,4 +261,17 @@ For users deploying optional cloud services, refer to the dedicated 20-step conf
 - **Supabase Cloud Database Setup (20 Steps)**: [`setup_supabase.md`](file:///C:/Users/USER/Documents/Codes%20and%20projects/VISIOLOG/setup_supabase.md)
 - **Vercel Production Deployment (20 Steps)**: [`setup_vercel.md`](file:///C:/Users/USER/Documents/Codes%20and%20projects/VISIOLOG/setup_vercel.md)
 - **Google Gemini API Key Rotation Setup (20 Steps)**: [`setup_gemini.md`](file:///C:/Users/USER/Documents/Codes%20and%20projects/VISIOLOG/setup_gemini.md)
+
+---
+
+## 11. In-Browser Demo Studio Architecture
+
+The live demo (`index.html`, `demo/index.html`, and `public/demo/index.html`) operates as an autonomous, client-side application:
+
+- **Root & Static Deployment**: Hosted directly from repository root for GitHub Pages or static CDN deployment without requiring Node.js server runtimes.
+- **Client-Side BYOK Privacy**: API keys for Google Gemini or OpenRouter reside exclusively in browser `localStorage` and transmit directly to inference endpoints without intermediary servers.
+- **Collapsible Settings Drawer**: Encapsulates provider selection, key management, live model discovery, and prompt customization in a minimalist panel with live status badges.
+- **Dynamic Prompt Customization**: Provides full prompt flexibility allowing users to extract specialized schemas, JSON payloads, or standard RFC 4180 CSV tables.
+- **Client-Side Pre-processing**: In-memory HTML5 canvas compression reduces raw image payloads prior to transmission.
+- **Sample Document Quota**: Provides a 2-conversion free sample quota for testing before requiring user-supplied API keys.
 
