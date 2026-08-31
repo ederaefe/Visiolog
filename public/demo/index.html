@@ -672,6 +672,15 @@
                     Detect
                   </button>
                 </div>
+
+                <!-- Model Selector: populated after live API discovery for Gemini -->
+                <div id="modelSelectorRow" style="margin-top: 0.65rem;">
+                  <p class="pane-section-title" style="margin-bottom: 0.3rem;">Model</p>
+                  <select id="modelSelect" onchange="discoveredLatestModel = this.value; document.getElementById('activeModelBadge').textContent = 'Using: ' + this.value;" style="width: 100%; background-color: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.45rem 0.65rem; color: var(--foreground); font-family: var(--font-mono); font-size: 0.75rem; outline: none; cursor: pointer;">
+                    <option value="gemini-2.5-flash">gemini-2.5-flash (default)</option>
+                  </select>
+                </div>
+
                 <p id="providerHelperText" style="font-size: 0.6875rem; color: var(--muted-foreground); margin-top: 0.35rem;">
                   Keys remain strictly in browser localStorage and connect directly to Google's API.
                 </p>
@@ -840,10 +849,12 @@
       const keyInput = document.getElementById('apiKeyInput');
       const helper = document.getElementById('providerHelperText');
       const keyRow = document.getElementById('keyInputRow');
+      const modelSelectorRow = document.getElementById('modelSelectorRow');
 
       if (provider === 'gemini') {
         document.getElementById('tabGemini').classList.add('active');
         keyRow.style.display = 'flex';
+        modelSelectorRow.style.display = 'block';
         keyInput.placeholder = 'AIzaSy... (Gemini API Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_gemini_key') || '';
         helper.textContent = 'Keys connect directly to Google Gemini REST endpoints.';
@@ -851,6 +862,7 @@
       } else if (provider === 'openrouter') {
         document.getElementById('tabOpenRouter').classList.add('active');
         keyRow.style.display = 'flex';
+        modelSelectorRow.style.display = 'none';
         keyInput.placeholder = 'sk-or-v1-... (OpenRouter Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_openrouter_key') || '';
         helper.textContent = 'Uses meta-llama/llama-3.2-11b-vision-instruct on OpenRouter.';
@@ -858,6 +870,7 @@
       } else if (provider === 'ollama') {
         document.getElementById('tabOllama').classList.add('active');
         keyRow.style.display = 'none';
+        modelSelectorRow.style.display = 'none';
         helper.textContent = 'Air-gapped local inference at http://localhost:11434 with zero keys.';
         document.getElementById('activeModelBadge').textContent = 'Local Ollama Vision';
       }
@@ -908,10 +921,18 @@
           });
 
           if (validModels.length > 0) {
-            discoveredLatestModel = validModels[0];
+            // Populate the model selector <select> with all discovered models
+            const selectEl = document.getElementById('modelSelect');
+            const prevSelection = selectEl.value;
+            selectEl.innerHTML = validModels
+              .map(m => `<option value="${m}"${m === prevSelection ? ' selected' : ''}>${m}</option>`)
+              .join('');
+
+            // Use current dropdown value as active model
+            discoveredLatestModel = selectEl.value;
             document.getElementById('activeModelBadge').textContent = `Using: ${discoveredLatestModel}`;
             if (showNotification) {
-              showStatus(`Discovered newest model: ${discoveredLatestModel}. Ready.`, 'loading');
+              showStatus(`Discovered ${validModels.length} models. Selected: ${discoveredLatestModel}`, 'loading');
               setTimeout(() => hideStatus(), 2000);
             }
             return;
@@ -1032,6 +1053,10 @@
     }
 
     async function processDocument() {
+      // Always read the currently selected model from the dropdown (user may have changed it)
+      const selectedModel = document.getElementById('modelSelect')?.value;
+      if (selectedModel) discoveredLatestModel = selectedModel;
+
       // 1. Custom Upload Processing
       if (uploadedCompressedBase64) {
         const prompt = "Extract all tabular data from this image into strict RFC 4180 CSV format. Output ONLY raw CSV text starting directly with headers. No markdown fences, no explanations.";
