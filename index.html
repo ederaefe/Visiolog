@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <!-- Character encoding and responsive viewport -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO Metadata -->
+  <title>Visiolog — Document to Spreadsheet & Paper OCR Extraction Engine</title>
+  <meta name="description" content="Convert paper documents, receipts, invoices, tax records, and scanned tables into editable Excel, CSV, and Google Sheets in seconds using multimodal vision extraction." />
+  <meta name="keywords" content="Document to Spreadsheet, OCR Table Extraction, Invoice to Excel, Paper Logbook to Spreadsheet, Scanned Table Converter, Bank Statement to CSV, Receipt OCR Extractor, Financial Document OCR, Tabular Vision Extraction, Master Sheet Reconciliation, Image Table Converter, Document Data Automation" />
+  <meta name="author" content="Visiolog Engineering Team" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://ederaefe.github.io/Visiolog/" />
+
+  <!-- Open Graph Metadata -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ederaefe.github.io/Visiolog/" />
+  <meta property="og:title" content="Visiolog — Transform Paper & Documents into Interactive Spreadsheets" />
+  <meta property="og:description" content="Instantly convert document scans, receipts, paper records, and invoices into structured Excel and CSV datasets with AI accuracy." />
+  <meta property="og:site_name" content="Visiolog" />
+
+  <!-- Inline SVG Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
+
+  <!-- Google Fonts: Fraunces (Serif Heading) & Inter (Sans Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Schema.org JSON-LD Structured Data Graph -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://ederaefe.github.io/Visiolog/#website",
+        "url": "https://ederaefe.github.io/Visiolog/",
+        "name": "Visiolog",
+        "description": "Automated document-to-spreadsheet extraction engine converting paper records to digital grids.",
+        "inLanguage": "en-US"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://ederaefe.github.io/Visiolog/#organization",
+        "name": "Visiolog",
+        "url": "https://ederaefe.github.io/Visiolog/",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "elrazortheodore@gmail.com",
+          "contactType": "customer support",
+          "availableLanguage": ["English"]
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://ederaefe.github.io/Visiolog/#software",
+        "name": "Visiolog",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All Modern Web Browsers, Android, iOS, Windows, macOS, Linux",
+        "description": "Multimodal vision platform converting paper logbooks, receipts, financial tables, and scanned documents into structured interactive spreadsheets.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "featureList": [
+          "Vision AI Table Extraction",
+          "Interactive 2D Grid Editing",
+          "Client-Side Conversion History",
+          "Multi-Format Exports (Excel, CSV, JSON, TXT)",
+          "Zero Persistent Image Storage Privacy",
+          "Multi-Provider BYOK Key Management"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Synchronous Head Theme Detection to Prevent FOUC -->
+  <script>
+    (function () {
+      var storedTheme = localStorage.getItem('visiolog_theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
+  <!-- CSS Design Tokens and Layout Styles -->
+  <style>
+    /* CSS Root Variable Definitions for Light Mode */
+    :root {
+      --background: hsl(70, 60%, 96%);
+      --foreground: hsl(214, 35%, 10%);
+      --card: hsl(70, 50%, 98%);
+      --card-foreground: hsl(214, 35%, 10%);
+      --popover: hsl(70, 50%, 98%);
+      --popover-foreground: hsl(214, 35%, 10%);
+      --primary: hsl(105, 100%, 16%);
+      --primary-foreground: hsl(70, 60%, 98%);
+      --secondary: hsl(148, 24%, 52%);
+      --secondary-foreground: hsl(214, 35%, 10%);
+      --muted: hsl(70, 20%, 90%);
+      --muted-foreground: hsl(214, 25%, 20%);
+      --accent: hsl(102, 87%, 76%);
+      --accent-foreground: hsl(214, 35%, 10%);
+      --border: hsla(105, 100%, 16%, 0.18);
+      --border-subtle: hsla(105, 100%, 16%, 0.08);
+      --mobile-menu-bg: hsl(70, 50%, 98%);
+      --mobile-menu-text: hsl(214, 35%, 10%);
+      --hamburger-color: hsl(214, 35%, 10%);
+      --shadow-color: rgba(13, 82, 0, 0.08);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* CSS Variable Overrides for Dark Mode */
+    html.dark {
+      --background: hsl(0, 0%, 16%);
+      --foreground: hsl(0, 0%, 100%);
+      --card: hsl(0, 0%, 20%);
+      --card-foreground: hsl(0, 0%, 100%);
+      --popover: hsl(0, 0%, 20%);
+      --popover-foreground: hsl(0, 0%, 100%);
+      --primary: hsl(102, 87%, 76%);
+      --primary-foreground: hsl(214, 31%, 17%);
+      --secondary: hsl(0, 0%, 24%);
+      --secondary-foreground: hsl(0, 0%, 100%);
+      --muted: hsl(0, 0%, 22%);
+      --muted-foreground: hsl(0, 0%, 75%);
+      --accent: hsl(105, 100%, 16%);
+      --accent-foreground: hsl(0, 0%, 100%);
+      --border: hsl(0, 0%, 27%);
+      --border-subtle: hsl(0, 0%, 22%);
+      --mobile-menu-bg: #1c1c1c;
+      --mobile-menu-text: #ffffff;
+      --hamburger-color: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.35);
+    }
+
+    /* Reset and Core Layout Defaults */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.2s ease;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Typography Utilities */
+    .font-serif { font-family: var(--font-serif); }
+    .font-mono  { font-family: var(--font-mono); }
+
+    /* Container Utility */
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+
+    /* Top Navigation Header Styling */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      border-bottom: 1px solid var(--border);
+      background-color: var(--background);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      display: flex;
+      height: 4.25rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--foreground);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .brand-mark {
+      width: 2.25rem;
+      height: 2.25rem;
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* Desktop Navigation Links */
+    .desktop-nav {
+      display: none;
+      align-items: center;
+      gap: 2rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .desktop-nav a {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .desktop-nav a:hover {
+      color: var(--foreground);
+    }
+
+    .desktop-actions {
+      display: none;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    @media (min-width: 768px) {
+      .desktop-nav { display: flex; }
+      .desktop-actions { display: flex; }
+      .mobile-toggle-btn { display: none !important; }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border-radius: 0.75rem;
+      padding: 0.625rem 1.15rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow: 0 2px 8px var(--shadow-color);
+    }
+
+    .btn-primary:hover { opacity: 0.92; }
+
+    .btn-outline {
+      background-color: var(--card);
+      color: var(--foreground);
+      border-color: var(--border);
+    }
+
+    .btn-outline:hover { background-color: var(--muted); }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--foreground);
+    }
+
+    .btn-ghost:hover { color: var(--primary); }
+
+    /* Mobile Hamburger Button */
+    .mobile-toggle-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0.5rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 0.65rem;
+      cursor: pointer;
+      position: relative;
+      z-index: 60;
+    }
+
+    .hamburger-line {
+      width: 1.35rem;
+      height: 2px;
+      background-color: var(--hamburger-color);
+      border-radius: 2px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    }
+
+    .hamburger-line:first-child { transform: translateY(-4px); }
+    .hamburger-line:last-child { transform: translateY(4px); }
+
+    .mobile-toggle-btn.is-active .hamburger-line:first-child {
+      transform: translateY(1px) rotate(45deg);
+      background-color: var(--foreground);
+    }
+
+    .mobile-toggle-btn.is-active .hamburger-line:last-child {
+      transform: translateY(-1px) rotate(-45deg);
+      background-color: var(--foreground);
+    }
+
+    /* Mobile Drawer */
+    .mobile-drawer {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 4.25rem;
+      left: 0;
+      right: 0;
+      background-color: var(--mobile-menu-bg);
+      color: var(--mobile-menu-text);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
+      gap: 1rem;
+      box-shadow: 0 16px 32px var(--shadow-color);
+      transform: translateY(-120%);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.35s;
+      z-index: 45;
+    }
+
+    .mobile-drawer.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .mobile-nav-link {
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--foreground);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .mobile-nav-link:hover { color: var(--primary); }
+
+    .mobile-nav-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      padding: 4.5rem 0 5rem 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+      overflow: hidden;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      background-color: hsla(105, 100%, 16%, 0.08);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-mono);
+    }
+
+    html.dark .hero-pill {
+      background-color: hsla(102, 87%, 76%, 0.12);
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      color: var(--foreground);
+    }
+
+    @media (min-width: 640px) {
+      .hero-title { font-size: 3.5rem; }
+    }
+
+    .hero-highlight {
+      color: var(--primary);
+      text-decoration: underline;
+      text-decoration-color: hsla(105, 100%, 16%, 0.3);
+      text-underline-offset: 8px;
+    }
+
+    html.dark .hero-highlight {
+      text-decoration-color: hsla(102, 87%, 76%, 0.3);
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      color: var(--muted-foreground);
+      max-width: 42rem;
+      margin: 0 auto 2rem auto;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 640px) {
+      .hero-description { font-size: 1.15rem; }
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .hero-cta-group { flex-direction: row; }
+    }
+
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      font-weight: 500;
+    }
+
+    .trust-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Section Utilities */
+    .section-padding { padding: 4.5rem 0; }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-family: var(--font-mono);
+    }
+
+    .section-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--foreground);
+      letter-spacing: -0.01em;
+    }
+
+    @media (min-width: 640px) {
+      .section-title { font-size: 2.25rem; }
+    }
+
+    /* Steps Grid */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .steps-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .step-card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 2px 6px var(--shadow-color);
+    }
+
+    .step-number {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 0.85rem;
+      background-color: hsla(105, 100%, 16%, 0.08);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.15rem;
+      margin-bottom: 1.25rem;
+    }
+
+    html.dark .step-number {
+      background-color: hsla(102, 87%, 76%, 0.12);
+    }
+
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--foreground);
+    }
+
+    .step-text {
+      font-size: 0.8125rem;
+      color: var(--muted-foreground);
+      line-height: 1.5;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .feature-card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px var(--shadow-color);
+    }
+
+    .feature-icon-wrapper {
+      width: 2.25rem;
+      height: 2.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .feature-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--foreground);
+    }
+
+    .feature-text {
+      font-size: 0.8125rem;
+      color: var(--muted-foreground);
+      line-height: 1.5;
+    }
+
+    /* FAQ */
+    .faq-container {
+      max-width: 48rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background-color: var(--card);
+      padding: 1.25rem;
+    }
+
+    .faq-item summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--foreground);
+    }
+
+    .faq-item summary::-webkit-details-marker { display: none; }
+
+    .faq-item summary svg {
+      transition: transform 0.25s ease;
+      color: var(--muted-foreground);
+    }
+
+    .faq-item[open] summary svg { transform: rotate(180deg); }
+
+    .faq-answer {
+      font-size: 0.8125rem;
+      color: var(--muted-foreground);
+      line-height: 1.6;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* CTA Banner */
+    .cta-banner {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 4.5rem 0;
+      text-align: center;
+    }
+
+    .cta-title {
+      font-size: 1.85rem;
+      font-weight: 900;
+      margin-bottom: 0.75rem;
+    }
+
+    @media (min-width: 640px) {
+      .cta-title { font-size: 2.25rem; }
+    }
+
+    .cta-text {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 32rem;
+      margin: 0 auto 2rem auto;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background-color: var(--card);
+      padding: 2rem 0;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .footer-inner { flex-direction: row; }
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+
+    .footer-links a {
+      color: var(--muted-foreground);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover { color: var(--foreground); }
+
+    .theme-selector-group {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem;
+      border-radius: 9999px;
+      background-color: var(--muted);
+      border: 1px solid var(--border);
+      gap: 0.2rem;
+    }
+
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted-foreground);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .theme-btn:hover { color: var(--foreground); }
+
+    .theme-btn.active {
+      background-color: var(--card);
+      color: var(--foreground);
+      box-shadow: 0 1px 3px var(--shadow-color);
+    }
+
+    /* SVG Icons */
+    .svg-icon {
+      width: 1rem;
+      height: 1rem;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    .svg-icon-sm { width: 0.875rem; height: 0.875rem; }
+    .svg-icon-lg { width: 1.5rem; height: 1.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-inner">
+        <!-- Brand Link -->
+        <a href="./" class="brand-link" aria-label="Visiolog Home">
+          <div class="brand-mark" aria-hidden="true">V</div>
+          <span class="font-serif">Visiolog</span>
+        </a>
+
+        <!-- Desktop Navigation Items -->
+        <nav class="desktop-nav" aria-label="Primary Navigation">
+          <a href="#how-it-works">How It Works</a>
+          <a href="#features">Features</a>
+          <a href="#faq">FAQ</a>
+          <a href="./workspace.html">Workspace</a>
+          <a href="./settings.html">Settings</a>
+          <a href="./docs.html">Docs</a>
+          <a href="./contact.html">Contact</a>
+        </nav>
+
+        <!-- Desktop Action Buttons -->
+        <div class="desktop-actions">
+          <a href="./settings.html" class="btn btn-ghost">Settings</a>
+          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" title="GitHub Repository">
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            GitHub
+          </a>
+          <a href="./workspace.html" class="btn btn-primary">
+            <span>Launch Workspace</span>
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <button id="mobileNavToggle" class="mobile-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div id="mobileDrawer" class="mobile-drawer" aria-hidden="true">
+    <div class="mobile-nav-links">
+      <a href="#how-it-works" class="mobile-nav-link">How It Works</a>
+      <a href="#features" class="mobile-nav-link">Features</a>
+      <a href="#faq" class="mobile-nav-link">FAQ</a>
+      <a href="./workspace.html" class="mobile-nav-link">Workspace</a>
+      <a href="./settings.html" class="mobile-nav-link">Settings</a>
+      <a href="./docs.html" class="mobile-nav-link">Docs</a>
+      <a href="./contact.html" class="mobile-nav-link">Contact</a>
+      <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="mobile-nav-link">GitHub Repository</a>
+    </div>
+    <div class="mobile-nav-actions">
+      <a href="./settings.html" class="btn btn-outline" style="width: 100%;">Configure Settings</a>
+      <a href="./workspace.html" class="btn btn-primary" style="width: 100%;">
+        <span>Launch Workspace</span>
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- Hero Banner Section -->
+    <section class="hero-section">
+      <div class="container">
+        <!-- Tagline Pill -->
+        <div class="hero-pill font-mono">
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          <span>Vision &amp; Tabular Intelligence</span>
+        </div>
+
+        <!-- Primary Title Heading -->
+        <h1 class="hero-title font-serif">
+          Transform Paper Logbooks &amp; Scans into <span class="hero-highlight">Digital Spreadsheets</span>
+        </h1>
+
+        <!-- Subtitle Description -->
+        <p class="hero-description">
+          Instantly extract invoices, financial registries, receipts, and paper tables directly into interactive spreadsheet grids with zero manual transcription.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="hero-cta-group">
+          <a href="./workspace.html" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 0.95rem;">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            <span>Open Workspace</span>
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="./settings.html" class="btn btn-outline" style="padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+            <svg class="svg-icon" style="color: var(--primary);" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Configure AI Key</span>
+          </a>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+          <div class="trust-badge-item">
+            <svg class="svg-icon" style="color: var(--primary);" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>No signup required</span>
+          </div>
+          <div class="trust-badge-item">
+            <svg class="svg-icon" style="color: var(--primary);" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Excel &amp; CSV Export</span>
+          </div>
+          <div class="trust-badge-item">
+            <svg class="svg-icon" style="color: var(--primary);" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Local In-Memory Privacy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section-padding" style="background-color: var(--card); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow font-mono">Process</span>
+          <h2 class="section-title font-serif">From Snapshot to Clean Spreadsheet</h2>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <div class="step-number font-mono">1</div>
+            <h3 class="step-title font-serif">Upload or Snap</h3>
+            <p class="step-text">
+              Drop smartphone photos, scanned receipts, ledgers, or invoices into the upload workspace.
+            </p>
+          </article>
+
+          <article class="step-card">
+            <div class="step-number font-mono">2</div>
+            <h3 class="step-title font-serif">Vision Extraction</h3>
+            <p class="step-text">
+              Multimodal vision models accurately detect rows, columns, headers, and numeric values.
+            </p>
+          </article>
+
+          <article class="step-card">
+            <div class="step-number font-mono">3</div>
+            <h3 class="step-title font-serif">Edit &amp; Export</h3>
+            <p class="step-text">
+              Review and modify cells in the live interactive grid, then download as Excel, CSV, or TXT.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section-padding">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow font-mono">Capabilities</span>
+          <h2 class="section-title font-serif">Everything You Need to Digitize Records</h2>
+        </div>
+
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+            </div>
+            <h3 class="feature-title font-serif">Interactive 2D Grid</h3>
+            <p class="feature-text">
+              Full spreadsheet editing with keyboard navigation, formula evaluation, and multi-cell drag selection.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.9a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+            </div>
+            <h3 class="feature-title font-serif">Conversion History</h3>
+            <p class="feature-text">
+              Track previously converted files directly in your browser workspace with 1-click reload.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3 class="feature-title font-serif">Multi-Provider AI</h3>
+            <p class="feature-text">
+              Bring your own Gemini, OpenRouter, or local Ollama vision keys with zero middleman proxy.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3 class="feature-title font-serif">Zero-Storage Privacy</h3>
+            <p class="feature-text">
+              Raw document images are processed in volatile memory buffers and never permanently stored.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></svg>
+            </div>
+            <h3 class="feature-title font-serif">Multi-Format Exports</h3>
+            <p class="feature-text">
+              One-click export to formatted CSV and spreadsheet-ready tabular structures.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon-wrapper">
+              <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3 class="feature-title font-serif">Custom Prompting</h3>
+            <p class="feature-text">
+              Tailor the extraction prompt in Settings to output specialized columns, JSON, or key-value matrices.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section id="faq" class="section-padding" style="background-color: var(--card); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow font-mono">FAQ</span>
+          <h2 class="section-title font-serif">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-container">
+          <details class="faq-item">
+            <summary>
+              <span>What types of documents can Visiolog process?</span>
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-answer">
+              Visiolog processes financial ledgers, tax assessment forms, printed invoices, store receipts, tabular logs, registries, and scanned documents in PNG, JPG, or WebP image formats.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>How is my data protected during processing?</span>
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-answer">
+              Your files are processed in secure temporary memory buffers with zero persistent image retention and automatic memory purges once extraction completes.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>Can I edit extracted tables before downloading?</span>
+              <svg class="svg-icon" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </summary>
+            <div class="faq-answer">
+              Yes. The built-in spreadsheet editor lets you edit any cell value directly in an interactive grid layout before exporting to CSV.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <section class="cta-banner">
+      <div class="container">
+        <h2 class="cta-title font-serif">Ready to Automate Your Document Processing?</h2>
+        <p class="cta-text">
+          Convert paper documents and receipts into clean spreadsheets in seconds.
+        </p>
+        <a href="./workspace.html" class="btn" style="background-color: var(--background); color: var(--foreground); padding: 0.85rem 1.85rem; font-weight: 700;">
+          <span>Launch Workspace</span>
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with Theme Switcher -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <!-- Branding and Copyright -->
+        <div class="footer-brand">
+          <div class="brand-mark" style="width: 1.25rem; height: 1.25rem; font-size: 0.75rem; border-radius: 0.3rem;" aria-hidden="true">V</div>
+          <span class="font-serif" style="font-weight: 700; color: var(--foreground);">Visiolog</span>
+          <span>&copy; <span id="currentYear"></span> All rights reserved.</span>
+        </div>
+
+        <!-- Links Navigation -->
+        <div class="footer-links">
+          <a href="./workspace.html">Workspace</a>
+          <a href="./settings.html">Settings</a>
+          <a href="./docs.html" title="Visiolog Technical Documentation">Documentation</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./terms.html">Terms</a>
+          <a href="./contact.html" style="display: inline-flex; align-items: center; gap: 0.35rem; color: var(--foreground);">
+            <svg class="svg-icon svg-icon-sm" style="color: var(--primary);" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>Contact</span>
+          </a>
+        </div>
+
+        <!-- Theme Switcher Controls -->
+        <div class="theme-selector-group" role="radiogroup" aria-label="Theme Selection">
+          <button type="button" class="theme-btn" id="themeBtnLight" role="radio" aria-checked="false" title="Light Mode" aria-label="Light Mode">Light</button>
+          <button type="button" class="theme-btn" id="themeBtnDark" role="radio" aria-checked="false" title="Dark Mode" aria-label="Dark Mode">Dark</button>
+          <button type="button" class="theme-btn" id="themeBtnAuto" role="radio" aria-checked="true" title="System Match" aria-label="System Match">Auto</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript: Mobile Drawer and Theme Engine -->
+  <script>
+    // Initialize Current Year in Footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Mobile Navigation Drawer Elements
+    var mobileToggle = document.getElementById('mobileNavToggle');
+    var mobileDrawer = document.getElementById('mobileDrawer');
+
+    // Toggle Drawer Open / Close
+    function toggleMobileMenu() {
+      var isExpanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+      mobileToggle.setAttribute('aria-expanded', !isExpanded);
+      mobileToggle.classList.toggle('is-active', !isExpanded);
+      mobileDrawer.classList.toggle('is-open', !isExpanded);
+      mobileDrawer.setAttribute('aria-hidden', isExpanded);
+    }
+
+    mobileToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
+
+    // Close mobile drawer when clicking outside
+    document.addEventListener('click', function (e) {
+      if (mobileDrawer.classList.contains('is-open')) {
+        if (!mobileDrawer.contains(e.target) && !mobileToggle.contains(e.target)) {
+          toggleMobileMenu();
+        }
+      }
+    });
+
+    // Close mobile drawer when pressing Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && mobileDrawer.classList.contains('is-open')) {
+        toggleMobileMenu();
+        mobileToggle.focus();
+      }
+    });
+
+    // Close mobile drawer when clicking any nav link
+    var drawerLinks = mobileDrawer.querySelectorAll('a');
+    drawerLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (mobileDrawer.classList.contains('is-open')) {
+          toggleMobileMenu();
+        }
+      });
+    });
+
+    // Theme Management Engine
+    var themeBtnLight = document.getElementById('themeBtnLight');
+    var themeBtnDark  = document.getElementById('themeBtnDark');
+    var themeBtnAuto  = document.getElementById('themeBtnAuto');
+
+    function applyTheme(mode) {
+      var isDark = false;
+      if (mode === 'light') {
+        localStorage.setItem('visiolog_theme', 'light');
+        isDark = false;
+      } else if (mode === 'dark') {
+        localStorage.setItem('visiolog_theme', 'dark');
+        isDark = true;
+      } else {
+        localStorage.removeItem('visiolog_theme');
+        isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+
+      document.documentElement.classList.toggle('dark', isDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      updateThemeButtonsUI(mode);
+    }
+
+    function updateThemeButtonsUI(activeMode) {
+      themeBtnLight.classList.toggle('active', activeMode === 'light');
+      themeBtnLight.setAttribute('aria-checked', activeMode === 'light' ? 'true' : 'false');
+
+      themeBtnDark.classList.toggle('active', activeMode === 'dark');
+      themeBtnDark.setAttribute('aria-checked', activeMode === 'dark' ? 'true' : 'false');
+
+      themeBtnAuto.classList.toggle('active', activeMode === 'auto');
+      themeBtnAuto.setAttribute('aria-checked', activeMode === 'auto' ? 'true' : 'false');
+    }
+
+    themeBtnLight.addEventListener('click', function () { applyTheme('light'); });
+    themeBtnDark.addEventListener('click', function () { applyTheme('dark'); });
+    themeBtnAuto.addEventListener('click', function () { applyTheme('auto'); });
+
+    var initialSaved = localStorage.getItem('visiolog_theme');
+    if (initialSaved === 'light') {
+      updateThemeButtonsUI('light');
+    } else if (initialSaved === 'dark') {
+      updateThemeButtonsUI('dark');
+    } else {
+      updateThemeButtonsUI('auto');
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      var currentSetting = localStorage.getItem('visiolog_theme');
+      if (!currentSetting) {
+        document.documentElement.classList.toggle('dark', e.matches);
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
+  </script>
+</body>
+</html>
