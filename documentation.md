@@ -382,21 +382,23 @@ The static web client and live workspace operate entirely in the client browser:
 
 ### 20.1 Dedicated Key Tutorial Center (`get-key.html`)
 - **Interactive Provider Breadcrumb/Tab Switcher**: Allows toggling between **Google Gemini (Recommended)**, **OpenRouter**, **Ollama (Local Offline)**, and **Custom Endpoint** instructions with active tab indicators and URL hash synchronization (`#guide-gemini`, `#guide-openrouter`, `#guide-ollama`, `#guide-custom`).
-- **Structured Instructional Design**: Each guide features:
-  - Direct outbound links to official key management consoles (e.g. `aistudio.google.com/app/apikey`, `openrouter.ai/keys`, `ollama.com/download`).
-  - Numbered step cards with visual breadcrumbs and mock UI boxes.
-  - Contextual **Tips** (e.g., free tier quotas, free model endpoints).
-  - Explicit **Cautions** (e.g., distinguishing OAuth client IDs from REST API keys, configuring `OLLAMA_ORIGINS="*"` for browser CORS).
-  - Immediate action CTAs linking directly to Settings to paste and test keys.
+- **Beginner-Friendly Ollama Deep Dive**:
+  - Educational introductory section explaining local private AI execution on CPU/GPU without external network requests.
+  - Numbered installation instructions with direct download links.
+  - Copyable vision model pull commands (`ollama run llama3.2-vision`, `ollama run minicpm-v`).
+  - Dedicated **OS Switcher Sub-Tabs** providing operating-system specific commands for **Windows** (PowerShell one-liner & System GUI), **macOS** (`launchctl setenv OLLAMA_ORIGINS "*"`), and **Linux** (`systemctl edit ollama.service`).
+  - Local endpoint verification link (`http://localhost:11434`) and troubleshooting FAQ accordion.
+- **Structured Instructional Design**: Each guide features direct outbound links, numbered step cards, visual layout boxes, contextual **Tips**, and explicit **Cautions**.
 
 ### 20.2 In-Context Linkage Across the App
-- **Credentials Card (`settings.html`)**: Appended `<u><a href="./get-key.html">Get a key</a></u>` after the helper sentence, dynamically pointing to the relevant provider anchor upon tab selection.
+- **Credentials Card (`settings.html`)**: Appended `<u><a href="./get-key.html">Get a key</a></u>` styled with prominent underline offset and primary theme color (`text-decoration: underline; text-underline-offset: 3px; font-weight: 700; color: var(--primary)`), dynamically pointing to the relevant provider anchor upon tab selection.
 - **Error Status Bar (`workspace.html` & `demo.html`)**: Added a direct `Get Key` primary CTA button alongside `Settings` when a missing or invalid authentication error occurs.
 
 ### 20.3 Mobile View Ergonomics & Touch Target Enforcement
 - **Minimum 44px Touch Targets**: Applied across all interactive buttons, provider tabs, text inputs, combobox dropdown selectors, and navigation pills on mobile viewports (< 768px).
 - **Zero Horizontal Viewport Overflow**: Bounded container padding, flexible card structures, and smooth horizontal scrolling tabs with `-webkit-overflow-scrolling: touch`.
 - **Dark Mode `#6B9700` Palette Consistency**: Full theme switcher and high-contrast styling maintained on all mobile breakpoints.
+
 
 
 
