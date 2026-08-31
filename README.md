@@ -14,7 +14,7 @@
 
 *Transform paper logbooks, receipts, financial records, handwritten tables, and PDFs into interactive spreadsheets with 100% privacy sovereignty.*
 
-[Live Demo](./public/demo/) • [Quickstart](#quickstart) • [Features](#key-features) • [Architecture](#architecture) • [Self-Hosting](#self-hosting--docker) • [Database Studio](#in-app-database-studio) • [Setup Guides](#setup-guides)
+[Live Demo Studio](https://ederaefe.github.io/Visiolog/) • [Landing Website](https://visiolog.vercel.app) • [GitHub Repository](https://github.com/ederaefe/Visiolog) • [Quickstart](#quickstart) • [Features](#key-features) • [Self-Hosting](#self-hosting--docker) • [Guides](#setup-guides)
 
 </div>
 
