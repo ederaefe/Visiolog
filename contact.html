@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact & Support — Visiolog</title>
+  <title>Contact &amp; Support — Visiolog</title>
   <meta name="description" content="Contact the Visiolog engineering and developer support team." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://ederaefe.github.io/Visiolog/contact.html" />
 
   <!-- Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
@@ -65,8 +67,8 @@
     .email-box { background: var(--muted); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 2rem auto; max-width: 480px; font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; color: var(--primary); }
     .site-footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: auto; background: var(--card); font-size: 0.75rem; color: var(--muted-fg); }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-links { display: flex; gap: 1rem; }
-    .footer-links a { color: var(--muted-fg); text-decoration: none; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .footer-links a { color: var(--muted-fg); text-decoration: none; font-weight: 500; }
     .footer-links a:hover { color: var(--fg); }
   </style>
 </head>
@@ -79,8 +81,9 @@
           <span style="font-family: var(--font-serif);">Visiolog</span>
         </a>
         <div style="display:flex; gap:0.5rem;">
-          <a href="./" class="btn">Demo Studio</a>
-          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn">GitHub</a>
+          <a href="./workspace.html" class="btn">Workspace</a>
+          <a href="./settings.html" class="btn">Settings</a>
+          <a href="./docs.html" class="btn">Documentation</a>
         </div>
       </div>
     </div>
@@ -89,7 +92,7 @@
   <main class="wrap">
     <div class="content-card">
       <h1>Get in Touch</h1>
-      <p>Have questions about table extraction, enterprise self-hosting, or bug reports? Reach out directly via email.</p>
+      <p>Have questions about table extraction, model integrations, or feedback? Reach out directly via email.</p>
 
       <div class="email-box">
         elrazortheodore@gmail.com
@@ -99,7 +102,7 @@
         <a href="mailto:elrazortheodore@gmail.com?subject=Inquiry%20Regarding%20Visiolog" class="btn btn-primary">
           Open Mail Client
         </a>
-        <button class="btn" onclick="navigator.clipboard.writeText('elrazortheodore@gmail.com'); alert('Email address copied!');">
+        <button id="copyEmailBtn" class="btn" type="button" onclick="navigator.clipboard.writeText('elrazortheodore@gmail.com'); this.textContent = 'Copied'; setTimeout(function(b){ b.textContent = 'Copy Email Address'; }, 2000, this);">
           Copy Email Address
         </button>
       </div>
@@ -110,12 +113,16 @@
     <div class="wrap">
       <div class="footer-inner">
         <div>&copy; 2026 Visiolog — Support &amp; Contact</div>
-        <div class="footer-links">
-          <a href="./">Demo Studio</a>
+        <nav class="footer-links" aria-label="Footer Navigation">
+          <a href="./">Landing</a>
+          <a href="./workspace.html">Workspace</a>
+          <a href="./settings.html">Settings</a>
+          <a href="./docs.html" title="Visiolog Technical Documentation">Documentation</a>
           <a href="./privacy.html">Privacy</a>
           <a href="./terms.html">Terms</a>
+          <a href="./contact.html">Contact</a>
           <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </div>
+        </nav>
       </div>
     </div>
   </footer>

@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — Visiolog</title>
   <meta name="description" content="Privacy Policy and data protection practices for Visiolog." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://ederaefe.github.io/Visiolog/privacy.html" />
 
   <!-- Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
@@ -56,20 +58,19 @@
     .header-inner { display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
     .brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--fg); font-weight: 800; font-size: 1.1rem; }
     .brand-mark { width: 2rem; height: 2rem; background: var(--primary); color: var(--primary-fg); border-radius: 0.45rem; display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.1rem; font-weight: 900; }
-    .btn { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; font-size: 0.8125rem; border-radius: var(--radius); padding: 0.45rem 0.9rem; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--fg); }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; font-size: 0.8125rem; border-radius: var(--radius); padding: 0.5rem 1rem; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--fg); }
     .btn:hover { background: var(--muted); }
-    .content-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; margin: 3rem 0; }
-    h1 { font-family: var(--font-serif); font-size: 2.25rem; font-weight: 900; margin-bottom: 0.75rem; }
-    h2 { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 800; margin: 2rem 0 0.75rem; color: var(--fg); }
-    h3 { font-size: 1.05rem; font-weight: 700; margin: 1.25rem 0 0.5rem; }
+    .btn-primary { background: var(--primary); color: var(--primary-fg); border-color: var(--primary); }
+    .content-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 3rem 2rem; margin: 3rem 0; }
+    h1 { font-family: var(--font-serif); font-size: 2.25rem; font-weight: 900; margin-bottom: 1rem; }
+    h2 { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 800; margin: 1.75rem 0 0.5rem; color: var(--primary); }
     p { margin-bottom: 1rem; color: var(--fg); font-size: 0.9375rem; }
-    ul { margin: 0 0 1.25rem 1.5rem; }
+    ul { margin-bottom: 1rem; padding-left: 1.5rem; }
     li { margin-bottom: 0.5rem; font-size: 0.9375rem; }
-    .meta-sub { color: var(--muted-fg); font-size: 0.8125rem; margin-bottom: 2rem; }
     .site-footer { border-top: 1px solid var(--border); padding: 1.5rem 0; margin-top: auto; background: var(--card); font-size: 0.75rem; color: var(--muted-fg); }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-links { display: flex; gap: 1rem; }
-    .footer-links a { color: var(--muted-fg); text-decoration: none; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .footer-links a { color: var(--muted-fg); text-decoration: none; font-weight: 500; }
     .footer-links a:hover { color: var(--fg); }
   </style>
 </head>
@@ -82,8 +83,9 @@
           <span style="font-family: var(--font-serif);">Visiolog</span>
         </a>
         <div style="display:flex; gap:0.5rem;">
-          <a href="./" class="btn">Demo Studio</a>
-          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn">GitHub</a>
+          <a href="./workspace.html" class="btn">Workspace</a>
+          <a href="./settings.html" class="btn">Settings</a>
+          <a href="./docs.html" class="btn">Documentation</a>
         </div>
       </div>
     </div>
@@ -92,50 +94,30 @@
   <main class="wrap">
     <div class="content-card">
       <h1>Privacy Policy</h1>
-      <p class="meta-sub">Last updated: August 2026 • Governing Law: Federal Republic of Nigeria (NDPA 2023)</p>
+      <p><strong>Effective Date:</strong> August 31, 2026</p>
+      
+      <h2>1. Overview</h2>
+      <p>Visiolog ("we", "our", or "us") operates the document-to-spreadsheet vision extraction platform. This Privacy Policy details our handling of user data, uploaded documents, and API credentials.</p>
 
-      <h2>1. Introduction and Scope</h2>
-      <p>
-        Welcome to Visiolog ("we," "our," or "us"). We respect your privacy and are strongly committed to keeping secure any information we obtain from you. This Privacy Policy describes our practices with respect to data handled when you access Visiolog, utilize our document extraction and Optical Character Recognition (OCR) services, run standalone instances, or interact with our software.
-      </p>
-      <p>
-        This Privacy Policy is governed by the laws of the Federal Republic of Nigeria, including the Nigeria Data Protection Act (NDPA) 2023 and the Nigeria Data Protection Regulation (NDPR).
-      </p>
+      <h2>2. Document Processing & In-Memory Privacy</h2>
+      <p>Our document parsing is architected around client-side privacy:</p>
+      <ul>
+        <li><strong>Zero Persistent Image Storage:</strong> Document images uploaded to the web studio are processed in volatile memory and never permanently written to server disk or database stores.</li>
+        <li><strong>Direct API Dispatch:</strong> When you provide your own API credentials (e.g. Google Gemini, OpenRouter, or Ollama), requests are dispatched directly from your browser to the inference endpoint.</li>
+        <li><strong>Immediate Memory Purge:</strong> Uploaded image buffers are released upon completion of transcription or session termination.</li>
+      </ul>
 
-      <h2>2. Information We Collect & Privacy Architecture</h2>
-      <p>
-        Visiolog is designed with a privacy-first, local-first architecture. In standalone mode, your documents and spreadsheets remain 100% on your local device without external transmission.
-      </p>
+      <h2>3. Local Browser Storage</h2>
+      <p>We use standard web browser <code>localStorage</code> exclusively to preserve your client configuration:</p>
+      <ul>
+        <li>Your chosen color theme (light / dark).</li>
+        <li>Your configured API keys and model selections.</li>
+        <li>Your client-side conversion history table.</li>
+      </ul>
+      <p>You can clear all stored keys and history at any time through the Settings page or by clearing browser site data.</p>
 
-      <h3>2.1 Uploaded Documents</h3>
-      <p>
-        When you select images or documents for extraction, files are processed temporarily in browser volatile memory to extract text and tabular matrices. We do not retain raw document images.
-      </p>
-
-      <h3>2.2 Zero Image Storage</h3>
-      <p>
-        Uploaded documents are converted in memory and permanently discarded after text transcription into spreadsheet rows.
-      </p>
-
-      <h3>2.3 API Keys</h3>
-      <p>
-        User-provided API keys (Google Gemini, OpenRouter) are stored exclusively in your browser's local storage and transmit directly to the AI provider endpoint over encrypted HTTPS.
-      </p>
-
-      <h2>3. Data Security and Sovereignty</h2>
-      <p>
-        We implement strong security measures including TLS encryption in transit and sandbox isolation. In local-first mode, all data resides entirely in your client environment.
-      </p>
-
-      <h2>4. Your Data Protection Rights</h2>
-      <p>
-        Under the NDPA and global data privacy standards, you possess rights to access, rectify, erase, restrict processing, and port your personal data.
-      </p>
-
-      <h2>5. Contact Us</h2>
-      <p>
-        For inquiries regarding this policy, contact our team directly at:
-      </p>
+      <h2>4. Contact Us</h2>
+      <p>If you have questions regarding this Privacy Policy, please contact:</p>
       <p>
         <strong>Email:</strong> <a href="mailto:elrazortheodore@gmail.com" style="color: var(--primary);">elrazortheodore@gmail.com</a><br />
         <strong>Jurisdiction:</strong> Federal Republic of Nigeria
@@ -147,12 +129,16 @@
     <div class="wrap">
       <div class="footer-inner">
         <div>&copy; 2026 Visiolog — Privacy Policy</div>
-        <div class="footer-links">
-          <a href="./">Demo Studio</a>
+        <nav class="footer-links" aria-label="Footer Navigation">
+          <a href="./">Landing</a>
+          <a href="./workspace.html">Workspace</a>
+          <a href="./settings.html">Settings</a>
+          <a href="./docs.html" title="Visiolog Technical Documentation">Documentation</a>
+          <a href="./privacy.html">Privacy</a>
           <a href="./terms.html">Terms</a>
           <a href="./contact.html">Contact</a>
           <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </div>
+        </nav>
       </div>
     </div>
   </footer>
