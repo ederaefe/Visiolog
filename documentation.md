@@ -259,6 +259,32 @@ The static web client and live workspace operate entirely in the client browser:
 - **Clean Repository Clones**: When users execute `git clone https://github.com/ederaefe/Visiolog.git`, Git checks out the default `main` branch, which contains exclusively the full-stack Next.js web application (`src/`, `package.json`, `supabase/`, etc.). Zero demo HTML files are cloned to their local environment.
 - **Ignore Rules**: The `.gitignore` and `.gitattributes` files on `main` ensure that any local `demo/` folders or loose static HTML files remain ignored and excluded from archive downloads.
 
+---
+
+## 13. Production Platform Documentation Website & Demo Architecture Assertions
+
+### 13.1 Standalone Crawlable Documentation Portal (`docs.html`)
+- **Real Platform Reference**: The documentation hub (`https://ederaefe.github.io/Visiolog/docs.html`) provides exhaustive technical specifications, API schemas, and architecture manuals for the full-stack Next.js production platform.
+- **Structured SEO & Search Indexing**: Features embedded Schema.org `TechArticle` and `SoftwareApplication` JSON-LD structured data for rich search engine indexing.
+- **Comprehensive Topic Matrix**:
+  - *System Architecture*: Next.js 15+ App Router, TypeScript, Tailwind CSS, Supabase PostgreSQL, Web Workers, PWA.
+  - *Authentication & Workspaces*: Supabase Auth (Magic link, OAuth), tenant isolation, organization/project/sheet hierarchy.
+  - *Ingestion Pipeline*: Image downsampling, EXIF auto-orientation, de-skewing, multi-page batch queues.
+  - *Inference Engine*: Provider-agnostic routing across Gemini 2.5 Flash/Pro, OpenRouter, local Ollama, and custom endpoints.
+  - *Header Reconciliation*: Semantic alias matching, data type enforcement, regular expression validation rules.
+  - *2D Spreadsheet Studio*: Virtualized cell grid, inline editing, formula evaluation, column sorting, search filters.
+  - *Mobile PWA Suite*: Touch gesture navigation, bottom drawer sheets, offline service worker caching.
+  - *Security & Zero-Retention*: PostgreSQL Row Level Security (RLS) policies, ephemeral memory inference, type-to-confirm account purging.
+  - *API Reference*: RESTful HTTP endpoints, JSON schemas, authorization headers.
+  - *Multi-Format Exports*: SheetJS Excel `.xlsx`, RFC 4180 `.csv`, structured `.json`, Markdown `.md`, clipboard TSV.
+  - *Deployment Runbooks*: Docker Compose self-hosting and managed Vercel deployments.
+
+### 13.2 Live Demo Architectural Assertion & Positioning
+- **Contextual Notice**: All live demo pages (`demo.html`, `workspace.html`, `settings.html`, `index.html`) prominently feature an architectural notice:
+  - Explaining that the client-side live demo is a lightweight, zero-backend demonstration built to mirror the visual ergonomics, interaction flow, and spreadsheet editing mechanics of the real platform while running 100% locally in-browser with bring-your-own-key settings.
+  - Directing users to the full production documentation to explore enterprise multi-tenant pipelines, Supabase PostgreSQL synchronization, schema rule enforcement, and cloud vector storage.
+
+
 
 
 
