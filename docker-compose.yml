@@ -1,0 +1,14 @@
+services:
+  visiolog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: visiolog_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_PRIVACY_MODE=true

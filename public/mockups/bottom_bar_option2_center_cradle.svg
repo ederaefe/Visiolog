@@ -1,0 +1,76 @@
+<svg width="400" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Canvas / Screen -->
+  <rect width="400" height="240" fill="#090D16"/>
+  
+  <line x1="20" y1="40" x2="380" y2="40" stroke="#1F2937" stroke-dasharray="4 4" stroke-width="1"/>
+  <text x="20" y="30" fill="#9CA3AF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto" font-size="12" font-weight="600">OPTION 2: Sculpted Wave Arch with Center Lift</text>
+
+  <defs>
+    <filter id="shadow2" x="-10" y="70" width="420" height="170" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="-6" stdDeviation="14" flood-color="#000000" flood-opacity="0.7"/>
+      <feDropShadow dx="0" dy="-1" stdDeviation="4" flood-color="#2E8B57" flood-opacity="0.25"/>
+    </filter>
+    <linearGradient id="barGrad2" x1="200" y1="95" x2="200" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#18202F"/>
+      <stop offset="1" stop-color="#0B0F17"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sculpted Wave: Side rounded fillets transitioning smoothly to bottom -->
+  <path d="M 0 145
+           C 0 120 18 112 36 112
+           L 135 112
+           C 155 112 165 95 200 95
+           C 235 95 245 112 265 112
+           L 364 112
+           C 382 112 400 120 400 145
+           L 400 240
+           L 0 240 Z"
+        fill="url(#barGrad2)"
+        stroke="#2E3B52"
+        stroke-width="1.5"
+        filter="url(#shadow2)"/>
+
+  <!-- Glowing Top Contour Highlight -->
+  <path d="M 20 115 L 135 112 C 155 112 165 95 200 95 C 235 95 245 112 265 112 L 380 115"
+        stroke="rgba(46, 139, 87, 0.4)"
+        stroke-width="1.5"
+        stroke-linecap="round"/>
+
+  <!-- 1. Projects Tab -->
+  <g transform="translate(65, 148)">
+    <path d="M -10 -2 L -4 -2 L -2 0 L 10 0 C 11 0 12 1 12 2 L 12 8 C 12 9 11 10 10 10 L -10 10 C -11 10 -12 9 -12 8 L -12 0 C -12 -1 -11 -2 -10 -2 Z" stroke="#9CA3AF" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+    <text x="0" y="24" text-anchor="middle" fill="#9CA3AF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto" font-size="10" font-weight="500">Projects</text>
+  </g>
+
+  <!-- 2. Capture Action (Elevated Sea Green Button in Center Crown) -->
+  <g transform="translate(200, 132)">
+    <!-- Elevated Circular Shutter Pill -->
+    <circle cx="0" cy="-6" r="24" fill="#2E8B57" filter="drop-shadow(0 4px 10px rgba(46,139,87,0.5))"/>
+    <circle cx="0" cy="-6" r="22" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/>
+    <!-- Camera Icon in Center -->
+    <rect x="-8" y="-11" width="16" height="12" rx="2.5" stroke="#FFFFFF" stroke-width="1.8" fill="none"/>
+    <circle cx="0" cy="-5" r="3" stroke="#FFFFFF" stroke-width="1.8" fill="none"/>
+    <!-- Red Background Processing Spinner Badge -->
+    <circle cx="16" cy="-18" r="5" fill="#EF4444"/>
+    <circle cx="16" cy="-18" r="2.5" fill="#FFFFFF"/>
+    <text x="0" y="32" text-anchor="middle" fill="#2E8B57" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto" font-size="10" font-weight="700">Capture</text>
+  </g>
+
+  <!-- 3. History Tab -->
+  <g transform="translate(295, 148)">
+    <circle cx="0" cy="4.5" r="8" stroke="#9CA3AF" stroke-width="1.8" fill="none"/>
+    <path d="M 0 0.5 L 0 4.5 L 3.5 6.5" stroke="#9CA3AF" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="0" y="24" text-anchor="middle" fill="#9CA3AF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto" font-size="10" font-weight="500">History</text>
+  </g>
+
+  <!-- 4. Settings Tab -->
+  <g transform="translate(355, 148)">
+    <circle cx="0" cy="4.5" r="7.5" stroke="#9CA3AF" stroke-width="1.8" fill="none"/>
+    <circle cx="0" cy="4.5" r="2.5" fill="#9CA3AF"/>
+    <text x="0" y="24" text-anchor="middle" fill="#9CA3AF" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto" font-size="10" font-weight="500">Settings</text>
+  </g>
+
+  <!-- Home Indicator Bar -->
+  <rect x="135" y="222" width="130" height="4" rx="2" fill="#4B5563"/>
+</svg>

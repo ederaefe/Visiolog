@@ -1,0 +1,801 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Fraunces', serif;
+  --font-mono: var(--font-geist-mono);
+  --font-heading: 'Fraunces', serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 1.75);
+  --radius-4xl: calc(var(--radius) * 2.0);
+}
+
+/*
+  New Brand Color Palette (Coolors #02873280161014824):
+  Primary Azure Cyan: #0096c7  -> oklch(0.62 0.17 225)
+  Deep Ocean Navy:    #03045e  -> oklch(0.20 0.12 260)
+  Soft Ice Blue:      #c9f0f7  -> oklch(0.92 0.05 210)
+  Sky Mist:           #edfafd  -> oklch(0.97 0.02 210)
+  Clean White:        #ffffff  -> oklch(1 0 0)
+*/
+
+:root {
+  --background: hsl(70, 60%, 96%);
+  /* Warm Ivory #F7F8E8 */
+  --foreground: hsl(214, 35%, 10%);
+  /* Deep Charcoal-Black #111822 (17.5:1 contrast) */
+  --card: hsl(70, 50%, 98%);
+  /* #FAFBF2 Surface */
+  --card-foreground: hsl(214, 35%, 10%);
+  --popover: hsl(70, 50%, 98%);
+  /* #FAFBF2 Popover */
+  --popover-foreground: hsl(214, 35%, 10%);
+  --primary: hsl(105, 100%, 16%);
+  /* Dark Spruce Forest Green #0D5200 (10.2:1 contrast) */
+  --primary-foreground: hsl(70, 60%, 98%);
+  --secondary: hsl(148, 24%, 52%);
+  /* Seagrass Green #67A282 */
+  --secondary-foreground: hsl(214, 35%, 10%);
+  --muted: hsl(70, 20%, 90%);
+  --muted-foreground: hsl(214, 25%, 20%);
+  /* Deep slate-charcoal (11.5:1 contrast) */
+  --accent: hsl(102, 87%, 76%);
+  /* Light Glow Green #B4F292 */
+  --accent-foreground: hsl(214, 35%, 10%);
+  --destructive: hsl(0, 84%, 60%);
+  --border: hsla(105, 100%, 16%, 0.20);
+  --input: hsla(105, 100%, 16%, 0.20);
+  --ring: hsl(105, 100%, 16%);
+  --chart-1: hsl(105, 100%, 16%);
+  --chart-2: hsl(214, 35%, 10%);
+  --chart-3: hsl(102, 87%, 76%);
+  --chart-4: hsl(148, 24%, 52%);
+  --chart-5: hsl(70, 60%, 96%);
+  --radius: 0.5rem;
+  --sidebar: hsl(70, 50%, 98%);
+  --sidebar-foreground: hsl(214, 35%, 10%);
+  --sidebar-primary: hsl(105, 100%, 16%);
+  --sidebar-primary-foreground: hsl(70, 60%, 98%);
+  --sidebar-accent: hsl(148, 24%, 52%);
+  --sidebar-accent-foreground: hsl(214, 35%, 10%);
+  --sidebar-border: hsla(105, 100%, 16%, 0.18);
+  --sidebar-ring: hsl(105, 100%, 16%);
+}
+
+.dark {
+  --background: hsl(0, 0%, 16%);
+  /* Exact #282828 Charcoal Canvas */
+  --foreground: hsl(0, 0%, 100%);
+  /* Pure Crisp White Text */
+  --card: hsl(0, 0%, 20%);
+  /* Elevated Surface #333333 */
+  --card-foreground: hsl(0, 0%, 100%);
+  --popover: hsl(0, 0%, 20%);
+  /* Elevated Popover #333333 */
+  --popover-foreground: hsl(0, 0%, 100%);
+  --primary: hsl(102, 87%, 76%);
+  /* Glowing Light Green on Dark #B4F292 */
+  --primary-foreground: hsl(214, 31%, 17%);
+  --secondary: hsl(0, 0%, 24%);
+  /* Elevated Hover #3D3D3D */
+  --secondary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(0, 0%, 22%);
+  /* Dark Slate Muted #383838 */
+  --muted-foreground: hsl(0, 0%, 75%);
+  /* Bright Readable Gray Text #BFBFBF */
+  --accent: hsl(105, 100%, 16%);
+  /* Dark Spruce Forest Green Accent */
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 75%, 50%);
+  --border: hsl(0, 0%, 27%);
+  /* High-Contrast Slate Border #444444 */
+  --input: hsl(0, 0%, 27%);
+  --ring: hsl(102, 87%, 76%);
+  --chart-1: hsl(102, 87%, 76%);
+  --chart-2: hsl(0, 0%, 100%);
+  --chart-3: hsl(105, 100%, 16%);
+  --chart-4: hsl(0, 0%, 30%);
+  --chart-5: hsl(0, 0%, 20%);
+  --sidebar: hsl(0, 0%, 18%);
+  --sidebar-foreground: hsl(0, 0%, 100%);
+  --sidebar-primary: hsl(102, 87%, 76%);
+  --sidebar-primary-foreground: hsl(214, 31%, 17%);
+  --sidebar-accent: hsl(0, 0%, 24%);
+  --sidebar-accent-foreground: hsl(0, 0%, 100%);
+  --sidebar-border: hsl(0, 0%, 27%);
+  --sidebar-ring: hsl(102, 87%, 76%);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    @apply font-sans;
+  }
+}
+
+/* Jspreadsheet & JSuites CSS Overrides for Akosil Theme */
+.jspreadsheet-akosil-custom {
+  font-family: var(--font-sans);
+}
+
+/* Ensure full width and styling for spreadsheet wrapper */
+.jexcel_container,
+.jss_container {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background-color: var(--background) !important;
+}
+
+/* Force override on material-icons to use Material Symbols Outlined */
+.material-icons,
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: 300 !important;
+  /* Sleek, sharp, and thin icons */
+  font-style: normal !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  word-wrap: normal !important;
+  white-space: nowrap !important;
+  direction: ltr !important;
+}
+
+/* Toolbar container */
+.jtoolbar {
+  background-color: var(--card) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 8px 16px !important;
+  display: flex !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  align-items: center !important;
+  gap: 6px !important;
+  height: auto !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+/* Toolbar items (icons) - styled with Material Symbols Outlined */
+.jtoolbar i,
+.jtoolbar-item,
+.jtoolbar [class*="material-icons"] {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: 300 !important;
+  /* Sleek, sharp, and thin icons */
+  font-style: normal !important;
+  font-size: 20px !important;
+  color: var(--muted-foreground) !important;
+  padding: 6px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.jtoolbar i:hover,
+.jtoolbar-item:hover {
+  background-color: var(--muted) !important;
+  color: var(--foreground) !important;
+}
+
+/* Active toolbar item states */
+.jtoolbar .jtoolbar-active,
+.jtoolbar i.active {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  /* light green highlight */
+  color: rgb(16, 185, 129) !important;
+  /* emerald-500 */
+  font-weight: bold !important;
+}
+
+/* Dropdown selectors in toolbar (jpicker and native select) */
+.jtoolbar select,
+.jtoolbar-select {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
+  padding: 4px 8px !important;
+  border-radius: 8px !important;
+  font-size: 12px !important;
+  font-family: var(--font-sans) !important;
+  outline: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.jtoolbar select:hover,
+.jtoolbar-select:hover {
+  border-color: rgb(16, 185, 129) !important;
+}
+
+/* jSuites Picker Dropdown UI Overrides for Dark/Light Themes */
+.jtoolbar .jpicker {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
+  border-radius: 8px !important;
+  height: 28px !important;
+  min-height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.jtoolbar .jpicker:hover,
+.jtoolbar .jpicker.jpicker-focus {
+  border-color: rgb(16, 185, 129) !important;
+}
+
+.jtoolbar .jpicker-header {
+  background-color: transparent !important;
+  color: var(--foreground) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  font-family: var(--font-sans) !important;
+  padding: 2px 24px 2px 10px !important;
+  border-radius: 8px !important;
+  line-height: 24px !important;
+  background-position: top 50% right 6px !important;
+}
+
+.jtoolbar .jpicker-header:hover {
+  background-color: var(--muted) !important;
+}
+
+.jtoolbar .jpicker-content {
+  background-color: var(--popover) !important;
+  color: var(--popover-foreground) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2) !important;
+  padding: 4px !important;
+  z-index: 9999 !important;
+  max-height: 240px !important;
+}
+
+.jtoolbar .jpicker-content>div,
+.jtoolbar .jpicker-item {
+  color: var(--foreground) !important;
+  font-size: 12px !important;
+  font-family: var(--font-sans) !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.jtoolbar .jpicker-content>div:hover,
+.jtoolbar .jpicker-item:hover {
+  background-color: var(--muted) !important;
+  color: rgb(16, 185, 129) !important;
+}
+
+/* 1px divisor line between groups of tools - reset JSuites default oval border and padding */
+.jtoolbar-divisor {
+  width: 1px !important;
+  height: 18px !important;
+  background: var(--border) !important;
+  background-color: var(--border) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  margin: 0 10px !important;
+  display: inline-block !important;
+}
+
+/* Ensure table container scrolls and stays responsive */
+.jexcel_content,
+.jss_content {
+  background-color: var(--background) !important;
+  overflow: auto !important;
+}
+
+/* Grid headers styling - sticky at the top */
+.jexcel>thead>tr>td,
+.jss>thead>tr>td,
+.jexcel_content thead td,
+.jss_content thead td {
+  background-color: var(--muted) !important;
+  color: var(--foreground) !important;
+  font-weight: 600 !important;
+  border: 1px solid var(--border) !important;
+  font-size: 12px !important;
+  padding: 8px 10px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+  user-select: none !important;
+}
+
+/* Row Number Header Cells (First Column) */
+.jexcel>tbody>tr>td:first-child,
+.jss>tbody>tr>td:first-child,
+.jexcel_content tbody td:first-child,
+.jss_content tbody td:first-child {
+  background-color: var(--muted) !important;
+  color: var(--muted-foreground) !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  user-select: none !important;
+  border: 1px solid var(--border) !important;
+  font-size: 11px !important;
+}
+
+.jexcel>thead>tr>td.selected,
+.jss>thead>tr>td.selected,
+.jexcel>tbody>tr>td:first-child.selected,
+.jss>tbody>tr>td:first-child.selected {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+  color: rgb(16, 185, 129) !important;
+  font-weight: bold !important;
+}
+
+/* Grid cells styling - theme variables for backgrounds and text colors */
+.jexcel>tbody>tr>td,
+.jss>tbody>tr>td,
+.jexcel_content tbody td,
+.jss_content tbody td {
+  border: 1px solid var(--border) !important;
+  font-size: 13px !important;
+  padding: 6px 8px !important;
+  color: var(--foreground) !important;
+  background-color: var(--card) !important;
+  transition: background-color 0.06s ease;
+  cursor: cell !important;
+}
+
+/* Excel-style fast cell hover feedback */
+.jexcel>tbody>tr>td:not(:first-child):hover,
+.jss>tbody>tr>td:not(:first-child):hover,
+.jexcel_content tbody td:not(:first-child):hover,
+.jss_content tbody td:not(:first-child):hover {
+  background-color: var(--muted) !important;
+  filter: brightness(0.96);
+}
+
+.dark .jexcel>tbody>tr>td:not(:first-child):hover,
+.dark .jss>tbody>tr>td:not(:first-child):hover,
+.dark .jexcel_content tbody td:not(:first-child):hover,
+.dark .jss_content tbody td:not(:first-child):hover {
+  filter: brightness(1.15);
+}
+
+/* Hide the distracting corner dot box handle */
+.jexcel_corner,
+.jss_corner,
+.jexcel .jexcel_corner,
+.jss .jss_corner {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Fix active textareas/inputs during cell editing with sleek blinking cursor */
+.jexcel textarea,
+.jexcel_editor,
+.jexcel_editor textarea,
+.jexcel_textarea,
+.jss textarea,
+.jss_editor,
+.jss_editor textarea,
+.jss_textarea {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border: 2px solid rgb(16, 185, 129) !important;
+  outline: none !important;
+  font-size: 13px !important;
+  font-family: inherit !important;
+  caret-color: rgb(16, 185, 129) !important;
+  padding: 4px 6px !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 2px !important;
+  z-index: 50 !important;
+}
+
+/* Selected cells border highlight & multi-selection area */
+.jexcel_selection,
+.jss_selection {
+  border: 2px solid rgb(16, 185, 129) !important;
+  background-color: rgba(16, 185, 129, 0.08) !important;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Highlighted cell range during drag */
+.jexcel_highlighted,
+.jss_highlighted {
+  background-color: rgba(16, 185, 129, 0.14) !important;
+}
+
+/* Custom Stacking Context & Selection Selectable Overrides */
+.jspreadsheet-akosil-custom {
+  isolation: auto !important;
+}
+
+/* Hide any residual Jspreadsheet automatic filter elements */
+.jexcel_filter,
+.jss_filter,
+.jexcel thead tr.filter,
+.jss thead tr.filter,
+.jexcel thead td.jexcel_filter,
+.jss thead td.jss_filter {
+  display: none !important;
+}
+
+/* Completely hide JSuites default context menu to prevent dual-menu UI rendering */
+.jcontextmenu {
+  display: none !important;
+}
+
+/* Custom Glassmorphism Tooltip */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 6px 10px;
+  background: hsla(214, 30%, 15%, 0.95);
+  backdrop-filter: blur(6px);
+  color: #f8fafc;
+  font-size: 10.5px;
+  font-weight: 500;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 10000;
+}
+[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+[data-tooltip]:active::before,
+[data-tooltip]:focus::before,
+[data-tooltip][data-state="open"]::before,
+[data-state="open"] [data-tooltip]::before {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  display: none !important;
+}
+
+/* Micro-animations and active states */
+@keyframes active-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0px rgba(16, 185, 129, 0.2), 0 0 4px rgba(16, 185, 129, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3), 0 0 10px rgba(16, 185, 129, 0.25);
+  }
+}
+
+@keyframes bounce-spring {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.85); }
+  70% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@keyframes tap-pulse {
+  0% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(0.9); filter: brightness(1.2); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Universal Tactile Button Feedback System */
+
+/* Universal interactive elements (header buttons, context items, pills) */
+.akosil-interactive-btn {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              background-color 0.15s ease, 
+              color 0.15s ease, 
+              box-shadow 0.15s ease;
+  user-select: none;
+}
+.akosil-interactive-btn:hover {
+  transform: translateY(-1px) scale(1.03);
+}
+.akosil-interactive-btn:active {
+  transform: translateY(1px) scale(0.95);
+  background-color: rgba(16, 185, 129, 0.12);
+}
+
+/* Click confirm flash effect for non-toggle buttons */
+.toolbar-btn-clicked {
+  animation: bounce-spring 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* ========================================================================= */
+/* Ionic Capacitor & Mobile App Native Environment Optimizations             */
+/* ========================================================================= */
+
+html, body {
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Mobile Safe-Area Utilities */
+.safe-top {
+  padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+}
+
+.safe-bottom {
+  padding-bottom: max(0.75rem, calc(0.5rem + env(safe-area-inset-bottom, 0px)));
+}
+
+.safe-pb-nav {
+  padding-bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Tactile Native Press Feedback */
+.touch-native-active {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.12s ease;
+}
+
+.touch-native-active:active {
+  transform: scale(0.96);
+  opacity: 0.88;
+}
+
+/* Sea Green (#2E8B57) Inspo Brand Tokens */
+.text-brand-green { color: #2E8B57; }
+.bg-brand-green { background-color: #2E8B57; }
+.border-brand-green { border-color: #2E8B57; }
+.hover-bg-brand-green:hover { background-color: #236B43; }
+.bg-brand-green-subtle { background-color: rgba(46, 139, 87, 0.08); }
+.ring-brand-green { --tw-ring-color: #2E8B57; }
+
+/* OLED Pitch Black Surface Utility */
+.dark .bg-pitch-black { background-color: #000000 !important; }
+.dark .bg-oled-card { background-color: #0a0a0a !important; }
+.dark .bg-oled-elevated { background-color: #121212 !important; }
+.dark .border-oled { border-color: rgba(255, 255, 255, 0.08) !important; }
+
+
+/* ========================================================================= */
+/* Clean Print & PDF Generation Media Queries                                 */
+/* ========================================================================= */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header, nav, footer,
+  .no-print,
+  button,
+  [role="dialog"] > div > div:first-child,
+  [data-radix-popper-content-wrapper],
+  .sheet-toolbar,
+  .sheet-formula-bar,
+  .sheet-search-dock,
+  .sheet-back-fab,
+  .floating-scan-fab {
+    display: none !important;
+  }
+
+  .sheet-grid-container,
+  .printable-content {
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ========================================================================= */
+/* 4.0s Smooth Physics-Based Gravitational Ballistic Keyframes (15 Frames)   */
+/* ========================================================================= */
+@keyframes toastGravityBallistic {
+  0% {
+    opacity: 0;
+    transform: translateY(120px) scale(0.92);
+  }
+  4% {
+    opacity: 0.65;
+    transform: translateY(55px) scale(0.96);
+  }
+  8% {
+    opacity: 0.95;
+    transform: translateY(12px) scale(1.01);
+  }
+  12% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.02);
+  }
+  16% {
+    opacity: 1;
+    transform: translateY(-16px) scale(1.01);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-18px) scale(1);
+  }
+  /* Zero-acceleration apex hover / comfortable 4s reading interval */
+  28% {
+    opacity: 1;
+    transform: translateY(-18.5px) scale(1);
+  }
+  42% {
+    opacity: 1;
+    transform: translateY(-18.5px) scale(1);
+  }
+  56% {
+    opacity: 1;
+    transform: translateY(-18px) scale(1);
+  }
+  68% {
+    opacity: 1;
+    transform: translateY(-16px) scale(1);
+  }
+  76% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1);
+  }
+  /* Gravitational downward plunge with accelerating descent */
+  84% {
+    opacity: 0.96;
+    transform: translateY(4px) scale(0.995);
+  }
+  90% {
+    opacity: 0.85;
+    transform: translateY(32px) scale(0.98);
+  }
+  95% {
+    opacity: 0.45;
+    transform: translateY(85px) scale(0.94);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(145px) scale(0.88);
+    pointer-events: none;
+  }
+}
+
+.toast-gravity-float {
+  animation: toastGravityBallistic 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards !important;
+  will-change: transform, opacity;
+  touch-action: pan-y !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: grab;
+}
+
+/* ========================================================================= */
+/* Clean Desktop & Mobile Notification Toast Styling                         */
+/* ========================================================================= */
+
+[data-sonner-toaster] {
+  font-family: var(--font-sans);
+}
+
+[data-sonner-toast] {
+  border-radius: 0.75rem !important;
+  border: 1px solid var(--border) !important;
+  background: var(--card) !important;
+  color: var(--foreground) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.4 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.dark [data-sonner-toast] {
+  background: #333333 !important;
+  border-color: #444444 !important;
+  color: #ffffff !important;
+  box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-sonner-toast] [data-title] {
+  font-weight: 600 !important;
+  color: var(--foreground) !important;
+}
+
+.dark [data-sonner-toast] [data-title] {
+  color: #ffffff !important;
+}
+
+[data-sonner-toast] [data-description] {
+  color: var(--muted-foreground) !important;
+  font-size: 0.75rem !important;
+  margin-top: 0.125rem !important;
+}
+
+.dark [data-sonner-toast] [data-description] {
+  color: #b5b5b5 !important;
+}
+
+[data-sonner-toast] [data-icon] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-right: 0.5rem !important;
+  flex-shrink: 0 !important;
+}
+
+/* ========================================================================= */
+/* Luxury Smooth Rotational Flow (Continuous Silky Ambient Aura)             */
+/* ========================================================================= */
+@keyframes luxuryCameraSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.luxury-light-sweep {
+  animation: luxuryCameraSpin 4.5s linear infinite;
+  will-change: transform;
+}
