@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>Get API Key Guide — Visiolog</title>
+  <meta name="description" content="Step-by-step visual guide to obtaining free and paid API keys for Google Gemini, OpenRouter, Ollama, and custom vision models in Visiolog." />
+
+  <!-- Synchronous Theme Evaluation -->
+  <script>
+    (function () {
+      var storedTheme = localStorage.getItem('visiolog_theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+
+  <!-- Typography: Fraunces, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: hsl(70, 40%, 97%);
+      --fg: hsl(214, 35%, 10%);
+      --card: hsl(70, 30%, 99%);
+      --card-fg: hsl(214, 35%, 10%);
+      --muted: hsl(70, 20%, 92%);
+      --muted-fg: hsl(214, 25%, 35%);
+      --primary: hsl(105, 100%, 16%);
+      --primary-hover: hsl(105, 100%, 12%);
+      --primary-fg: hsl(70, 60%, 98%);
+      --border: hsla(105, 100%, 16%, 0.16);
+      --border-sub: hsla(105, 100%, 16%, 0.08);
+      --accent: hsl(102, 87%, 76%);
+      --accent-fg: hsl(214, 35%, 10%);
+      --danger: #dc2626;
+      --success: #16a34a;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-serif: 'Fraunces', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 0.75rem;
+      --shadow: rgba(13, 82, 0, 0.08);
+    }
+
+    [data-theme="dark"] {
+      --bg: hsl(0, 0%, 13%);
+      --fg: hsl(0, 0%, 98%);
+      --card: hsl(0, 0%, 18%);
+      --card-fg: hsl(0, 0%, 98%);
+      --muted: hsl(0, 0%, 22%);
+      --muted-fg: hsl(0, 0%, 68%);
+      --primary: #6B9700;
+      --primary-hover: #5a8000;
+      --primary-fg: #ffffff;
+      --border: hsl(0, 0%, 26%);
+      --border-sub: hsl(0, 0%, 20%);
+      --accent: #6B9700;
+      --accent-fg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.4);
+      --danger: hsl(0, 72%, 60%);
+      --success: hsl(142, 72%, 50%);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.75rem;
+      gap: 0.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 800;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      width: 2rem;
+      height: 2rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-radius: 0.45rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    .desktop-nav { display: flex; gap: 0.5rem; }
+    .mobile-nav { display: none; gap: 0.35rem; }
+
+    @media (max-width: 768px) {
+      .desktop-nav { display: none; }
+      .mobile-nav { display: flex; }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      font-size: 0.8125rem;
+      padding: 0.5rem 0.85rem;
+      min-height: 44px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    .btn-primary { background: var(--primary); color: var(--primary-fg); }
+    .btn-primary:hover { opacity: 0.92; }
+    .btn-outline { background: transparent; border-color: var(--border); color: var(--fg); }
+    .btn-outline:hover { background: var(--muted); }
+    .btn-ghost { background: transparent; color: var(--muted-fg); border-color: transparent; }
+    .btn-ghost:hover { background: var(--muted); color: var(--fg); }
+    .btn-sm { min-height: 36px; padding: 0.35rem 0.65rem; font-size: 0.75rem; }
+    .nav-icon-btn { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius); color: var(--fg); border: 1px solid var(--border); background: var(--card); }
+
+    /* Breadcrumbs */
+    .breadcrumb-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--muted-fg);
+      padding: 1.25rem 0 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb-bar a {
+      color: var(--muted-fg);
+      text-decoration: none;
+    }
+    .breadcrumb-bar a:hover { color: var(--fg); text-decoration: underline; }
+    .breadcrumb-bar .current { color: var(--fg); font-weight: 700; }
+
+    /* Page Title & Intro */
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      font-weight: 900;
+      line-height: 1.25;
+      margin: 0.5rem 0 0.4rem;
+    }
+
+    .page-lead {
+      font-size: 0.95rem;
+      color: var(--muted-fg);
+      max-width: 720px;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* Provider Selector Tabs / Breadcrumb Selector */
+    .provider-selector-wrap {
+      display: flex;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.25rem;
+      gap: 0.25rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .provider-tab-btn {
+      flex: 1;
+      min-width: 140px;
+      min-height: 44px;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      background: transparent;
+      color: var(--muted-fg);
+      font-weight: 700;
+      font-size: 0.8125rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      white-space: nowrap;
+    }
+
+    .provider-tab-btn.active {
+      background: var(--card);
+      color: var(--fg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .rec-badge {
+      font-size: 0.65rem;
+      padding: 0.15rem 0.35rem;
+      background: var(--primary);
+      color: var(--primary-fg);
+      border-radius: 0.35rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Guide Content Container */
+    .guide-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 4px var(--shadow);
+    }
+
+    .guide-section { display: none; }
+    .guide-section.active { display: block; }
+
+    .guide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .guide-provider-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    /* Step Card */
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+    }
+
+    .step-badge {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      font-weight: 900;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-text {
+      font-size: 0.85rem;
+      color: var(--muted-fg);
+      line-height: 1.55;
+    }
+
+    /* Mock UI Visual Box */
+    .mock-visual-box {
+      background: var(--muted);
+      border: 1px solid var(--border-sub);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      margin-top: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      overflow-x: auto;
+    }
+
+    /* Alerts / Callouts */
+    .callout {
+      border-radius: 0.55rem;
+      padding: 0.85rem 1rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+    }
+
+    .callout-tip {
+      background: hsla(105, 100%, 16%, 0.08);
+      border: 1px solid var(--primary);
+      color: var(--fg);
+    }
+
+    .callout-caution {
+      background: hsla(0, 84%, 60%, 0.1);
+      border: 1px solid var(--danger);
+      color: var(--fg);
+    }
+
+    .callout-icon {
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* Action CTA Box */
+    .cta-box {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .cta-text-title { font-weight: 700; font-size: 0.95rem; }
+    .cta-text-desc { font-size: 0.8rem; color: var(--muted-fg); }
+
+    /* Strict Monochrome SVG Icon Utilities */
+    .svg-icon {
+      width: 1rem;
+      height: 1rem;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .svg-icon-sm { width: 0.85rem; height: 0.85rem; }
+    .svg-icon-lg { width: 1.4rem; height: 1.4rem; }
+
+    /* Footer */
+    footer.site-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      background: var(--card);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: var(--muted-fg);
+    }
+
+    .footer-links { display: flex; gap: 1rem; }
+    .footer-links a { color: var(--muted-fg); text-decoration: none; }
+    .footer-links a:hover { color: var(--fg); text-decoration: underline; }
+
+    .theme-selector-group {
+      display: flex;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.15rem;
+      gap: 0.15rem;
+    }
+
+    .theme-btn {
+      min-height: 32px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.725rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--muted-fg);
+      border-radius: 0.45rem;
+      cursor: pointer;
+    }
+
+    .theme-btn.active {
+      background: var(--card);
+      color: var(--fg);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="site-header">
+    <div class="wrap">
+      <div class="header-inner">
+        <a href="./" class="brand" title="Visiolog Home">
+          <div class="brand-mark">V</div>
+          <span style="font-family: var(--font-serif);">Visiolog</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="desktop-nav" aria-label="Desktop Navigation">
+          <a href="./workspace.html" class="btn btn-outline btn-sm">Workspace</a>
+          <a href="./settings.html" class="btn btn-outline btn-sm">Settings</a>
+          <a href="./docs.html" class="btn btn-outline btn-sm">Docs</a>
+          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">GitHub</a>
+        </nav>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" aria-label="Mobile Navigation">
+          <a href="./workspace.html" class="nav-icon-btn" title="Workspace" aria-label="Workspace">
+            <svg class="svg-icon" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+          </a>
+          <a href="./settings.html" class="nav-icon-btn" title="Settings" aria-label="Settings">
+            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          </a>
+          <a href="./docs.html" class="nav-icon-btn" title="Docs" aria-label="Documentation">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Wrap -->
+  <main class="wrap" style="flex: 1; padding-bottom: 3rem;">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+      <a href="./">Home</a>
+      <span>/</span>
+      <a href="./settings.html">Settings</a>
+      <span>/</span>
+      <span class="current">Get API Key</span>
+    </nav>
+
+    <h1 class="page-title">How to Get an API Key</h1>
+    <p class="page-lead">
+      Visiolog operates 100% in your browser. To transcribe paper registries and logbooks into spreadsheets, connect your preferred vision provider. Follow the step-by-step guides below.
+    </p>
+
+    <!-- Provider Breadcrumb / Tab Switcher -->
+    <div class="provider-selector-wrap" role="tablist" aria-label="Provider Tutorials">
+      <button type="button" class="provider-tab-btn active" id="tabBtnGemini" onclick="switchGuide('gemini')" role="tab" aria-selected="true" aria-controls="guideGemini">
+        <span>Google Gemini</span>
+        <span class="rec-badge">Recommended</span>
+      </button>
+      <button type="button" class="provider-tab-btn" id="tabBtnOpenrouter" onclick="switchGuide('openrouter')" role="tab" aria-selected="false" aria-controls="guideOpenrouter">
+        <span>OpenRouter</span>
+      </button>
+      <button type="button" class="provider-tab-btn" id="tabBtnOllama" onclick="switchGuide('ollama')" role="tab" aria-selected="false" aria-controls="guideOllama">
+        <span>Ollama (Local)</span>
+      </button>
+      <button type="button" class="provider-tab-btn" id="tabBtnCustom" onclick="switchGuide('custom')" role="tab" aria-selected="false" aria-controls="guideCustom">
+        <span>Custom Endpoint</span>
+      </button>
+    </div>
+
+    <!-- 1. Google Gemini Guide (Recommended) -->
+    <article class="guide-card guide-section active" id="guideGemini" role="tabpanel" aria-labelledby="tabBtnGemini">
+      <div class="guide-header">
+        <div>
+          <h2 class="guide-provider-title">Google Gemini API Key</h2>
+          <p style="font-size: 0.85rem; color: var(--muted-fg);">Best transcription accuracy for handwritten logbooks & receipts</p>
+        </div>
+        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+          <span>Open AI Studio</span>
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        </a>
+      </div>
+
+      <div class="step-list">
+        <!-- Step 1 -->
+        <div class="step-item">
+          <div class="step-badge">1</div>
+          <div class="step-content">
+            <div class="step-title">Visit Google AI Studio</div>
+            <p class="step-text">
+              Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color: var(--fg); font-weight: 700; text-decoration: underline;">aistudio.google.com/app/apikey</a> and sign in with any standard Google account.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-item">
+          <div class="step-badge">2</div>
+          <div class="step-content">
+            <div class="step-title">Click "Create API key"</div>
+            <p class="step-text">
+              Click the blue <strong>Create API key</strong> button in the top right. Select an existing Google Cloud project or choose <em>Create API key in new project</em>.
+            </p>
+            <div class="mock-visual-box">
+              <span>Google AI Studio &gt; Get API key &gt; [ + Create API key ]</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-item">
+          <div class="step-badge">3</div>
+          <div class="step-content">
+            <div class="step-title">Copy your Secret Key</div>
+            <p class="step-text">
+              A string starting with <code style="font-family: var(--font-mono); font-weight: 700; color: var(--primary);">AIzaSy...</code> will be generated. Click the copy icon.
+            </p>
+            <div class="mock-visual-box">
+              <span style="color: var(--muted-fg);">Key: AIzaSyD9x8K... (39 characters)</span>
+              <span style="color: var(--primary); font-weight: 700;">[Copy]</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-item">
+          <div class="step-badge">4</div>
+          <div class="step-content">
+            <div class="step-title">Paste Key into Visiolog Settings</div>
+            <p class="step-text">
+              Return to Visiolog <a href="./settings.html" style="color: var(--fg); font-weight: 700; text-decoration: underline;">Settings</a>, select <strong>Google Gemini</strong>, paste your key into the API key field, and click <strong>Test</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips & Cautions -->
+      <div class="callout callout-tip">
+        <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+        <div>
+          <strong>Free Tier Quota:</strong> Google AI Studio provides a free tier with 15 requests per minute, which is more than enough for daily paper-to-spreadsheet conversions.
+        </div>
+      </div>
+
+      <div class="callout callout-caution">
+        <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+        <div>
+          <strong>Caution:</strong> Do not confuse Google Cloud OAuth Client IDs (ending in <code style="font-family: var(--font-mono);">.apps.googleusercontent.com</code>) with API keys. Visiolog expects a direct REST API key starting with <code style="font-family: var(--font-mono);">AIzaSy...</code>.
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <div>
+          <div class="cta-text-title">Ready to configure?</div>
+          <div class="cta-text-desc">Head over to settings and paste your key.</div>
+        </div>
+        <a href="./settings.html" class="btn btn-primary btn-sm">Open Settings</a>
+      </div>
+    </article>
+
+    <!-- 2. OpenRouter Guide -->
+    <article class="guide-card guide-section" id="guideOpenrouter" role="tabpanel" aria-labelledby="tabBtnOpenrouter">
+      <div class="guide-header">
+        <div>
+          <h2 class="guide-provider-title">OpenRouter API Key</h2>
+          <p style="font-size: 0.85rem; color: var(--muted-fg);">Access Claude 3.5 Sonnet, Llama 3.2 Vision, Qwen 2.5 VL, and more</p>
+        </div>
+        <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+          <span>Open OpenRouter</span>
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        </a>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-badge">1</div>
+          <div class="step-content">
+            <div class="step-title">Sign Up / Sign In on OpenRouter</div>
+            <p class="step-text">Navigate to <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" style="color: var(--fg); font-weight: 700; text-decoration: underline;">openrouter.ai/keys</a> and log in.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-badge">2</div>
+          <div class="step-content">
+            <div class="step-title">Create a New Key</div>
+            <p class="step-text">Click <strong>Create Key</strong>. Enter a label (e.g. <em>Visiolog Workspace</em>) and click Create.</p>
+            <div class="mock-visual-box">
+              <span>OpenRouter &gt; Keys &gt; [ + Create Key ]</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-badge">3</div>
+          <div class="step-content">
+            <div class="step-title">Copy your Secret Key</div>
+            <p class="step-text">Copy the generated key starting with <code style="font-family: var(--font-mono); font-weight: 700; color: var(--primary);">sk-or-v1-...</code>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-tip">
+        <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+        <div>
+          <strong>Free Vision Models:</strong> OpenRouter hosts free vision models like <code style="font-family: var(--font-mono);">meta-llama/llama-3.2-11b-vision-instruct:free</code>.
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <div>
+          <div class="cta-text-title">Have your OpenRouter key?</div>
+          <div class="cta-text-desc">Switch provider to OpenRouter in settings.</div>
+        </div>
+        <a href="./settings.html" class="btn btn-primary btn-sm">Open Settings</a>
+      </div>
+    </article>
+
+    <!-- 3. Ollama (Local) Guide -->
+    <article class="guide-card guide-section" id="guideOllama" role="tabpanel" aria-labelledby="tabBtnOllama">
+      <div class="guide-header">
+        <div>
+          <h2 class="guide-provider-title">Ollama (100% Offline Local Vision)</h2>
+          <p style="font-size: 0.85rem; color: var(--muted-fg);">Run vision models locally on your GPU/CPU with zero external network traffic</p>
+        </div>
+        <a href="https://ollama.com/download" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+          <span>Download Ollama</span>
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+        </a>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-badge">1</div>
+          <div class="step-content">
+            <div class="step-title">Install Ollama & Pull a Vision Model</div>
+            <p class="step-text">Open your terminal or command prompt and pull a lightweight vision model:</p>
+            <div class="mock-visual-box">
+              <code>ollama run llama3.2-vision</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-badge">2</div>
+          <div class="step-content">
+            <div class="step-title">Configure Browser CORS Access</div>
+            <p class="step-text">Because Visiolog runs in the browser, Ollama must allow web origins. Set the environment variable before starting Ollama:</p>
+            <div class="mock-visual-box">
+              <span>Windows PowerShell: <code>$env:OLLAMA_ORIGINS="*"</code><br />macOS/Linux: <code>export OLLAMA_ORIGINS="*"</code></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-badge">3</div>
+          <div class="step-content">
+            <div class="step-title">Connect in Visiolog Settings</div>
+            <p class="step-text">In Settings, select <strong>Ollama (Local)</strong>, confirm endpoint <code style="font-family: var(--font-mono);">http://localhost:11434</code>, and click <strong>Test</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-caution">
+        <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+        <div>
+          <strong>CORS Required:</strong> If test fails with "Failed to fetch", ensure <code style="font-family: var(--font-mono);">OLLAMA_ORIGINS="*"</code> is configured and restart the Ollama service.
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <div>
+          <div class="cta-text-title">Ollama running locally?</div>
+          <div class="cta-text-desc">Test your local connection in settings.</div>
+        </div>
+        <a href="./settings.html" class="btn btn-primary btn-sm">Open Settings</a>
+      </div>
+    </article>
+
+    <!-- 4. Custom Endpoint Guide -->
+    <article class="guide-card guide-section" id="guideCustom" role="tabpanel" aria-labelledby="tabBtnCustom">
+      <div class="guide-header">
+        <div>
+          <h2 class="guide-provider-title">Custom OpenAI-Compatible Endpoint</h2>
+          <p style="font-size: 0.85rem; color: var(--muted-fg);">Connect vLLM, LM Studio, Groq, Azure OpenAI, or self-hosted proxies</p>
+        </div>
+      </div>
+
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-badge">1</div>
+          <div class="step-content">
+            <div class="step-title">Locate your Base URL & Key</div>
+            <p class="step-text">Ensure your endpoint supports OpenAI-compatible <code style="font-family: var(--font-mono);">/v1/chat/completions</code> with base64 vision image payloads.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-badge">2</div>
+          <div class="step-content">
+            <div class="step-title">Enter URL & Key in Settings</div>
+            <p class="step-text">In Settings, select <strong>Custom Endpoint</strong>. Enter your custom server URL (e.g. <code style="font-family: var(--font-mono);">https://api.groq.com/openai/v1/chat/completions</code>), your API key, and your vision model name.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <div>
+          <div class="cta-text-title">Have custom credentials?</div>
+          <div class="cta-text-desc">Configure your custom endpoint in settings.</div>
+        </div>
+        <a href="./settings.html" class="btn btn-primary btn-sm">Open Settings</a>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <div>Visiolog &copy; 2026. High-Accuracy Paper-to-Spreadsheet Conversion.</div>
+        <div class="footer-links">
+          <a href="./">Home</a>
+          <a href="./workspace.html">Workspace</a>
+          <a href="./settings.html">Settings</a>
+          <a href="./docs.html">Docs</a>
+          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <div class="theme-selector-group" role="radiogroup" aria-label="Theme Selection">
+          <button type="button" class="theme-btn" id="themeBtnLight" role="radio" aria-checked="false" title="Light Mode">Light</button>
+          <button type="button" class="theme-btn" id="themeBtnDark" role="radio" aria-checked="false" title="Dark Mode">Dark</button>
+          <button type="button" class="theme-btn" id="themeBtnAuto" role="radio" aria-checked="true" title="System Match">Auto</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script for Guide Switching & Theme -->
+  <script>
+    function switchGuide(prov) {
+      document.querySelectorAll('.provider-tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.guide-section').forEach(function(sec) {
+        sec.classList.remove('active');
+      });
+
+      var tabBtn = document.getElementById('tabBtn' + prov.charAt(0).toUpperCase() + prov.slice(1));
+      var guideSec = document.getElementById('guide' + prov.charAt(0).toUpperCase() + prov.slice(1));
+
+      if (tabBtn) {
+        tabBtn.classList.add('active');
+        tabBtn.setAttribute('aria-selected', 'true');
+      }
+      if (guideSec) {
+        guideSec.classList.add('active');
+      }
+
+      // Sync URL hash
+      if (history.replaceState) {
+        history.replaceState(null, null, '#guide-' + prov);
+      }
+    }
+
+    /* Theme Engine */
+    var themeBtnLight = document.getElementById('themeBtnLight');
+    var themeBtnDark  = document.getElementById('themeBtnDark');
+    var themeBtnAuto  = document.getElementById('themeBtnAuto');
+
+    function applyTheme(mode) {
+      var isDark = false;
+      if (mode === 'light') { localStorage.setItem('visiolog_theme', 'light'); isDark = false; }
+      else if (mode === 'dark') { localStorage.setItem('visiolog_theme', 'dark'); isDark = true; }
+      else { localStorage.removeItem('visiolog_theme'); isDark = window.matchMedia('(prefers-color-scheme: dark)').matches; }
+
+      document.documentElement.classList.toggle('dark', isDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      updateThemeButtonsUI(mode);
+    }
+
+    function updateThemeButtonsUI(activeMode) {
+      if (themeBtnLight) themeBtnLight.classList.toggle('active', activeMode === 'light');
+      if (themeBtnDark) themeBtnDark.classList.toggle('active', activeMode === 'dark');
+      if (themeBtnAuto) themeBtnAuto.classList.toggle('active', activeMode === 'auto');
+    }
+
+    if (themeBtnLight) themeBtnLight.addEventListener('click', function () { applyTheme('light'); });
+    if (themeBtnDark) themeBtnDark.addEventListener('click', function () { applyTheme('dark'); });
+    if (themeBtnAuto) themeBtnAuto.addEventListener('click', function () { applyTheme('auto'); });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var hash = (location.hash || '').replace('#guide-', '');
+      if (hash && ['gemini', 'openrouter', 'ollama', 'custom'].indexOf(hash) >= 0) {
+        switchGuide(hash);
+      }
+      var savedTheme = localStorage.getItem('visiolog_theme') || 'auto';
+      updateThemeButtonsUI(savedTheme);
+    });
+  </script>
+</body>
+</html>

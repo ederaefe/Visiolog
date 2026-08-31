@@ -205,7 +205,7 @@
       font-weight: 600;
       font-size: 0.8125rem;
       border-radius: var(--radius);
-      padding: 0.45rem 0.85rem;
+      padding: 0.5rem 0.85rem;
       text-decoration: none;
       cursor: pointer;
       border: 1px solid var(--border);
@@ -213,7 +213,8 @@
       color: var(--fg);
       transition: opacity 0.15s ease, background-color 0.15s ease;
       white-space: nowrap;
-      min-height: 38px;
+      min-height: 44px;
+      touch-action: manipulation;
     }
 
     .btn:hover { background: var(--muted); }
@@ -226,7 +227,7 @@
     .btn-danger { background: var(--danger); color: #ffffff; border-color: var(--danger); }
     .btn-danger:hover { opacity: 0.9; }
     .btn-danger:disabled { opacity: 0.45; cursor: not-allowed; }
-    .btn-sm { font-size: 0.75rem; padding: 0.3rem 0.6rem; min-height: 32px; }
+    .btn-sm { font-size: 0.75rem; padding: 0.35rem 0.65rem; min-height: 38px; }
     .btn-full { width: 100%; }
 
     /* SVG Helpers */
@@ -302,8 +303,8 @@
     }
 
     .provider-tab {
-      padding: 0.5rem 0.65rem;
-      font-size: 0.75rem;
+      padding: 0.6rem 0.65rem;
+      font-size: 0.775rem;
       font-weight: 700;
       border-radius: 0.5rem;
       border: 1px solid var(--border);
@@ -312,7 +313,12 @@
       cursor: pointer;
       font-family: var(--font-mono);
       text-align: center;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: all 0.15s ease;
+      touch-action: manipulation;
     }
 
     .provider-tab:hover { color: var(--fg); border-color: var(--primary); }
@@ -322,24 +328,24 @@
     .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
     .form-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-fg); font-family: var(--font-mono); }
     .input-row { display: flex; gap: 0.4rem; }
-    .text-input { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); outline: none; transition: border-color 0.15s ease; }
+    .text-input { flex: 1; min-height: 44px; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--fg); outline: none; transition: border-color 0.15s ease; }
     .text-input:focus { border-color: var(--primary); }
     .text-input::placeholder { color: var(--muted-fg); }
 
-    .textarea-input { width: 100%; height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg); outline: none; resize: vertical; line-height: 1.45; }
+    .textarea-input { width: 100%; height: 90px; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); outline: none; resize: vertical; line-height: 1.45; }
     .textarea-input:focus { border-color: var(--primary); }
 
     /* Combobox Styles */
     .combobox-wrap { position: relative; width: 100%; }
     .combobox-input-row { display: flex; position: relative; align-items: center; }
-    .combobox-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.55rem 2.25rem 0.55rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); outline: none; transition: border-color 0.15s ease; }
+    .combobox-input { width: 100%; min-height: 44px; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.6rem 2.5rem 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.8125rem; color: var(--fg); outline: none; transition: border-color 0.15s ease; }
     .combobox-input:focus { border-color: var(--primary); }
-    .combobox-btn { position: absolute; right: 0.35rem; top: 50%; transform: translateY(-50%); background: transparent; border: none; padding: 0.35rem; cursor: pointer; color: var(--muted-fg); display: flex; align-items: center; justify-content: center; }
+    .combobox-btn { position: absolute; right: 0.35rem; top: 50%; transform: translateY(-50%); background: transparent; border: none; padding: 0.5rem; cursor: pointer; color: var(--muted-fg); display: flex; align-items: center; justify-content: center; min-height: 38px; min-width: 38px; }
     .combobox-btn:hover { color: var(--fg); }
 
     .combobox-panel { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; box-shadow: 0 8px 24px var(--shadow); z-index: 200; max-height: 220px; overflow-y: auto; display: none; scrollbar-width: thin; }
     .combobox-wrap.open .combobox-panel { display: block; }
-    .combobox-opt { padding: 0.45rem 0.75rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--fg); cursor: pointer; transition: background 0.1s ease; display: flex; justify-content: space-between; align-items: center; }
+    .combobox-opt { padding: 0.6rem 0.75rem; min-height: 40px; font-family: var(--font-mono); font-size: 0.775rem; color: var(--fg); cursor: pointer; transition: background 0.1s ease; display: flex; justify-content: space-between; align-items: center; }
     .combobox-opt:hover { background: var(--muted); }
     .combobox-opt.sel { background: hsla(105, 100%, 16%, 0.08); color: var(--primary); font-weight: 700; }
     [data-theme="dark"] .combobox-opt.sel { background: hsla(102, 87%, 76%, 0.1); }
@@ -467,7 +473,7 @@
           <div class="card-title">2. Credentials</div>
         </div>
         <p class="card-desc" id="keyHelperText">
-          Enter your personal API key. It connects directly from your browser to the provider endpoint.
+          Enter your personal API key. It connects directly from your browser to the provider endpoint. <u><a href="./get-key.html#guide-gemini" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>
         </p>
 
         <div id="customEndpointRow" class="form-group" style="display:none;">
@@ -725,7 +731,7 @@
         customRow.style.display = 'none';
         keyInput.placeholder = 'AIzaSy... (Gemini API Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_gemini_key') || '';
-        helper.textContent = 'Direct connection to Google Gemini REST API. Stored exclusively in local storage.';
+        helper.innerHTML = 'Direct connection to Google Gemini REST API. Stored exclusively in local storage. <u><a href="./get-key.html#guide-gemini" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>';
         badge.textContent = 'Google Gemini';
         probeModels(false);
 
@@ -736,7 +742,7 @@
         customRow.style.display = 'none';
         keyInput.placeholder = 'sk-or-v1-... (OpenRouter Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_openrouter_key') || '';
-        helper.textContent = 'Direct route to open vision models via OpenRouter.';
+        helper.innerHTML = 'Direct route to open vision models via OpenRouter. <u><a href="./get-key.html#guide-openrouter" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>';
         badge.textContent = 'OpenRouter';
         populateCombobox(PRESETS.openrouter);
 
@@ -745,7 +751,7 @@
         keySec.style.display = 'flex';
         keyGrp.style.display = 'none';
         customRow.style.display = 'none';
-        helper.textContent = 'Connects locally to http://localhost:11434 with zero keys required.';
+        helper.innerHTML = 'Connects locally to http://localhost:11434 with zero keys required. <u><a href="./get-key.html#guide-ollama" style="color: inherit; text-decoration: underline; font-weight: 700;">Setup guide</a></u>';
         badge.textContent = 'Ollama (Local)';
         populateCombobox(PRESETS.ollama);
 
@@ -757,7 +763,7 @@
         customInput.value = localStorage.getItem('visiolog_custom_endpoint') || 'http://localhost:8000/v1';
         keyInput.placeholder = 'Optional Bearer token / API key...';
         keyInput.value = localStorage.getItem('visiolog_custom_key') || '';
-        helper.textContent = 'Connect to any OpenAI-compatible Vision API (vLLM, LM Studio, Ollama OpenAI endpoint, Together AI).';
+        helper.innerHTML = 'Connect to any OpenAI-compatible Vision API (vLLM, LM Studio, Groq). <u><a href="./get-key.html#guide-custom" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>';
         badge.textContent = 'Custom Endpoint';
         populateCombobox(PRESETS.custom);
       }
