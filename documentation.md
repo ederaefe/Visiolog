@@ -416,6 +416,25 @@ The static web client and live workspace operate entirely in the client browser:
 - **Touch-Friendly Form Controls**: Enforced 44px minimum tap targets across `.text-input`, `.combobox-input`, `.provider-tab`, and `.btn` elements.
 - **Responsive OS Tab System**: Implemented smooth horizontal sub-tab switching for operating system instructions (Windows, macOS, Linux) with overflow containment.
 
+---
+
+## 22. Active Grid Canvas Scanning Preview & Multi-Page / Open-Book OCR Engine
+
+### 22.1 In-Flight Upload Locking & State Protection
+- **Dropzone Disabling**: Applied `.dropzone.disabled` (`pointer-events: none; opacity: 0.45; cursor: not-allowed;`) and locked `#fileInput` during extraction to prevent concurrent ingestion conflicts.
+- **Immediate State Recovery**: Restores interactive upload states cleanly upon completion or on network failure.
+
+### 22.2 High-Resolution Grid Canvas Scanning Animation
+- **Dedicated Grid Scan Viewport (`#gridScanningContainer`)**: During active transcription, the right main grid replaces empty state placeholders with a centered, high-resolution document preview container.
+- **Synchronized Laser Animation**: Displays the live laser scanning beam and progressive phase indicators across both the sidebar thumbnail and the primary spreadsheet canvas.
+- **Mobile Automatic Focus**: Triggers viewport shift to the grid canvas so mobile users monitor extraction in real time.
+
+### 22.3 Two-Page Spread & Multi-Table Open-Notebook OCR Architecture
+- **Root Cause Analysis for Multi-Table Degradation**: When extracting open two-page logs (e.g. side-by-side FUTA and UI gate logs with distinct headers), unguided prompts force ragged header merges and hit default token truncations.
+- **Prompt Directive Expansion**: Integrated explicit multi-page and open-notebook instructions ensuring sequential top-to-bottom transcription across all pages without mid-generation stoppage.
+- **Max Output Token Expansion**: Upgraded Gemini REST payload configuration from 4,096 to 8,192 max output tokens (`maxOutputTokens: 8192`) to accommodate dense 60+ row registries.
+
+
 
 
 
