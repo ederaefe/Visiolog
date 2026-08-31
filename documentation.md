@@ -219,5 +219,23 @@ The static web client and live workspace operate entirely in the client browser:
 - **Zero Sparkles & Zero Emojis**: Complete elimination of decorative magic wand/sparkle clusters and emojis across all source files, comments, and rendered elements.
 - **Strict Monochrome Inheritance**: All SVGs enforce `stroke="currentColor"` or `fill="currentColor"`, eliminating inline hex colors (`#f59e0b`, `#34d399`, etc.) for seamless light/dark theme synchronization.
 
+---
+
+## 10. Root-Directory Live Demo Architecture
+
+### 10.1 Root Entry Point (`demo.html`)
+- **Direct Root Access**: The full in-browser interactive extraction demo is placed directly in the repository root directory as `demo.html` (`https://ederaefe.github.io/Visiolog/demo.html`).
+- **Complete Feature Parity**: Contains the complete client-side processing suite:
+  - Document ingestion and drag-and-drop downsampling.
+  - Multi-file queue with item removal and active thumbnail switching.
+  - In-browser vision inference integration across Gemini, OpenRouter, Ollama, and Custom endpoints.
+  - 2D editable spreadsheet grid with inline cell and column title editing.
+  - Live row search and column sorting.
+  - Multi-format client-side export (SheetJS Excel `.xlsx`, RFC 4180 `.csv`, structured `.json`, Markdown `.md`, and clipboard TSV).
+  - Structured notes generator and editor.
+  - Local history persistence with load and individual/bulk purge capabilities.
+- **Strict Compliance**: Adheres to zero-emoji, zero-sparkle, pure monochrome SVG icons, desktop text navigation, and responsive mobile icon controls.
+
+
 
 
