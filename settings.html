@@ -473,7 +473,7 @@
           <div class="card-title">2. Credentials</div>
         </div>
         <p class="card-desc" id="keyHelperText">
-          Enter your personal API key. It connects directly from your browser to the provider endpoint. <u><a href="./get-key.html#guide-gemini" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>
+          Enter your personal API key. It connects directly from your browser to the provider endpoint. <u><a href="./get-key.html#guide-gemini" style="color: var(--primary); text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">Get a key</a></u>
         </p>
 
         <div id="customEndpointRow" class="form-group" style="display:none;">
@@ -731,7 +731,7 @@
         customRow.style.display = 'none';
         keyInput.placeholder = 'AIzaSy... (Gemini API Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_gemini_key') || '';
-        helper.innerHTML = 'Direct connection to Google Gemini REST API. Stored exclusively in local storage. <u><a href="./get-key.html#guide-gemini" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>';
+        helper.innerHTML = 'Direct connection to Google Gemini REST API. Stored exclusively in local storage. <u><a href="./get-key.html#guide-gemini" style="color: var(--primary); text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">Get a key</a></u>';
         badge.textContent = 'Google Gemini';
         probeModels(false);
 
@@ -742,7 +742,7 @@
         customRow.style.display = 'none';
         keyInput.placeholder = 'sk-or-v1-... (OpenRouter Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_openrouter_key') || '';
-        helper.innerHTML = 'Direct route to open vision models via OpenRouter. <u><a href="./get-key.html#guide-openrouter" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>';
+        helper.innerHTML = 'Direct route to open vision models via OpenRouter. <u><a href="./get-key.html#guide-openrouter" style="color: var(--primary); text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">Get a key</a></u>';
         badge.textContent = 'OpenRouter';
         populateCombobox(PRESETS.openrouter);
 
@@ -751,7 +751,7 @@
         keySec.style.display = 'flex';
         keyGrp.style.display = 'none';
         customRow.style.display = 'none';
-        helper.innerHTML = 'Connects locally to http://localhost:11434 with zero keys required. <u><a href="./get-key.html#guide-ollama" style="color: inherit; text-decoration: underline; font-weight: 700;">Setup guide</a></u>';
+        helper.innerHTML = 'Connects locally to http://localhost:11434 with zero keys required. <u><a href="./get-key.html#guide-ollama" style="color: var(--primary); text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">Setup guide</a></u>';
         badge.textContent = 'Ollama (Local)';
         populateCombobox(PRESETS.ollama);
 
@@ -763,7 +763,7 @@
         customInput.value = localStorage.getItem('visiolog_custom_endpoint') || 'http://localhost:8000/v1';
         keyInput.placeholder = 'Optional Bearer token / API key...';
         keyInput.value = localStorage.getItem('visiolog_custom_key') || '';
-        helper.innerHTML = 'Connect to any OpenAI-compatible Vision API (vLLM, LM Studio, Groq). <u><a href="./get-key.html#guide-custom" style="color: inherit; text-decoration: underline; font-weight: 700;">Get a key</a></u>';
+        helper.innerHTML = 'Connect to any OpenAI-compatible Vision API (vLLM, LM Studio, Groq). <u><a href="./get-key.html#guide-custom" style="color: var(--primary); text-decoration: underline; text-underline-offset: 3px; font-weight: 700;">Get a key</a></u>';
         badge.textContent = 'Custom Endpoint';
         populateCombobox(PRESETS.custom);
       }

@@ -379,6 +379,57 @@
       margin-top: 0.15rem;
     }
 
+    /* Sub-tabs for OS Selection inside Ollama guide */
+    .os-subtabs {
+      display: flex;
+      gap: 0.35rem;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.2rem;
+      margin: 0.75rem 0 0.5rem;
+      overflow-x: auto;
+    }
+    .os-tab-btn {
+      flex: 1;
+      padding: 0.4rem 0.65rem;
+      min-height: 38px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--muted-fg);
+      border-radius: 0.35rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+    .os-tab-btn.active {
+      background: var(--card);
+      color: var(--fg);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .os-panel { display: none; margin-top: 0.5rem; }
+    .os-panel.active { display: block; }
+
+    .code-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.775rem;
+      line-height: 1.5;
+      color: var(--fg);
+      overflow-x: auto;
+      margin: 0.5rem 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
     /* Action CTA Box */
     .cta-box {
       background: var(--muted);
@@ -680,8 +731,8 @@
     <article class="guide-card guide-section" id="guideOllama" role="tabpanel" aria-labelledby="tabBtnOllama">
       <div class="guide-header">
         <div>
-          <h2 class="guide-provider-title">Ollama (100% Offline Local Vision)</h2>
-          <p style="font-size: 0.85rem; color: var(--muted-fg);">Run vision models locally on your GPU/CPU with zero external network traffic</p>
+          <h2 class="guide-provider-title">Ollama (100% Local Offline Vision)</h2>
+          <p style="font-size: 0.85rem; color: var(--muted-fg);">Run vision AI on your own computer. Zero cloud fees, zero data leaves your machine.</p>
         </div>
         <a href="https://ollama.com/download" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
           <span>Download Ollama</span>
@@ -689,49 +740,168 @@
         </a>
       </div>
 
+      <!-- Beginner Intro Banner -->
+      <div style="background: var(--muted); border: 1px solid var(--border); border-radius: 0.55rem; padding: 0.95rem; margin-bottom: 1.25rem;">
+        <strong style="font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">What is Ollama?</strong>
+        <p style="font-size: 0.8rem; color: var(--muted-fg); line-height: 1.55;">
+          Ollama is a free program that runs artificial intelligence directly on your personal computer (using your GPU or CPU). Because it runs locally, you do not need an API key or an internet connection to transcribe confidential paper records, visitor books, or financial ledgers.
+        </p>
+      </div>
+
       <div class="step-list">
+        <!-- Step 1: Download & Install -->
         <div class="step-item">
           <div class="step-badge">1</div>
           <div class="step-content">
-            <div class="step-title">Install Ollama & Pull a Vision Model</div>
-            <p class="step-text">Open your terminal or command prompt and pull a lightweight vision model:</p>
-            <div class="mock-visual-box">
-              <code>ollama run llama3.2-vision</code>
-            </div>
+            <div class="step-title">Download & Install Ollama</div>
+            <p class="step-text">
+              Go to <a href="https://ollama.com/download" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; font-weight: 700;">ollama.com/download</a>. Download the installer for your operating system (Windows, macOS, or Linux) and run it just like any regular desktop app.
+            </p>
           </div>
         </div>
 
+        <!-- Step 2: Pull Vision Model -->
         <div class="step-item">
           <div class="step-badge">2</div>
           <div class="step-content">
-            <div class="step-title">Configure Browser CORS Access</div>
-            <p class="step-text">Because Visiolog runs in the browser, Ollama must allow web origins. Set the environment variable before starting Ollama:</p>
-            <div class="mock-visual-box">
-              <span>Windows PowerShell: <code>$env:OLLAMA_ORIGINS="*"</code><br />macOS/Linux: <code>export OLLAMA_ORIGINS="*"</code></span>
+            <div class="step-title">Download a Vision AI Model</div>
+            <p class="step-text">
+              Open your <strong>Terminal</strong> (macOS/Linux) or <strong>PowerShell / Command Prompt</strong> (Windows), type the command below, and press Enter:
+            </p>
+            <div class="code-box">ollama run llama3.2-vision</div>
+            <p class="step-text" style="font-size: 0.775rem; margin-top: 0.35rem;">
+              <em>What happens next:</em> Ollama will automatically download the Llama 3.2 Vision model (~7.9 GB). Once download finishes, you can type <code style="font-family: var(--font-mono); font-weight: 700;">/bye</code> to exit the chat; Ollama remains running in the background as a local service.
+            </p>
+            <div class="callout callout-tip" style="margin-top: 0.5rem;">
+              <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+              <div>
+                <strong>Lightweight Alternative:</strong> If you have limited disk space or RAM, run <code style="font-family: var(--font-mono); font-weight: 700;">ollama run minicpm-v</code> (~5.5 GB), which also provides excellent document table OCR.
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Step 3: Enable Web Browser Access (CORS) with OS Switcher -->
         <div class="step-item">
           <div class="step-badge">3</div>
           <div class="step-content">
+            <div class="step-title">Enable Browser Access (One-Time CORS Setup)</div>
+            <p class="step-text">
+              Because Visiolog runs securely in your web browser, modern web security requires Ollama to allow incoming requests from websites. Choose your operating system below:
+            </p>
+
+            <!-- OS Tabs -->
+            <div class="os-subtabs" role="tablist">
+              <button type="button" class="os-tab-btn active" id="osTabWindows" onclick="switchOs('windows')" role="tab">Windows</button>
+              <button type="button" class="os-tab-btn" id="osTabMac" onclick="switchOs('mac')" role="tab">macOS</button>
+              <button type="button" class="os-tab-btn" id="osTabLinux" onclick="switchOs('linux')" role="tab">Linux</button>
+            </div>
+
+            <!-- Windows Instructions -->
+            <div class="os-panel active" id="osPanelWindows">
+              <p class="step-text">
+                <strong>Method A (Fastest via PowerShell):</strong> Open PowerShell and run:
+              </p>
+              <div class="code-box">[System.Environment]::SetEnvironmentVariable("OLLAMA_ORIGINS", "*", "User")</div>
+              <p class="step-text" style="margin-top: 0.4rem;">
+                <strong>Method B (Visual Windows Settings):</strong>
+              </p>
+              <ol style="font-size: 0.8rem; color: var(--muted-fg); padding-left: 1.25rem; margin-top: 0.25rem; line-height: 1.6;">
+                <li>Open the Windows Start Menu, type <strong>Environment Variables</strong>, and click <em>Edit the system environment variables</em>.</li>
+                <li>Click the <strong>Environment Variables...</strong> button at the bottom.</li>
+                <li>Under <em>User variables</em>, click <strong>New...</strong></li>
+                <li>Set Variable name to <code style="font-family: var(--font-mono); font-weight: 700;">OLLAMA_ORIGINS</code> and Variable value to <code style="font-family: var(--font-mono); font-weight: 700;">*</code>.</li>
+                <li>Click OK on all dialogs.</li>
+              </ol>
+              <div class="callout callout-caution" style="margin-top: 0.5rem;">
+                <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                <div>
+                  <strong>Crucial Step:</strong> Right-click the Ollama icon in the Windows taskbar system tray (bottom-right near clock), click <strong>Quit</strong>, then launch Ollama again from the Start Menu to apply changes.
+                </div>
+              </div>
+            </div>
+
+            <!-- macOS Instructions -->
+            <div class="os-panel" id="osPanelMac">
+              <p class="step-text">
+                Open the Terminal app on your Mac and run this command:
+              </p>
+              <div class="code-box">launchctl setenv OLLAMA_ORIGINS "*"</div>
+              <div class="callout callout-caution" style="margin-top: 0.5rem;">
+                <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                <div>
+                  <strong>Crucial Step:</strong> Click the Ollama icon in your top Mac menu bar, choose <strong>Quit</strong>, and re-open the Ollama application from Applications.
+                </div>
+              </div>
+            </div>
+
+            <!-- Linux Instructions -->
+            <div class="os-panel" id="osPanelLinux">
+              <p class="step-text">
+                If Ollama is installed as a systemd service, update the service override:
+              </p>
+              <div class="code-box">sudo systemctl edit ollama.service</div>
+              <p class="step-text" style="margin-top: 0.35rem;">Add these two lines under the editor:</p>
+              <div class="code-box">[Service]
+Environment="OLLAMA_ORIGINS=*"</div>
+              <p class="step-text" style="margin-top: 0.35rem;">Save, exit, and reload the service:</p>
+              <div class="code-box">sudo systemctl daemon-reload && sudo systemctl restart ollama</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Step 4: Verification -->
+        <div class="step-item">
+          <div class="step-badge">4</div>
+          <div class="step-content">
+            <div class="step-title">Verify Ollama is Running</div>
+            <p class="step-text">
+              Click this test link to open your local endpoint: <a href="http://localhost:11434" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: underline; font-weight: 700;">http://localhost:11434</a>.
+            </p>
+            <div class="mock-visual-box">
+              <span>Browser: http://localhost:11434</span>
+              <span style="color: var(--success); font-weight: 700;">"Ollama is running"</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5: Connect in Settings -->
+        <div class="step-item">
+          <div class="step-badge">5</div>
+          <div class="step-content">
             <div class="step-title">Connect in Visiolog Settings</div>
-            <p class="step-text">In Settings, select <strong>Ollama (Local)</strong>, confirm endpoint <code style="font-family: var(--font-mono);">http://localhost:11434</code>, and click <strong>Test</strong>.</p>
+            <p class="step-text">
+              Go to Visiolog <a href="./settings.html" style="color: var(--primary); text-decoration: underline; font-weight: 700;">Settings</a>, click the <strong>Ollama (Local)</strong> tab, and click <strong>Test</strong>. You are ready to transcribe!
+            </p>
           </div>
         </div>
       </div>
 
-      <div class="callout callout-caution">
-        <svg class="svg-icon svg-icon-sm callout-icon" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-        <div>
-          <strong>CORS Required:</strong> If test fails with "Failed to fetch", ensure <code style="font-family: var(--font-mono);">OLLAMA_ORIGINS="*"</code> is configured and restart the Ollama service.
-        </div>
+      <!-- FAQ Accordion -->
+      <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border);">
+        <div style="font-weight: 800; font-size: 0.95rem; margin-bottom: 0.75rem;">Frequently Asked Questions</div>
+        
+        <details style="margin-bottom: 0.5rem; background: var(--muted); border-radius: 0.5rem; padding: 0.65rem 0.85rem; font-size: 0.8rem; cursor: pointer;">
+          <summary style="font-weight: 700; color: var(--fg);">Is Ollama completely free?</summary>
+          <p style="margin-top: 0.35rem; color: var(--muted-fg); line-height: 1.5;">Yes. Ollama is 100% open-source and free forever. There are no credit cards, subscriptions, or token charges.</p>
+        </details>
+
+        <details style="margin-bottom: 0.5rem; background: var(--muted); border-radius: 0.5rem; padding: 0.65rem 0.85rem; font-size: 0.8rem; cursor: pointer;">
+          <summary style="font-weight: 700; color: var(--fg);">Do I need a dedicated GPU?</summary>
+          <p style="margin-top: 0.35rem; color: var(--muted-fg); line-height: 1.5;">An NVIDIA GPU or Apple Silicon Mac (M1/M2/M3/M4) delivers the fastest transcription speeds (2-5 seconds per page). However, Ollama will also run on standard Intel/AMD CPUs (takes ~15-30 seconds per page).</p>
+        </details>
+
+        <details style="margin-bottom: 0.5rem; background: var(--muted); border-radius: 0.5rem; padding: 0.65rem 0.85rem; font-size: 0.8rem; cursor: pointer;">
+          <summary style="font-weight: 700; color: var(--fg);">Why do I get "Failed to fetch" during the Test button?</summary>
+          <p style="margin-top: 0.35rem; color: var(--muted-fg); line-height: 1.5;">This almost always means either (1) Ollama is not currently running, or (2) the <code style="font-family: var(--font-mono);">OLLAMA_ORIGINS="*"</code> environment variable was set but Ollama was not restarted afterwards. Quit Ollama from your taskbar or menu bar and re-launch it.</p>
+        </details>
       </div>
 
       <div class="cta-box">
         <div>
           <div class="cta-text-title">Ollama running locally?</div>
-          <div class="cta-text-desc">Test your local connection in settings.</div>
+          <div class="cta-text-desc">Head over to Settings and verify your connection.</div>
         </div>
         <a href="./settings.html" class="btn btn-primary btn-sm">Open Settings</a>
       </div>
@@ -822,6 +992,20 @@
       if (history.replaceState) {
         history.replaceState(null, null, '#guide-' + prov);
       }
+    }
+
+    function switchOs(os) {
+      document.querySelectorAll('.os-tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+      document.querySelectorAll('.os-panel').forEach(function(p) {
+        p.classList.remove('active');
+      });
+
+      var btn = document.getElementById('osTab' + os.charAt(0).toUpperCase() + os.slice(1));
+      var panel = document.getElementById('osPanel' + os.charAt(0).toUpperCase() + os.slice(1));
+      if (btn) btn.classList.add('active');
+      if (panel) panel.classList.add('active');
     }
 
     /* Theme Engine */
