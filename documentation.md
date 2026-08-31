@@ -348,6 +348,23 @@ The static web client and live workspace operate entirely in the client browser:
 - **Data-Row Header Inference**: Automatically detects unlabelled header rows (e.g. data rows starting with numbers or timestamps) and synthesizes standard column headers (`No, Full Name, Company, Purpose, Time In, Time Out`).
 - **Row Length Normalization**: Reconciles ragged records to guarantee consistent 2D cell matrices.
 
+---
+
+## 18. Live Extraction Prompt Customization & Workspace Quick-Edit Drawer
+
+### 18.1 Active Prompt Pre-Population & Legacy Cache Migration
+- **Full Advanced System Prompt Pre-Loading**: On page load, `settings.html`, `workspace.html`, and `demo.html` inspect `localStorage.getItem('visiolog_prompt')`. If empty or containing legacy one-liners, they automatically migrate to the multi-rule, production-grade vision OCR prompt.
+- **Immediate User Visibility**: The prompt editor displays the full, real prompt in a monospace, 10-row editing surface.
+
+### 18.2 Prompt Management Actions (Settings View)
+- **Direct Save Action (`savePromptExplicit`)**: Saves customized instructions immediately with feedback notification.
+- **Reset to Default Action (`resetPrompt`)**: Instantly reloads the full advanced multi-rule systemic prompt into the textarea and persists it to local storage.
+
+### 18.3 Workspace Quick Prompt Drawer
+- **In-Context Customization**: Embedded directly within the workspace sidebar (`#promptQuickCard`), allowing users to inspect and adjust prompt rules for specific document batches without leaving the conversion workspace.
+- **Bidirectional Synchronization**: Modifications made in either the workspace quick drawer or the settings page synchronize transparently through `localStorage`.
+
+
 
 
 
