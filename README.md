@@ -1,97 +1,196 @@
 # Visiolog
 
-> **Privacy-First Document Extraction & Real-Time Spreadsheet Studio for Schools and Organizations**
+<div align="center">
 
-Visiolog is a modern, open-source web platform engineered to transform scanned invoices, receipts, ledgers, and academic records into interactive, high-performance spreadsheets with uncompromising privacy guarantees.
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16_App_Router-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://www.docker.com/)
+[![Ollama](https://img.shields.io/badge/Ollama-Offline_Vision-black)](https://ollama.com/)
+[![OpenRouter](https://img.shields.io/badge/OpenRouter-Multimodal-purple)](https://openrouter.ai/)
+[![PWA](https://img.shields.io/badge/PWA-100%25_Offline_Ready-success)](https://web.dev/progressive-web-apps/)
+
+**Open-Source AI Document-to-Spreadsheet Studio & Tabular OCR Engine**
+
+*Transform paper logbooks, receipts, financial records, handwritten tables, and PDFs into interactive spreadsheets with 100% privacy sovereignty.*
+
+[Quickstart](#quickstart) • [Features](#key-features) • [Architecture](#architecture) • [Self-Hosting](#self-hosting--docker) • [Database Studio](#in-app-database-studio) • [Setup Guides](#setup-guides)
+
+</div>
 
 ---
 
-## Key Highlights
+## What is Visiolog?
 
-- **Zero-Persistence Privacy**: Document parsing occurs in-memory. Sensitive institutional documents, student records, and financial receipts are not stored on public clouds or third-party servers.
-- **Bring Your Own Key (BYOK)**: Connect your own Google Gemini AI keys or local inference endpoints directly. No centralized intermediary proxy or vendor lock-in.
-- **Pure-React Interactive Spreadsheet Studio**: Instant client-side computation for `=SUM`, `=AVERAGE`, `=PRODUCT`, nested ranges, formula bars, sorting, dynamic zoom, and multi-sheet workflows.
-- **Universal Multi-Format Export**: Export parsed matrices instantly to `.xlsx`, `.csv`, `.json`, and print-ready `.pdf`.
-- **Intranet and Self-Hostable**: Deployable anywhere via Docker on private school servers and local networks.
+**Visiolog** is an open-source, privacy-first document intelligence platform and interactive spreadsheet studio. It converts physical paper documents, photographs, and PDF files into structured digital spreadsheets (`.xlsx`, `.csv`) and clean notes in seconds.
+
+Unlike cloud-dependent SaaS OCR services, Visiolog runs **100% locally and air-gapped** using browser-native **IndexedDB** storage and local **Ollama** vision models (`llama3.2-vision`, `minicpm-v`, `qwen2.5-vl`), or connects seamlessly to cloud backends (**Supabase**, **OpenRouter**, **Google Gemini**) for multi-device synchronization.
+
+---
+
+## Key Features
+
+### 1. Multimodal Tabular & Note OCR
+- **High-Fidelity Table Extraction**: Converts complex tabular matrices, multi-line cells, financial ledgers, and scanned forms into standard CSV and Excel.
+- **Handwritten Registry Recognition**: Parses handwritten logs, dates, quantities, and currency amounts with spatial alignment.
+- **Plain Text & Note Mode**: Transcribes memos, letters, and unstructured documents with preserved line breaks and list numbering.
+
+### 2. Multi-Provider Vision AI Engine
+- **Local Air-Gapped Inference**: Connects directly to local Ollama instances (`llama3.2-vision`, `minicpm-v`, `qwen2.5-vl`) with zero internet access required.
+- **Multi-Model Cloud Routing**: Native OpenRouter support (`meta-llama/llama-3.2-11b-vision-instruct`, `qwen/qwen-2.5-vl-72b-instruct`, `claude-3.5-sonnet`).
+- **High-Speed Flash Vision**: Google Gemini Flash models with an automatic 12-key rotation load balancer and exponential retry backoff.
+- **Custom OpenAI Endpoints**: Plug into LocalAI, vLLM, LM Studio, or private enterprise vision gateways.
+
+### 3. Interactive Spreadsheet Studio
+- In-browser reactive spreadsheet engine with formulas (`=SUM`, `=AVERAGE`, `=PRODUCT`, `=COUNT`).
+- Column management (insert, delete, rename, resize), real-time sorting, search filtering, and instant export to `.csv` and `.xlsx`.
+
+### 4. Fixed Settings & Header Reconciliation
+- Define strict master schemas (e.g. `Date, Item, Quantity, Price, Total`) for continuous batch scanning.
+- Disparate document column structures are automatically aligned and appended into your project master sheet.
+
+### 5. In-App Database Studio
+- Complete replacement for external database dashboards.
+- Visual table explorer for `projects`, `documents`, `spreadsheets`, `profiles`, `processing_jobs`, and `system_logs`.
+- Inline JSON drawer editor, column sorting, search filters, and 1-click database backup export/restore (`.json`).
+
+### 6. Zero-Telemetry Privacy Sovereignty
+- Zero external tracking, zero analytics packages, zero persistent image retention.
+- Binary files process strictly in volatile memory buffers and are discarded immediately after transcription.
+
+---
+
+## Architecture
+
+```
++---------------------------------------------------------------------------------+
+|                                 VISIOLOG STUDIO                                 |
++----------------------------------------+----------------------------------------+
+                                         |
+            +----------------------------+----------------------------+
+            |                                                         |
+            v                                                         v
++-------------------------------------+   +-------------------------------------+
+|         LOCAL-FIRST ENGINE          |   |          CLOUD-SYNC ENGINE          |
+| - 100% Offline Air-Gapped           |   | - Multi-Device Synchronization      |
+| - Browser IndexedDB Storage         |   | - Supabase PostgreSQL Database      |
+| - Local Ollama Vision Daemon        |   | - OpenRouter / Gemini Cloud Models  |
+| - Direct File Export (.csv / .xlsx) |   | - Edge Serverless Hosting           |
++-------------------------------------+   +-------------------------------------+
+```
 
 ---
 
 ## Quickstart
 
 ### Prerequisites
-
-- **Node.js**: v20.x or higher
-- **npm** or **pnpm**
-- **Google Gemini API Key**: [Get a key from Google AI Studio](https://aistudio.google.com/)
+- Node.js 20+ and npm
+- Git
 
 ### 1. Clone Repository
-
 ```bash
-git clone https://github.com/your-username/visiolog.git
-cd visiolog
+git clone https://github.com/ederaefe/Visiolog.git
+cd Visiolog
 ```
 
-### 2. Configure Environment
-
+### 2. Install Dependencies
 ```bash
-cp .env.example .env.local
+npm install --legacy-peer-deps
 ```
 
-Edit `.env.local` and add your Supabase connection strings and Gemini API key:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-GEMINI_API_KEY=your_gemini_api_key
-NEXT_PUBLIC_PRIVACY_MODE=true
-```
-
-### 3. Install Dependencies & Run
-
+### 3. Run Development Server
 ```bash
-npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your web browser. Visiolog will immediately operate in local-first standalone mode with zero cloud configuration required.
 
 ---
 
-## Self-Hosting with Docker
+## Self-Hosting & Docker
 
-To deploy Visiolog on your private school or enterprise intranet using Docker Compose:
+### 1-Command Air-Gapped Deployment with Ollama
+
+Run Visiolog alongside a local Ollama vision container using Docker Compose:
 
 ```bash
-# 1. Ensure .env.local exists with your configuration
-cp .env.example .env.local
-
-# 2. Build and launch container
-docker compose up -d
+docker compose -f docker-compose.ollama.yml up -d
 ```
 
-The application will be accessible at port `3000`.
+Pull your vision model into the Ollama container:
+```bash
+docker exec -it visiolog_ollama ollama pull llama3.2-vision
+```
+
+Access the studio at `http://localhost:3000`.
+
+### Standard Docker Build
+
+```bash
+docker build -t visiolog:latest .
+docker run -d -p 3000:3000 -e LOCAL_FIRST=true visiolog:latest
+```
 
 ---
 
-## Privacy & Compliance for Institutions
+## In-App Database Studio
 
-Visiolog is designed with a **Privacy-by-Design** architecture:
+Accessible at `/admin/database` or `/database`:
 
-1. **FERPA and GDPR Alignment**: Document images are held in volatile client memory during extraction and immediately purged upon matrix generation unless local archiving is explicitly enabled by your administrator.
-2. **Zero Telemetry**: All external tracking and third-party analytics are disabled by default.
-3. **Sovereign Key Custody**: API keys remain under institutional custody via standard environment variables or browser-level settings.
+```
++---------------------------------------------------------------------------------+
+| TABLES            | SEARCH & ACTIONS: [ Search records... ] [Export] [Import] [+] |
+| - projects        +-------------------------------------------------------------+
+| - documents       | ID          | NAME           | CREATED_AT        | ACTIONS  |
+| - spreadsheets    | proj_101    | Inventory Q1   | 2026-08-31T12:00  | Edit Del |
+| - profiles        | proj_102    | Lab Scans      | 2026-08-31T13:30  | Edit Del |
+| - processing_jobs +-------------------------------------------------------------+
+| - system_logs     | Pagination: Page 1 of 4                         [<] [>]     |
++-------------------+-------------------------------------------------------------+
+```
+
+- **Table Navigator**: Real-time browsing across all application stores.
+- **Dual Mode**: Direct inspection of browser IndexedDB or Supabase PostgreSQL.
+- **Data Portability**: 1-click JSON snapshot backup export and restore.
 
 ---
 
-## Contributing
+## Setup Guides
 
-We welcome contributions from educators, developers, and privacy advocates! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and development workflows.
+For users deploying optional cloud backends, refer to our step-by-step 20-step setup manuals:
+
+- [Master Setup Index](./software_setup.md)
+- [Supabase Setup Guide (20 Steps)](./setup_supabase.md)
+- [Vercel Deployment Guide (20 Steps)](./setup_vercel.md)
+- [Google Gemini Setup Guide (20 Steps)](./setup_gemini.md)
+- [Comprehensive User Manual](./documentation.md)
 
 ---
 
-## Security
+## Environment Variables Reference
 
-For security vulnerability disclosures, please review our [SECURITY.md](SECURITY.md).
+| Variable | Required | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `LOCAL_FIRST` | No | `false` | Enables zero-cloud standalone mode |
+| `AI_VISION_PROVIDER` | No | `gemini` | Active inference provider (`ollama`, `openrouter`, `gemini`, `custom`) |
+| `OLLAMA_BASE_URL` | No | `http://localhost:11434` | Ollama daemon base URL |
+| `OLLAMA_MODEL` | No | `llama3.2-vision` | Default Ollama vision model |
+| `OPENROUTER_API_KEY` | Conditional | - | OpenRouter API authentication token |
+| `OPENROUTER_MODEL` | No | `meta-llama/llama-3.2-11b-vision-instruct` | OpenRouter model ID |
+| `GEMINI_API_KEY` | Conditional | - | Primary Google Gemini API key |
+| `GEMINI_API_KEY_2..12` | No | - | Multi-key rotation pool keys |
+| `NEXT_PUBLIC_SUPABASE_URL` | No | - | Supabase project URL for cloud mode |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY`| No | - | Supabase public anonymous key |
+| `SUPABASE_SERVICE_ROLE_KEY` | No | - | Supabase administrative service role key |
+
+---
+
+## Contact & Support
+
+For feature requests, enterprise deployments, bug reports, or partnership inquiries:
+
+- **Founder & Developer Email**: `elrazortheodore@gmail.com`
+- **Repository**: [https://github.com/ederaefe/Visiolog](https://github.com/ederaefe/Visiolog)
 
 ---
 
