@@ -8,5 +8,6 @@ export const brandingConfig = {
   backgroundColor: "#282828",
   description: "Transforming Paper Logbooks & Registries into Digital Spreadsheets",
   titleSuffix: "Proprietary Tabular Vision & Document Processing Engine",
+  contactEmail: "elrazortheodore@gmail.com",
+  supportEmail: "elrazortheodore@gmail.com",
 };
-

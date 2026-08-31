@@ -22,7 +22,7 @@ import { NoteViewer } from '@/components/workspace/note-viewer'
 import { updateSpreadsheetCsv, deleteDocument } from '@/app/actions/workspace-actions'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { UserNav } from '@/components/layout/user-nav'
-import { AkosilLogo } from '@/components/ui/visiolog-logo'
+import { VisiologLogo } from '@/components/ui/visiolog-logo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -85,7 +85,7 @@ export function RecentsView({
   useEffect(() => {
     try {
       if (typeof window !== 'undefined') {
-        const raw = localStorage.getItem('akosil_opened_documents')
+        const raw = localStorage.getItem('visiolog_opened_documents') || localStorage.getItem('akosil_opened_documents')
         if (raw) {
           const parsed = JSON.parse(raw)
           if (Array.isArray(parsed)) {
@@ -159,7 +159,7 @@ export function RecentsView({
         next.add(docId)
         try {
           if (typeof window !== 'undefined') {
-            localStorage.setItem('akosil_opened_documents', JSON.stringify(Array.from(next)))
+            localStorage.setItem('visiolog_opened_documents', JSON.stringify(Array.from(next)))
           }
         } catch {}
         return next
@@ -268,7 +268,7 @@ export function RecentsView({
       <header className="sticky top-0 z-30 h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/recents" className="flex items-center gap-2 group">
-            <AkosilLogo className="w-7 h-7 text-[#0D5200] dark:text-emerald-400 group-hover:scale-105 transition-transform" />
+            <VisiologLogo className="w-7 h-7 text-[#0D5200] dark:text-emerald-400 group-hover:scale-105 transition-transform" />
             <span className="text-xl font-bold font-serif tracking-tight text-foreground">
               Visiolog
             </span>

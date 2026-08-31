@@ -26,11 +26,11 @@ const TABS: { key: TabKey; label: string; icon: React.ComponentType<{ className?
   { key: 'recents', label: 'Recents', icon: Clock, href: '/recents' },
   { key: 'projects', label: 'Projects', icon: FolderOpen, href: '/projects' },
   { key: 'digitize', label: 'Convert', icon: Plus },
-  { key: 'akosheets', label: 'AkoSheets', icon: FileSpreadsheet, href: '/sheets' },
+  { key: 'akosheets', label: 'Sheets', icon: FileSpreadsheet, href: '/sheets' },
 ]
 
-export const DOCK_STORAGE_KEY = 'akosil_island_dock_position'
-export const COLLAPSED_STORAGE_KEY = 'akosil_island_collapsed'
+export const DOCK_STORAGE_KEY = 'visiolog_island_dock_position'
+export const COLLAPSED_STORAGE_KEY = 'visiolog_island_collapsed'
 
 export function DesktopDynamicIsland({ userTier = 'free' }: DesktopDynamicIslandProps) {
   const pathname = usePathname() || ''

@@ -217,7 +217,7 @@ export function MobileAppShell({
   // PWA First-Landing detection
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const dismissed = localStorage.getItem('akosil_pwa_dismissed')
+      const dismissed = localStorage.getItem('visiolog_pwa_dismissed') || localStorage.getItem('akosil_pwa_dismissed')
       const standalone =
         window.matchMedia('(display-mode: standalone)').matches ||
         // @ts-expect-error navigator.standalone
@@ -239,7 +239,7 @@ export function MobileAppShell({
   const [isAppendExplainerOpen, setIsAppendExplainerOpen] = useState(false)
 
   const handleDismissPwaPrompt = () => {
-    localStorage.setItem('akosil_pwa_dismissed', 'true')
+    localStorage.setItem('visiolog_pwa_dismissed', 'true')
     setShowPwaPrompt(false)
   }
 
@@ -535,7 +535,7 @@ export function MobileAppShell({
         prev.map((s) => (s.id === activeSpreadsheet.id ? { ...s, csv_data: newCsv } : s))
       )
       try {
-        localStorage.setItem(`akosil_sheet_cache_${activeSpreadsheet.id}`, newCsv)
+        localStorage.setItem(`visiolog_sheet_cache_${activeSpreadsheet.id}`, newCsv)
       } catch {}
       if (selectedDocId) {
         updateSpreadsheetCsv(selectedDocId, newCsv).catch(() => {})
@@ -798,7 +798,8 @@ export function MobileAppShell({
     }
     const hasSeenExplainer =
       typeof window !== 'undefined' &&
-      localStorage.getItem('akosil_master_sheet_explainer_seen') === 'true'
+      (localStorage.getItem('visiolog_master_sheet_explainer_seen') === 'true' ||
+       localStorage.getItem('akosil_master_sheet_explainer_seen') === 'true')
 
     if (!hasSeenExplainer) {
       setIsAppendExplainerOpen(true)
@@ -809,7 +810,7 @@ export function MobileAppShell({
 
   const handleDismissAppendExplainer = () => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('akosil_master_sheet_explainer_seen', 'true')
+      localStorage.setItem('visiolog_master_sheet_explainer_seen', 'true')
     }
     setIsAppendExplainerOpen(false)
     proceedWithAppendReview()

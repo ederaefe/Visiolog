@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react'
 import Link from 'next/link'
-import { AkosilLogo } from '@/components/ui/visiolog-logo'
+import { VisiologLogo } from '@/components/ui/visiolog-logo'
 import { reportSystemError } from '@/lib/system-logger'
 import { ArrowLeft, Home, Layers } from 'lucide-react'
 
@@ -30,7 +30,7 @@ export default function NotFound() {
       <header className="w-full max-w-md flex items-center justify-between py-2">
         <Link href="/" className="flex items-center gap-2 touch-native-active">
           <div className="w-8 h-8 rounded-xl bg-[#2E8B57]/10 dark:bg-emerald-500/10 flex items-center justify-center text-[#2E8B57] dark:text-emerald-400 border border-emerald-500/20">
-            <AkosilLogo className="w-5 h-5" color="currentColor" />
+            <VisiologLogo className="w-5 h-5" color="currentColor" />
           </div>
           <span className="font-bold text-base tracking-tight text-gray-900 dark:text-white">
             Visiolog

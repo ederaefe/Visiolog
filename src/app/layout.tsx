@@ -7,19 +7,20 @@ import { PWAInstallPrompt } from "@/components/pwa-install-prompt";
 import { Toaster } from "@/components/ui/sonner";
 import { FloatingScanFabWrapper } from "@/components/workspace/floating-scan-fab-wrapper";
 import { brandingConfig } from "@/config/branding";
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
+// Configure Geist Sans font with local css variable binding
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
+// Configure Geist Mono font with local css variable binding
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
+// Viewport configuration optimizing mobile usability and responsive theme colors
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
@@ -32,8 +33,9 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+// Root metadata definition referencing central Visiolog branding configuration
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://Visiolog.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://visiolog.local'),
   title: `${brandingConfig.name} - ${brandingConfig.titleSuffix}`,
   description: brandingConfig.description,
   appleWebApp: {
@@ -51,6 +53,7 @@ export const metadata: Metadata = {
   },
 };
 
+// Root layout component providing theme, offline PWA support, and zero external tracking
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,6 +69,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/icon?v=2.0.0" />
         <link rel="shortcut icon" href="/icon?v=2.0.0" type="image/png" />
         <link rel="apple-touch-icon" href="/apple-icon?v=2.0.0" />
+        {/* Preconnect links for typography with fallback to system fonts when offline */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap" rel="stylesheet" />
@@ -87,8 +91,6 @@ export default function RootLayout({
             <Toaster duration={3000} />
           </PWAProvider>
         </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

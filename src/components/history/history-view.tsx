@@ -21,7 +21,7 @@ import { NoteViewer } from '@/components/workspace/note-viewer'
 import { updateSpreadsheetCsv, deleteDocument } from '@/app/actions/workspace-actions'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { UserNav } from '@/components/layout/user-nav'
-import { AkosilLogo } from '@/components/ui/visiolog-logo'
+import { VisiologLogo } from '@/components/ui/visiolog-logo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -163,7 +163,7 @@ export function HistoryView({
       <header className="sticky top-0 z-30 h-16 border-b border-border bg-card/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/projects" className="flex items-center gap-2 group">
-            <AkosilLogo className="w-7 h-7 text-[#0D5200] dark:text-emerald-400 group-hover:scale-105 transition-transform" />
+            <VisiologLogo className="w-7 h-7 text-[#0D5200] dark:text-emerald-400 group-hover:scale-105 transition-transform" />
             <span className="text-xl font-bold font-serif tracking-tight text-foreground">
               Visiolog
             </span>

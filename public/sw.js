@@ -1,4 +1,4 @@
-const CACHE_NAME = 'akosil-pwa-v4';
+const CACHE_NAME = 'visiolog-pwa-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/projects',

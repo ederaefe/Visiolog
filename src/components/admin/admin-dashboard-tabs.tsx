@@ -1,14 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import { Users, Bug, Activity, Shield } from 'lucide-react'
+import { Users, Bug, Database } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface AdminDashboardTabsProps {
   userCount: number
   errorCount: number
-  activeTab: 'users' | 'errors'
-  onTabChange: (tab: 'users' | 'errors') => void
+  activeTab: 'users' | 'database' | 'errors'
+  onTabChange: (tab: 'users' | 'database' | 'errors') => void
 }
 
 export function AdminDashboardTabs({
@@ -18,8 +17,9 @@ export function AdminDashboardTabs({
   onTabChange,
 }: AdminDashboardTabsProps) {
   return (
-    <div className="flex items-center gap-2 p-1 bg-muted/60 border border-border/80 rounded-2xl w-fit mb-6">
+    <div className="flex flex-wrap items-center gap-2 p-1 bg-muted/60 border border-border/80 rounded-2xl w-fit mb-6">
       <button
+        type="button"
         onClick={() => onTabChange('users')}
         className={cn(
           'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all',
@@ -29,13 +29,28 @@ export function AdminDashboardTabs({
         )}
       >
         <Users className="w-4 h-4 text-primary" />
-        <span>User Accounts &amp; Quotas</span>
+        <span>Accounts</span>
         <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-mono">
           {userCount}
         </span>
       </button>
 
       <button
+        type="button"
+        onClick={() => onTabChange('database')}
+        className={cn(
+          'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all',
+          activeTab === 'database'
+            ? 'bg-card text-foreground shadow-xs border border-border'
+            : 'text-muted-foreground hover:text-foreground'
+        )}
+      >
+        <Database className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+        <span>Database Studio</span>
+      </button>
+
+      <button
+        type="button"
         onClick={() => onTabChange('errors')}
         className={cn(
           'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all',
@@ -45,7 +60,7 @@ export function AdminDashboardTabs({
         )}
       >
         <Bug className="w-4 h-4 text-red-500" />
-        <span>System Error Logs &amp; Diagnostics</span>
+        <span>Diagnostics</span>
         <span
           className={cn(
             'text-[10px] px-2 py-0.5 rounded-full font-mono font-bold',

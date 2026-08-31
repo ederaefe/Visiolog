@@ -26,10 +26,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { deleteAccount } from '@/app/actions/project-actions'
-import { LogOut, Trash2, Loader2, AlertTriangle, CreditCard, Sun, Moon, LayoutGrid, Check } from 'lucide-react'
+import { LogOut, Trash2, Loader2, AlertTriangle, CreditCard, Sun, Moon, LayoutGrid, Check, Sliders } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { createClient } from '@/utils/supabase/client'
+import { AiSettingsModal } from '@/components/settings/ai-settings-modal'
  
 interface UserNavProps {
   user: {
@@ -49,12 +50,13 @@ interface UserNavProps {
 }
  
 export function UserNav({ user, profile }: UserNavProps) {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [dockPosition, setDockPosition] = useState<'bottom' | 'top' | 'left' | 'right'>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('akosil_island_dock_position')
+      const saved = localStorage.getItem('visiolog_island_dock_position') || localStorage.getItem('akosil_island_dock_position')
       if (saved === 'top' || saved === 'bottom' || saved === 'left' || saved === 'right') {
         return saved
       }
@@ -71,7 +73,7 @@ export function UserNav({ user, profile }: UserNavProps) {
   const handleSetDockPosition = (pos: 'bottom' | 'top' | 'left' | 'right') => {
     setDockPosition(pos)
     try {
-      localStorage.setItem('akosil_island_dock_position', pos)
+      localStorage.setItem('visiolog_island_dock_position', pos)
       window.dispatchEvent(new CustomEvent('visiolog-dock-position-changed', { detail: pos }))
       toast.success(`Dock moved to ${pos}`)
     } catch {
@@ -209,6 +211,15 @@ export function UserNav({ user, profile }: UserNavProps) {
             </DropdownMenuSubContent>
           </DropdownMenuSub>
 
+          {/* System & AI Settings */}
+          <DropdownMenuItem
+            onClick={() => setIsSettingsOpen(true)}
+            className="cursor-pointer flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium text-foreground hover:bg-muted"
+          >
+            <Sliders className="w-4 h-4 text-muted-foreground" />
+            <span>Settings</span>
+          </DropdownMenuItem>
+
           <DropdownMenuSeparator />
           
           {/* Account Submenu */}
@@ -249,6 +260,9 @@ export function UserNav({ user, profile }: UserNavProps) {
           </DropdownMenuSub>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Enterprise System & AI Provider Settings Modal */}
+      <AiSettingsModal open={isSettingsOpen} onOpenChange={setIsSettingsOpen} />
 
       {/* Delete Account Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>

@@ -467,10 +467,10 @@ export function QuickScanModal({ isOpen, onOpenChange, userTier = 'free' }: Quic
         // Record newly created document IDs in sessionStorage for Recents highlighting
         try {
           if (typeof window !== 'undefined' && newlyCreatedDocIds.length > 0) {
-            const existingRaw = sessionStorage.getItem('akosil_new_scans') || '[]'
+            const existingRaw = sessionStorage.getItem('visiolog_new_scans') || sessionStorage.getItem('akosil_new_scans') || '[]'
             const existingIds = JSON.parse(existingRaw)
             const merged = Array.from(new Set([...existingIds, ...newlyCreatedDocIds]))
-            sessionStorage.setItem('akosil_new_scans', JSON.stringify(merged))
+            sessionStorage.setItem('visiolog_new_scans', JSON.stringify(merged))
           }
         } catch {
           // Session storage fallback

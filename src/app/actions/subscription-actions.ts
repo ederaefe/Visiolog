@@ -19,11 +19,11 @@ export async function initializeSubscriptionPayment(tier: 'pro' | 'enterprise') 
   const amountUSD = pricesUSD[tier] || 19
   // Paystack amount in smallest currency unit (e.g. cents for USD = amount * 100)
   const amountInSubunits = amountUSD * 100
-  const reference = `Akosil_sub_${user.id}_${tier}_${Date.now()}`
+  const reference = `Visiolog_sub_${user.id}_${tier}_${Date.now()}`
 
   const payload = {
     key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || '',
-    email: user.email || 'user@Visiolog.com',
+    email: user.email || 'user@visiolog.com',
     amount: amountInSubunits,
     currency: 'USD',
     ref: reference,

@@ -22,8 +22,8 @@ export async function GET() {
     isAuthenticated = false
   }
 
-  // Inject authoritative server state into HTML
-  const authScript = `<script>window.__AKOSIL_AUTH__ = ${isAuthenticated};</script>`
+  // Inject authoritative server state into HTML with backward compatibility
+  const authScript = `<script>window.__VISIOLOG_AUTH__ = ${isAuthenticated}; window.__AKOSIL_AUTH__ = ${isAuthenticated};</script>`
   htmlContent = htmlContent.replace('</head>', `${authScript}\n</head>`)
 
   return new NextResponse(htmlContent, {

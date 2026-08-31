@@ -30,7 +30,7 @@ import {
 import { cn } from '@/lib/utils'
 import { triggerHaptic } from '@/lib/haptics'
 import { toast } from 'sonner'
-import { AkosilLogo } from '@/components/ui/visiolog-logo'
+import { VisiologLogo } from '@/components/ui/visiolog-logo'
 import { MobileProject, MobileDocument, MobileSpreadsheet } from '@/components/mobile/mobile-app-shell'
 
 interface ProjectsTabViewProps {
@@ -814,7 +814,7 @@ export function ProjectsTabView({
       {/* ── Top Header with Brand SVG ── */}
       <div className="px-5 pt-6 pb-3 flex justify-between items-center bg-white dark:bg-[#282828] border-b border-gray-100 dark:border-[#383838]">
         <div className="flex items-center gap-1.5">
-          <AkosilLogo className="w-8 h-8 text-[#0D5200] dark:text-emerald-400" />
+          <VisiologLogo className="w-8 h-8 text-[#0D5200] dark:text-emerald-400" />
         </div>
 
         <div className="flex items-center gap-2">

@@ -766,7 +766,7 @@ export function WorkspaceView({ project, documents, spreadsheets: initialSpreads
           const fileReader = new FileReader()
           fileReader.onload = (ev) => {
             if (ev.target?.result && typeof window !== 'undefined') {
-              sessionStorage.setItem(`Akosil_preview_${readyFile.name}`, ev.target.result as string)
+              sessionStorage.setItem(`visiolog_preview_${readyFile.name}`, ev.target.result as string)
             }
           }
           fileReader.readAsDataURL(readyFile)

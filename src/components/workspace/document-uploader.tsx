@@ -19,7 +19,7 @@ export function DocumentUploader({ projectId, profile }: { projectId: string; pr
       const reader = new FileReader()
       reader.onload = (e) => {
         if (e.target?.result && typeof window !== 'undefined') {
-          sessionStorage.setItem(`Akosil_preview_${fileName}`, e.target.result as string)
+          sessionStorage.setItem(`visiolog_preview_${fileName}`, e.target.result as string)
         }
       }
       reader.readAsDataURL(file)

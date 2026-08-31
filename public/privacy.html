@@ -1,51 +1,51 @@
 <section class="space-y-4">
   <h2 class="text-2xl font-bold font-serif text-foreground">1. Introduction and Scope</h2>
   <p>
-    Welcome to Akosil ("we," "our," or "us"). We respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. This Privacy Policy describes our practices with respect to personal data we collect from or about you when you access Akosil, utilize our document extraction and Optical Character Recognition (OCR) services, interact with our third-party integrations (such as Google Sheets), or otherwise use our platform (collectively, the "Services").
+    Welcome to Visiolog ("we," "our," or "us"). We respect your privacy and are strongly committed to keeping secure any information we obtain from you or about you. This Privacy Policy describes our practices with respect to data handled when you access Visiolog, utilize our document extraction and Optical Character Recognition (OCR) services, run self-hosted air-gapped instances, interact with optional third-party integrations (such as Google Sheets), or otherwise use our platform (collectively, the "Services").
   </p>
   <p>
-    This Privacy Policy is governed by the laws of the Federal Republic of Nigeria, including but not limited to the Nigeria Data Protection Act (NDPA) 2023 and the Nigeria Data Protection Regulation (NDPR). By using the Services, you acknowledge that you have read, understood, and agree to be bound by the data handling practices described in this document.
+    This Privacy Policy is governed by the laws of the Federal Republic of Nigeria, including but not limited to the Nigeria Data Protection Act (NDPA) 2023 and the Nigeria Data Protection Regulation (NDPR). By using the Services, you acknowledge that you have read, understood, and agree to the data handling practices described in this document.
   </p>
 </section>
 
 <section class="space-y-4">
-  <h2 class="text-2xl font-bold font-serif text-foreground">2. Information We Collect</h2>
+  <h2 class="text-2xl font-bold font-serif text-foreground">2. Information We Collect & Privacy Architecture</h2>
   <p>
-    To provide our Services effectively, we collect several categories of information, which may include personal data. The scope of data collection depends on how you interact with Akosil.
+    Visiolog is designed with a privacy-first, local-first architecture. In self-hosted or local standalone mode, your documents and spreadsheets remain 100% on your local workstation without external network transmissions.
   </p>
   
   <h3 class="text-xl font-semibold mt-6 mb-2">2.1 Information You Provide Directly</h3>
   <ul class="list-disc pl-6 space-y-2">
-    <li><strong>Account Data:</strong> When you register for an account, we collect your email address, full name, and authentication credentials. If you utilize single sign-on (SSO) providers like Google, we receive basic profile information (such as your name and email) permitted by your configuration with that provider.</li>
-    <li><strong>Billing Information:</strong> If you subscribe to a paid tier (Professional or Enterprise), payment processing is handled securely by our third-party payment processor, Paystack. We do not process, store, or transmit full credit card numbers on our servers. We only retain billing history, subscription status, and transactional metadata.</li>
-    <li><strong>Customer Support Data:</strong> Information you provide when you contact us for technical support, including crash logs, diagnostic information, and written correspondence.</li>
+    <li><strong>Account Data:</strong> When registering for an online account, we collect your email address, full name, and authentication credentials. If you utilize single sign-on (SSO) providers like Google, we receive basic profile information permitted by your configuration. In local standalone mode, no online account is required.</li>
+    <li><strong>Billing Information:</strong> If you subscribe to a hosted tier, payment processing is handled securely by our third-party payment processor (Paystack/Flutterwave). We do not process, store, or transmit full credit card numbers on our servers.</li>
+    <li><strong>Customer Support Data:</strong> Information you provide when contacting us for technical support, including diagnostic information and written correspondence.</li>
   </ul>
 
   <h3 class="text-xl font-semibold mt-6 mb-2">2.2 User-Generated Content and Document Data</h3>
   <ul class="list-disc pl-6 space-y-2">
-    <li><strong>Uploaded Documents:</strong> When you upload images, PDFs, or other document formats for OCR processing, we temporarily process these files to extract text and tabular data.</li>
-    <li><strong>Zero-Storage Architecture:</strong> We employ a strict data-minimization approach. Uploaded documents are processed in-memory for extraction purposes and are promptly discarded after the text is converted into spreadsheet rows. We do not permanently store the raw images of your proprietary documents unless explicitly required by an active, uncompleted background task.</li>
-    <li><strong>Extracted Data:</strong> The resulting extracted textual and tabular data (CSV data) is stored securely in our database (Supabase) to allow you to view, edit, and export your workspaces across sessions.</li>
+    <li><strong>Uploaded Documents:</strong> When you upload images, PDFs, or other document formats for OCR processing, files are processed temporarily in volatile memory buffers to extract text and tabular matrices.</li>
+    <li><strong>Zero-Storage Architecture:</strong> Uploaded documents are processed in volatile memory and permanently discarded after text is converted into spreadsheet rows. We do not permanently store raw document images.</li>
+    <li><strong>Extracted Data:</strong> Extracted spreadsheet datasets are persisted in your configured storage backend (browser IndexedDB for local-first mode, or Supabase for cloud-synchronized mode).</li>
   </ul>
 
   <h3 class="text-xl font-semibold mt-6 mb-2">2.3 Information Collected Automatically</h3>
   <ul class="list-disc pl-6 space-y-2">
-    <li><strong>Usage and Telemetry Data:</strong> We automatically log standard technical information when you access the Services. This includes IP addresses, browser types, operating systems, referring URLs, device identifiers, and interaction timestamps.</li>
-    <li><strong>Cookies and Tracking Technologies:</strong> We use cookies (small text files stored on your device) and similar tracking technologies to maintain session state, remember user preferences, and analyze platform traffic. You may control cookie preferences through your browser settings, though disabling essential cookies may render parts of the application unusable.</li>
+    <li><strong>Usage and Telemetry:</strong> In cloud-hosted instances, standard operational diagnostic logs may be maintained. In self-hosted and air-gapped instances, external telemetry is deactivated by default.</li>
+    <li><strong>Local Storage:</strong> We use local storage and IndexedDB on your device to maintain session state, offline project caches, and user theme preferences.</li>
   </ul>
 </section>
 
 <section class="space-y-4">
   <h2 class="text-2xl font-bold font-serif text-foreground">3. How We Use Your Information</h2>
   <p>
-    We only process your personal data when we have a lawful basis to do so under the NDPA and applicable global regulations. We use the collected information for the following purposes:
+    We only process your data when we have a lawful basis to do so under the NDPA and applicable global regulations. We use the collected information for the following purposes:
   </p>
   <ul class="list-disc pl-6 space-y-2">
-    <li><strong>Service Provision:</strong> To authenticate users, provide OCR capabilities, maintain workspace state, and facilitate exports to localized environments or third-party integrations.</li>
-    <li><strong>Platform Improvement:</strong> To monitor system performance, troubleshoot technical anomalies, and optimize our proprietary extraction algorithms. We do <em>not</em> use your private, extracted tabular data to train public machine learning models without your explicit opt-in consent.</li>
-    <li><strong>Communication:</strong> To send critical transactional emails (e.g., password resets, billing receipts, security alerts) and, subject to your opt-in preferences, promotional or feature-update newsletters.</li>
-    <li><strong>Security and Fraud Prevention:</strong> To enforce our Terms of Service, monitor for unauthorized access attempts, mitigate DDoS attacks, and protect the overall integrity of the Akosil infrastructure.</li>
-    <li><strong>Legal Compliance:</strong> To comply with applicable Nigerian laws, lawful court orders, or governmental requests.</li>
+    <li><strong>Service Provision:</strong> To authenticate users, provide OCR capabilities, maintain workspace state, and facilitate exports to local formats or external integrations.</li>
+    <li><strong>Platform Improvement:</strong> To monitor system reliability and optimize tabular extraction algorithms. We do <em>not</em> use your private document data to train public machine learning models without explicit consent.</li>
+    <li><strong>Communication:</strong> To send critical transactional notices (e.g. security alerts, password resets) and product updates.</li>
+    <li><strong>Security and Fraud Prevention:</strong> To protect infrastructure integrity, prevent abuse, and mitigate unauthorized access.</li>
+    <li><strong>Legal Compliance:</strong> To comply with applicable statutory laws or lawful governmental requests.</li>
   </ul>
 </section>
 
@@ -54,87 +54,55 @@
   
   <h3 class="text-xl font-semibold mt-6 mb-2">4.1 Google Workspace and Google Sheets Integration</h3>
   <p>
-    Akosil offers an integration with Google Sheets, allowing users to seamlessly export and synchronize their extracted tabular data to their personal or organizational Google Drive. By utilizing this feature, you authorize Akosil to access your Google account via OAuth 2.0.
+    Visiolog offers an optional integration with Google Sheets, allowing users to export and synchronize extracted tabular datasets directly to Google Drive upon authorization via OAuth 2.0.
   </p>
   <ul class="list-disc pl-6 space-y-2">
-    <li><strong>Scope of Access:</strong> We request only the narrowest possible permissions required to create new spreadsheets and write row data to the spreadsheets you explicitly select or create via the Akosil interface.</li>
-    <li><strong>Data Handling Requirements:</strong> Akosil's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:underline">Google API Services User Data Policy</a>, including the Limited Use requirements.</li>
-    <li><strong>Token Storage:</strong> OAuth access and refresh tokens are encrypted at rest within our database. We do not use Google OAuth tokens to access any Google Drive files other than those created by or explicitly connected to the Akosil application.</li>
+    <li><strong>Scope of Access:</strong> We request only the narrowest permissions required to create new spreadsheets and write row data to the spreadsheets you explicitly select.</li>
+    <li><strong>Data Handling Requirements:</strong> Visiolog's use and transfer of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:underline">Google API Services User Data Policy</a>, including the Limited Use requirements.</li>
+    <li><strong>Token Storage:</strong> OAuth tokens are encrypted at rest and never used to access unauthorized Google Drive files.</li>
   </ul>
 
   <h3 class="text-xl font-semibold mt-6 mb-2">4.2 Service Providers</h3>
   <p>
-    We employ trusted third-party service providers to facilitate our Services. These include:
-  </p>
-  <ul class="list-disc pl-6 space-y-2">
-    <li><strong>Infrastructure and Database Hosting:</strong> Supabase and Vercel for secure cloud hosting, database management, and edge routing.</li>
-    <li><strong>Payment Processing:</strong> Paystack for secure, PCI-DSS compliant subscription billing and transaction routing.</li>
-  </ul>
-  <p>
-    We execute stringent Data Processing Agreements (DPAs) with these sub-processors, ensuring they adhere to security standards commensurate with or stricter than our own, and they are strictly prohibited from utilizing your personal data for their own independent marketing or commercial purposes.
+    When utilizing hosted cloud modes, trusted providers may facilitate delivery (e.g. Supabase, Vercel, Paystack). Self-hosted deployments bypass third-party cloud intermediaries entirely.
   </p>
 </section>
 
 <section class="space-y-4">
   <h2 class="text-2xl font-bold font-serif text-foreground">5. Data Security and Retention</h2>
   <p>
-    We implement robust technical and organizational security measures to protect your data against unauthorized access, destruction, loss, alteration, or misuse. These measures include TLS/SSL encryption for data in transit, AES-256 encryption for data at rest, Role-Based Access Controls (RBAC), and strict Row Level Security (RLS) policies within our database architecture.
+    We implement robust security measures including TLS encryption in transit, AES-256 encryption at rest, and strict access controls. In local-first mode, all data resides entirely in your client environment.
   </p>
   <p>
-    Despite our comprehensive security protocols, no internet-based transmission or digital storage system is entirely infallible. We cannot guarantee absolute security. In the event of a legally defined data breach compromising your personal data, we will notify you and the Nigeria Data Protection Commission (NDPC) without undue delay as required by the NDPA.
-  </p>
-  <p>
-    <strong>Data Retention:</strong> We retain your account data and extracted workspace data only for as long as your account remains active or as necessary to fulfill the purposes outlined in this policy. Upon account deletion, your proprietary workspace data is permanently scrubbed from our active databases, subject only to temporary retention in encrypted operational backups for disaster recovery purposes (which are cyclically overwritten).
+    <strong>Data Retention:</strong> We retain account and cloud workspace data only while your account remains active or as needed for operational purposes. Deleting your workspace scrubs the corresponding records permanently.
   </p>
 </section>
 
 <section class="space-y-4">
   <h2 class="text-2xl font-bold font-serif text-foreground">6. Your Data Protection Rights</h2>
   <p>
-    Under the Nigeria Data Protection Act (NDPA) and other applicable global regulations (such as the GDPR and CCPA, where applicable to international users), you possess specific rights regarding your personal data:
+    Under the NDPA and international data privacy regulations, you possess rights to access, rectify, erase, restrict processing, and port your personal data.
   </p>
-  <ul class="list-disc pl-6 space-y-2">
-    <li><strong>Right to Access:</strong> You may request a comprehensive copy of the personal data we hold about you.</li>
-    <li><strong>Right to Rectification:</strong> You may request corrections to any inaccurate or incomplete personal data.</li>
-    <li><strong>Right to Erasure (Right to be Forgotten):</strong> You may request the permanent deletion of your account and associated personal data, subject to limited legal or legitimate business retention exceptions (e.g., tax compliance records).</li>
-    <li><strong>Right to Restrict Processing:</strong> You may request a temporary halt to the processing of your data under specific dispute circumstances.</li>
-    <li><strong>Right to Data Portability:</strong> You may request your data in a structured, commonly used, and machine-readable format.</li>
-    <li><strong>Right to Object:</strong> You may object to the processing of your data for direct marketing purposes at any time.</li>
-  </ul>
   <p>
-    To exercise any of these rights, please contact our Data Protection Officer at the contact information provided at the end of this document. We will respond to all legitimate requests within the legally mandated timeframe (typically 30 days).
+    To exercise any of these rights, contact our Data Protection team using the details below.
   </p>
 </section>
 
 <section class="space-y-4">
   <h2 class="text-2xl font-bold font-serif text-foreground">7. International Data Transfers</h2>
   <p>
-    Akosil operates global cloud infrastructure. Consequently, your personal data may be transferred to, stored, and processed in jurisdictions outside of Nigeria. When we engage in cross-border data transfers, we ensure that such transfers comply with the NDPA, utilizing mechanisms such as Standard Contractual Clauses (SCCs), adequacy decisions, or explicit user consent, ensuring your data receives a substantially similar degree of protection as it would domestically.
+    Where cloud services operate across multiple jurisdictions, data transfers comply with statutory requirements under the NDPA using appropriate safeguards.
   </p>
 </section>
 
 <section class="space-y-4">
-  <h2 class="text-2xl font-bold font-serif text-foreground">8. Children's Privacy</h2>
+  <h2 class="text-2xl font-bold font-serif text-foreground">8. Contact Us</h2>
   <p>
-    The Services are intended strictly for general business and professional audiences and are not directed at children under the age of 18 (or the age of legal majority in your jurisdiction). We do not knowingly collect personal data from minors. If we become aware that we have inadvertently gathered data from a child, we will take immediate measures to purge that information from our systems.
-  </p>
-</section>
-
-<section class="space-y-4">
-  <h2 class="text-2xl font-bold font-serif text-foreground">9. Changes to this Privacy Policy</h2>
-  <p>
-    We reserve the right to amend or update this Privacy Policy at our discretion to reflect changes in our operational practices, technological advancements, or statutory requirements. When material modifications are made, we will provide conspicuous notice through the Services (such as an in-app banner) or via direct email communication prior to the changes taking effect. Your continued use of the Services post-modification constitutes your acknowledgment of the updated policy.
-  </p>
-</section>
-
-<section class="space-y-4">
-  <h2 class="text-2xl font-bold font-serif text-foreground">10. Contact Us</h2>
-  <p>
-    If you have any questions, concerns, or requests regarding this Privacy Policy or our data processing practices, please contact our Data Protection Operations team:
+    For inquiries or data privacy requests, contact:
   </p>
   <div class="bg-muted/30 p-6 rounded-lg border border-border mt-4">
-    <p class="font-semibold text-foreground mb-1">Akosil Data Protection Officer</p>
-    <p>Email: legal@akosil.com</p>
+    <p class="font-semibold text-foreground mb-1">Visiolog Data Protection Officer</p>
+    <p>Email: elrazortheodore@gmail.com</p>
     <p>Jurisdiction: Federal Republic of Nigeria</p>
   </div>
 </section>

@@ -1,0 +1,33 @@
+services:
+  # Visiolog Web Application
+  visiolog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: visiolog_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - LOCAL_FIRST=true
+      - AI_VISION_PROVIDER=ollama
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3.2-vision
+    depends_on:
+      - ollama
+
+  # Local Air-Gapped Ollama Vision Server
+  ollama:
+    image: ollama/ollama:latest
+    container_name: visiolog_ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_storage:/root/.ollama
+
+volumes:
+  ollama_storage:
+    driver: local

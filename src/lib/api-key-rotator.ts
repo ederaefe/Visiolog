@@ -257,3 +257,11 @@ class ApiKeyRotator {
 }
 
 export const apiKeyRotator = new ApiKeyRotator()
+
+export function getNextGeminiApiKey(tier: 'free' | 'pro' | 'enterprise' = 'free'): string {
+  try {
+    return apiKeyRotator.getNextKey(tier)
+  } catch {
+    return process.env.GEMINI_API_KEY || ''
+  }
+}

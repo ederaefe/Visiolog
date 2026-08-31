@@ -1,5 +1,5 @@
 import { getProjectMasterSheet } from '@/app/actions/project-sheet-actions'
-import { AkosilSheetMiniApp } from '@/components/sheet/visiolog-sheet-mini-app'
+import { VisiologSheetMiniApp } from '@/components/sheet/visiolog-sheet-mini-app'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 
@@ -50,7 +50,7 @@ export default async function SheetPage({ params }: SheetPageProps) {
   const { csvData, projectName } = await getProjectMasterSheet(projectId)
 
   return (
-    <AkosilSheetMiniApp
+    <VisiologSheetMiniApp
       projectId={project.id}
       projectName={projectName}
       initialCsvData={csvData}

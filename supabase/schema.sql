@@ -1,4 +1,4 @@
--- Akosilz Supabase Database Schema
+-- Visiolog Supabase Database Schema
 
 -- Custom Types
 CREATE TYPE user_tier AS ENUM ('free', 'pro', 'enterprise');

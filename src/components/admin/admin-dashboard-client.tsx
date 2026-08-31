@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { AdminDashboardTabs } from './admin-dashboard-tabs'
 import { AdminUserTable } from './admin-user-table'
 import { AdminErrorLogsViewer } from './admin-error-logs-viewer'
+import { DatabaseStudio } from './database-studio'
 import { SystemErrorLogRecord } from '@/app/actions/system-log-actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Users, Zap, BarChart3, FileSpreadsheet, Activity } from 'lucide-react'
@@ -22,7 +23,7 @@ interface AdminDashboardClientProps {
 }
 
 export function AdminDashboardClient({ stats, errorLogs }: AdminDashboardClientProps) {
-  const [activeTab, setActiveTab] = useState<'users' | 'errors'>('users')
+  const [activeTab, setActiveTab] = useState<'users' | 'database' | 'errors'>('users')
 
   return (
     <div>
@@ -34,7 +35,7 @@ export function AdminDashboardClient({ stats, errorLogs }: AdminDashboardClientP
         onTabChange={setActiveTab}
       />
 
-      {activeTab === 'users' ? (
+      {activeTab === 'users' && (
         <div>
           {/* Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
@@ -101,24 +102,32 @@ export function AdminDashboardClient({ stats, errorLogs }: AdminDashboardClientP
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg sm:text-xl font-bold font-serif text-foreground flex items-center gap-2">
               <Activity className="w-5 h-5 text-primary" />
-              Registered User Accounts (Tap row for full details)
+              Registered User Accounts
             </h2>
             <span className="text-xs text-muted-foreground">
               Showing {stats.recentUsers.length} accounts
             </span>
           </div>
 
-          {/* Interactive User Table with Tap-to-View Modal & Per-User Error Logs */}
+          {/* Interactive User Table */}
           <AdminUserTable users={stats.recentUsers} errorLogs={errorLogs} />
         </div>
-      ) : (
+      )}
+
+      {activeTab === 'database' && (
+        <div className="space-y-4">
+          <DatabaseStudio />
+        </div>
+      )}
+
+      {activeTab === 'errors' && (
         <div>
           <div className="mb-6">
             <h2 className="text-xl sm:text-2xl font-bold font-serif text-foreground mb-1">
-              System Error Logs &amp; Debug Telemetry
+              System Error Logs
             </h2>
             <p className="text-xs text-muted-foreground">
-              Real-time application exceptions, stack traces, and subsystem errors per user account for diagnostic debugging.
+              Real-time application exceptions and subsystem errors for debugging.
             </p>
           </div>
           <AdminErrorLogsViewer initialLogs={errorLogs} />

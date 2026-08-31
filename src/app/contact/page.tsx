@@ -10,7 +10,7 @@ import { toast } from 'sonner'
 
 export default function ContactPage() {
   const [copied, setCopied] = useState(false)
-  const contactEmail = 'efeoghene@proton.me'
+  const contactEmail = 'elrazortheodore@gmail.com'
   const emailSubject = 'Inquiry Regarding Visiolog Document-to-Spreadsheet Platform'
   const emailBody = `Hello Visiolog Team,
 

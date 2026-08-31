@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import Link from 'next/link'
 import { brandingConfig } from '@/config/branding'
-import { AkosilLogo } from '@/components/ui/visiolog-logo'
+import { VisiologLogo } from '@/components/ui/visiolog-logo'
 import { ShieldCheck, Sparkles, FileSpreadsheet, ArrowLeft, Loader2, Mail, Lock, UserPlus, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -125,7 +125,7 @@ function AuthFormCardInner({ initialView = 'sign_in', redirectUrl }: AuthFormCar
       <div className="flex flex-col items-center text-center mb-6">
         <Link href="/" className="group flex flex-col items-center gap-2 mb-3">
           <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center p-2.5 shadow-xs group-hover:scale-105 transition-all">
-            <AkosilLogo className="w-7 h-7 text-primary" />
+            <VisiologLogo className="w-7 h-7 text-primary" />
           </div>
           <span className="font-sans font-black text-2xl tracking-wider text-foreground uppercase">
             {brandingConfig.name || 'VISIOLOG'}
