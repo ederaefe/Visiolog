@@ -92,28 +92,24 @@
     .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem; }
     .card-title { font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-fg); margin-bottom: 0.75rem; font-family: var(--font-mono); }
 
-    /* Dropzone (Multiple Files Supported) */
     .dropzone { border: 2px dashed var(--border); border-radius: 0.75rem; padding: 1.5rem 1rem; text-align: center; cursor: pointer; background: var(--bg); transition: border-color 0.15s ease; }
     .dropzone:hover { border-color: var(--primary); }
     .dropzone-label { font-size: 0.8125rem; font-weight: 600; color: var(--fg); }
     .dropzone-hint { font-size: 0.65rem; color: var(--muted-fg); margin-top: 0.25rem; }
 
-    /* File Queue List */
     .file-queue { display: none; flex-direction: column; gap: 0.35rem; margin-top: 0.65rem; max-height: 120px; overflow-y: auto; scrollbar-width: thin; }
-    .file-queue-item { display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 0.5rem; background: var(--muted); border-radius: 0.35rem; font-size: 0.65rem; font-family: var(--font-mono); }
+    .file-queue-item { display: flex; align-items: center; justify-content: space-between; padding: 0.35rem 0.5rem; background: var(--muted); border-radius: 0.35rem; font-size: 0.65rem; font-family: var(--font-mono); cursor: pointer; }
     .file-queue-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
 
     .doc-preview { display: none; position: relative; border-radius: 0.5rem; overflow: hidden; border: 1px solid var(--border); background: #000; max-height: 140px; margin-top: 0.65rem; }
     .doc-preview img { width: 100%; height: 140px; object-fit: contain; }
     .doc-preview-meta { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.6rem; font-family: var(--font-mono); padding: 0.25rem 0.5rem; display: flex; justify-content: space-between; }
 
-    /* 1 Preloaded Sample */
     .sample-card-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.65rem 0.85rem; background: var(--muted); border: 1px solid var(--border); border-radius: 0.5rem; cursor: pointer; text-align: left; transition: border-color 0.15s ease; }
     .sample-card-btn:hover { border-color: var(--primary); }
     .sample-card-title { font-size: 0.75rem; font-weight: 700; color: var(--fg); }
     .sample-card-sub { font-size: 0.65rem; color: var(--muted-fg); margin-top: 0.15rem; }
 
-    /* Converted Documents History */
     .history-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 240px; overflow-y: auto; scrollbar-width: thin; }
     .history-item { display: flex; align-items: center; justify-content: space-between; padding: 0.55rem 0.65rem; background: var(--bg); border: 1px solid var(--border); border-radius: 0.5rem; gap: 0.5rem; }
     .history-info { flex: 1; min-width: 0; }
@@ -126,11 +122,12 @@
 
     .main-pane { display: flex; flex-direction: column; gap: 0.85rem; }
 
-    .status-bar { display: none; align-items: center; gap: 0.5rem; padding: 0.65rem 0.85rem; border-radius: 0.65rem; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); }
+    .status-bar { display: none; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.65rem 0.85rem; border-radius: 0.65rem; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); flex-wrap: wrap; }
     .status-bar.visible { display: flex; }
     .status-bar.loading { background: hsla(105, 100%, 16%, 0.06); border-color: var(--border); color: var(--fg); }
     .status-bar.error { background: hsla(0, 72%, 51%, 0.07); border-color: hsla(0, 72%, 51%, 0.3); color: var(--danger); }
     .status-bar.success { background: hsla(142, 72%, 40%, 0.07); border-color: hsla(142, 72%, 40%, 0.3); color: var(--success); }
+    .status-msg-wrap { display: flex; align-items: center; gap: 0.45rem; }
 
     .spin { animation: spin 0.9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -190,8 +187,8 @@
             <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             <span>Settings</span>
           </a>
-          <a href="https://github.com/ederaefe/Visiolog" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" style="font-size: 0.75rem;">
-            GitHub
+          <a href="./docs.html" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+            Docs
           </a>
           <a href="./" class="btn btn-primary" style="font-size: 0.75rem;">
             Landing
@@ -242,11 +239,18 @@
           </button>
         </div>
 
-        <!-- 3. Convert Action -->
-        <button class="btn btn-primary btn-full" style="padding: 0.85rem; font-size: 0.95rem;" onclick="processDocument()">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-          <span>Convert Document</span>
-        </button>
+        <!-- 3. Convert & Retry Actions -->
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <button id="convertBtn" class="btn btn-primary btn-full" style="padding: 0.85rem; font-size: 0.95rem;" onclick="processDocument()">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            <span id="convertBtnText">Convert Document</span>
+          </button>
+
+          <button id="retryBtn" class="btn btn-outline btn-full" style="display:none; font-size: 0.85rem; padding: 0.6rem;" onclick="processDocument()">
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Retry Conversion</span>
+          </button>
+        </div>
 
         <!-- 4. Conversion History -->
         <div class="card">
@@ -380,7 +384,9 @@
         <div>&copy; 2026 Visiolog — In-Browser Workspace</div>
         <div class="footer-links">
           <a href="./">Landing</a>
+          <a href="./workspace.html">Workspace</a>
           <a href="./settings.html">Settings</a>
+          <a href="./docs.html">Docs</a>
           <a href="./privacy.html">Privacy</a>
           <a href="./terms.html">Terms</a>
           <a href="./contact.html">Contact</a>
@@ -529,7 +535,7 @@
     }
 
     var statusTimer = null;
-    function showStatus(msg, type) {
+    function showStatus(msg, type, showSettingsLink) {
       var bar = document.getElementById('statusBar');
       bar.className = 'status-bar visible ' + (type || 'loading');
 
@@ -543,11 +549,22 @@
           ? '<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>'
           : spinnerHtml);
 
-      bar.innerHTML = iconHtml + '<span>' + escHtml(msg) + '</span>';
+      var actionHtml = '';
+      if (type === 'error' || showSettingsLink) {
+        actionHtml = '<div style="display:flex; gap:0.35rem; align-items:center;">' +
+          '<a href="./settings.html" class="btn btn-outline" style="font-size:0.65rem; padding:0.2rem 0.5rem;">Edit Settings</a>' +
+        '</div>';
+      }
 
-      if (type === 'success') {
+      bar.innerHTML = '<div class="status-msg-wrap">' + iconHtml + '<span>' + escHtml(msg) + '</span></div>' + actionHtml;
+
+      var retryBtn = document.getElementById('retryBtn');
+      if (type === 'error' && uploadedB64) {
+        retryBtn.style.display = 'inline-flex';
+      } else if (type === 'success') {
+        retryBtn.style.display = 'none';
         clearTimeout(statusTimer);
-        statusTimer = setTimeout(hideStatus, 3000);
+        statusTimer = setTimeout(hideStatus, 3500);
       }
     }
 
@@ -625,6 +642,7 @@
         dimEl.textContent  = result.width + 'x' + result.height + ' (' + result.sizeKb + ' KB)';
         preview.style.display = 'block';
 
+        document.getElementById('retryBtn').style.display = 'none';
         showStatus('"' + file.name + '" loaded (' + result.sizeKb + ' KB). Ready to convert.', 'success');
       });
     }
@@ -669,7 +687,7 @@
       if (provider === 'gemini') {
         var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
         if (!key) {
-          showStatus('No Gemini key found. Go to Settings to configure your API key.', 'error');
+          showStatus('No Gemini key found. Please configure your API key in Settings.', 'error', true);
           return;
         }
         runGeminiExtractionWithPolling(key, model, prompt, 0);
@@ -677,20 +695,22 @@
       } else if (provider === 'openrouter') {
         var orKey = localStorage.getItem('visiolog_demo_openrouter_key') || '';
         if (!orKey) {
-          showStatus('No OpenRouter key found. Go to Settings to configure your key.', 'error');
+          showStatus('No OpenRouter key found. Please configure your key in Settings.', 'error', true);
           return;
         }
         runOpenRouterExtraction(orKey, model, prompt);
 
       } else if (provider === 'ollama') {
         runOllamaExtraction(model, prompt);
+
+      } else if (provider === 'custom') {
+        runCustomExtraction(model, prompt);
       }
     }
 
-    // Client-Side Gemini Polling with Exponential Backoff
     function runGeminiExtractionWithPolling(key, model, prompt, retryCount) {
       var maxRetries = 3;
-      showStatus('Analyzing document with ' + model + ' in browser...', 'loading');
+      showStatus('Analyzing document with Gemini ' + model + ' in browser...', 'loading');
 
       var url  = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key;
       var body = JSON.stringify({
@@ -734,9 +754,9 @@
         .catch(function(err) {
           clearTimeout(timeoutId);
           if (err.name === 'AbortError') {
-            showStatus('Request timed out. Please retry with a smaller image or faster model.', 'error');
+            showStatus('Request timed out. Please retry with a smaller image or faster model.', 'error', true);
           } else {
-            showStatus(err.message || 'Extraction failed. Check model & key in Settings.', 'error');
+            showStatus(err.message || 'Extraction failed. Check model & key in Settings.', 'error', true);
           }
         });
     }
@@ -767,7 +787,7 @@
           renderCsvOutput(raw.content || '', uploadedFileName);
         })
         .catch(function(err) {
-          showStatus(err.message || 'OpenRouter extraction failed.', 'error');
+          showStatus(err.message || 'OpenRouter extraction failed.', 'error', true);
         });
     }
 
@@ -791,7 +811,38 @@
           renderCsvOutput(raw, uploadedFileName);
         })
         .catch(function() {
-          showStatus('Could not connect to local Ollama at localhost:11434.', 'error');
+          showStatus('Could not connect to local Ollama at localhost:11434.', 'error', true);
+        });
+    }
+
+    function runCustomExtraction(model, prompt) {
+      var endpoint = (localStorage.getItem('visiolog_custom_endpoint') || 'http://localhost:8000/v1').replace(/\/+$/, '');
+      var cKey     = localStorage.getItem('visiolog_custom_key') || '';
+      showStatus('Sending to custom endpoint (' + endpoint + ')...', 'loading');
+
+      var headers = { 'Content-Type': 'application/json' };
+      if (cKey) headers['Authorization'] = 'Bearer ' + cKey;
+
+      var body = JSON.stringify({
+        model: model || 'default-vision-model',
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt },
+            { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,' + uploadedB64 } }
+          ]
+        }]
+      });
+
+      fetch(endpoint + '/chat/completions', { method: 'POST', headers: headers, body: body })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.error) throw new Error(data.error.message || 'Custom endpoint error');
+          var raw = ((data.choices || [])[0] || {}).message || {};
+          renderCsvOutput(raw.content || '', uploadedFileName);
+        })
+        .catch(function(err) {
+          showStatus('Custom endpoint error: ' + (err.message || 'Connection failed'), 'error', true);
         });
     }
 
@@ -800,7 +851,7 @@
       var lines   = cleaned.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
 
       if (lines.length < 2) {
-        showStatus('Could not parse a valid table. Try adjusting the prompt in Settings.', 'error');
+        showStatus('Could not parse a valid table. Try adjusting the prompt in Settings.', 'error', true);
         return;
       }
 
@@ -982,7 +1033,7 @@
       var badge    = document.getElementById('activeModelBadge');
       var provider = localStorage.getItem('visiolog_provider') || 'gemini';
       var model    = localStorage.getItem('visiolog_model') || 'gemini-2.5-flash';
-      var provName = provider === 'gemini' ? 'Gemini' : (provider === 'openrouter' ? 'OpenRouter' : 'Ollama');
+      var provName = provider === 'gemini' ? 'Gemini' : (provider === 'openrouter' ? 'OpenRouter' : (provider === 'custom' ? 'Custom' : 'Ollama'));
       if (badge) badge.textContent = provName + ' • ' + model;
     }
 

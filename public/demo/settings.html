@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings — Visiolog AI Configuration</title>
-  <meta name="description" content="Configure AI vision providers, API keys, custom models, and extraction prompts for Visiolog." />
+  <meta name="description" content="Configure AI vision providers, API keys, custom models, test outbound connections, and adjust extraction prompts for Visiolog." />
 
   <!-- Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
@@ -82,6 +82,8 @@
 
     .svg-icon { width: 1rem; height: 1rem; stroke-width: 2; stroke: currentColor; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
     .svg-icon-sm { width: 0.875rem; height: 0.875rem; }
+    .spin { animation: spin 0.9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     .settings-container { padding: 2.5rem 0 4rem; display: flex; flex-direction: column; gap: 1.5rem; }
     .settings-header { margin-bottom: 0.5rem; }
@@ -89,12 +91,12 @@
     .settings-sub { color: var(--muted-fg); font-size: 0.875rem; margin-top: 0.25rem; }
 
     .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 2px 6px var(--shadow); }
-    .card-heading { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .card-heading { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
     .card-title { font-size: 0.95rem; font-weight: 700; color: var(--fg); font-family: var(--font-serif); }
     .card-desc { font-size: 0.75rem; color: var(--muted-fg); line-height: 1.5; }
 
-    .provider-tabs { display: flex; gap: 0.35rem; }
-    .provider-tab { flex: 1; padding: 0.5rem; font-size: 0.75rem; font-weight: 700; border-radius: 0.5rem; border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg); cursor: pointer; font-family: var(--font-mono); text-align: center; transition: all 0.15s ease; }
+    .provider-tabs { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+    .provider-tab { flex: 1; min-width: 110px; padding: 0.5rem; font-size: 0.75rem; font-weight: 700; border-radius: 0.5rem; border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg); cursor: pointer; font-family: var(--font-mono); text-align: center; transition: all 0.15s ease; }
     .provider-tab:hover { color: var(--fg); border-color: var(--primary); }
     .provider-tab.active { background: var(--muted); color: var(--fg); border-color: var(--primary); }
 
@@ -131,6 +133,12 @@
     .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.65rem; font-family: var(--font-mono); padding: 0.2rem 0.5rem; border-radius: 0.35rem; border: 1px solid var(--border); background: var(--muted); }
     .status-badge.connected { color: var(--success); border-color: hsla(142, 72%, 40%, 0.3); }
 
+    /* Connection Test Result Box */
+    .connection-status-box { display: none; padding: 0.75rem 1rem; border-radius: 0.5rem; border: 1px solid var(--border); font-size: 0.75rem; font-family: var(--font-mono); line-height: 1.45; }
+    .connection-status-box.connected { display: flex; align-items: flex-start; gap: 0.5rem; background: hsla(142, 72%, 40%, 0.08); border-color: hsla(142, 72%, 40%, 0.35); color: var(--success); }
+    .connection-status-box.failed { display: flex; align-items: flex-start; gap: 0.5rem; background: hsla(0, 72%, 51%, 0.08); border-color: hsla(0, 72%, 51%, 0.35); color: var(--danger); }
+    .connection-status-box.testing { display: flex; align-items: center; gap: 0.5rem; background: hsla(105, 100%, 16%, 0.06); border-color: var(--border); color: var(--fg); }
+
     .notification-bar { display: none; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; border-radius: var(--radius); font-size: 0.8125rem; font-weight: 600; border: 1px solid var(--border); }
     .notification-bar.visible { display: flex; }
     .notification-bar.success { background: hsla(142, 72%, 40%, 0.08); border-color: hsla(142, 72%, 40%, 0.3); color: var(--success); }
@@ -165,6 +173,9 @@
             <span>Workspace</span>
             <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
+          <a href="./docs.html" class="btn btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+            Docs
+          </a>
           <a href="./" class="btn btn-ghost" style="font-size: 0.75rem;">
             Landing
           </a>
@@ -177,8 +188,8 @@
   <main class="wrap">
     <div class="settings-container">
       <div class="settings-header">
-        <h1 class="settings-title font-serif">AI Vision Settings</h1>
-        <p class="settings-sub">Manage inference providers, API credentials, custom model IDs, and extraction prompts.</p>
+        <h1 class="settings-title font-serif">AI Vision Configuration</h1>
+        <p class="settings-sub">Adaptable vision providers, credentials, custom model IDs, and live outbound connection testing.</p>
       </div>
 
       <div id="noticeBar" class="notification-bar" role="status"></div>
@@ -190,20 +201,21 @@
           <span id="providerBadge" class="status-badge connected">Google Gemini</span>
         </div>
         <p class="card-desc">
-          Choose which vision engine executes tabular document OCR. Credentials are stored securely in browser memory.
+          Choose which vision engine executes tabular document OCR. All models and keys adapt dynamically.
         </p>
 
         <div class="provider-tabs">
-          <button type="button" class="provider-tab active" id="tabGemini" onclick="switchProvider('gemini')">Gemini</button>
+          <button type="button" class="provider-tab active" id="tabGemini" onclick="switchProvider('gemini')">Google Gemini</button>
           <button type="button" class="provider-tab" id="tabOpenRouter" onclick="switchProvider('openrouter')">OpenRouter</button>
-          <button type="button" class="provider-tab" id="tabOllama" onclick="switchProvider('ollama')">Ollama</button>
+          <button type="button" class="provider-tab" id="tabOllama" onclick="switchProvider('ollama')">Ollama (Local)</button>
+          <button type="button" class="provider-tab" id="tabCustom" onclick="switchProvider('custom')">Custom Endpoint</button>
         </div>
       </section>
 
-      <!-- 2. API Credentials -->
+      <!-- 2. Endpoint & API Credentials -->
       <section class="card" id="apiKeySection">
         <div class="card-heading">
-          <div class="card-title">2. API Credentials</div>
+          <div class="card-title">2. API Credentials &amp; Endpoint</div>
           <button type="button" class="btn btn-outline" style="font-size: 0.65rem; padding: 0.25rem 0.5rem;" onclick="probeModels(true)">
             Auto-Detect Models
           </button>
@@ -212,7 +224,19 @@
           Enter your personal API key. It connects directly from your browser to the provider endpoint.
         </p>
 
-        <div class="form-group">
+        <div id="customEndpointRow" class="form-group" style="display:none;">
+          <label class="form-label" for="customEndpointInput">Base URL (OpenAI-compatible)</label>
+          <input
+            type="text"
+            id="customEndpointInput"
+            class="text-input"
+            placeholder="https://api.together.xyz/v1 or http://localhost:8000/v1"
+            oninput="handleCustomEndpointSave(this.value)"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="form-group" id="keyInputGroup">
           <label class="form-label" for="apiKeyInput">API Key</label>
           <div class="input-row">
             <input
@@ -230,14 +254,14 @@
         </div>
       </section>
 
-      <!-- 3. Model Selection -->
+      <!-- 3. Model Selection & Outbound Connection Test -->
       <section class="card">
         <div class="card-heading">
-          <div class="card-title">3. Model Selection</div>
-          <span id="modelCountBadge" class="status-badge">Customizable</span>
+          <div class="card-title">3. Model Setup &amp; Outbound Verification</div>
+          <span id="modelCountBadge" class="status-badge">Adaptable</span>
         </div>
         <p class="card-desc">
-          Select from auto-detected vision models or type any custom model identifier directly.
+          Select or type any custom model ID, then test outbound connectivity to verify valid credentials and endpoint response.
         </p>
 
         <div class="form-group">
@@ -261,6 +285,17 @@
           </div>
 
           <div class="model-pills" id="modelPills"></div>
+        </div>
+
+        <!-- Outbound Connection Test Action -->
+        <div style="margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.65rem;">
+          <button type="button" class="btn btn-primary" style="align-self: flex-start;" onclick="testOutboundConnection()" id="testConnectionBtn">
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Test Outbound Connection</span>
+          </button>
+
+          <!-- Result Indicator Box -->
+          <div id="connectionStatusBox" class="connection-status-box"></div>
         </div>
       </section>
 
@@ -299,11 +334,14 @@
         </div>
       </section>
 
-      <!-- Action Button -->
+      <!-- Navigation Actions -->
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <a href="./workspace.html" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">
           <span>Back to Workspace</span>
           <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="./docs.html" class="btn btn-outline">
+          <span>Read Documentation</span>
         </a>
       </div>
     </div>
@@ -317,6 +355,8 @@
         <div class="footer-links">
           <a href="./">Landing</a>
           <a href="./workspace.html">Workspace</a>
+          <a href="./settings.html">Settings</a>
+          <a href="./docs.html">Docs</a>
           <a href="./privacy.html">Privacy</a>
           <a href="./terms.html">Terms</a>
           <a href="./contact.html">Contact</a>
@@ -350,7 +390,8 @@
     var PRESETS = {
       gemini: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-2.0-flash'],
       openrouter: ['meta-llama/llama-3.2-11b-vision-instruct', 'qwen/qwen-2.5-vl-72b-instruct', 'google/gemini-2.5-flash', 'anthropic/claude-3.5-sonnet'],
-      ollama: ['llama3.2-vision', 'minicpm-v', 'qwen2.5-vl', 'llava']
+      ollama: ['llama3.2-vision', 'minicpm-v', 'qwen2.5-vl', 'llava'],
+      custom: ['default-vision-model', 'gpt-4o-mini', 'llama-3.2-vision']
     };
 
     var noticeTimer = null;
@@ -359,7 +400,7 @@
       bar.className = 'notification-bar visible ' + (type || 'success');
       bar.textContent = msg;
       clearTimeout(noticeTimer);
-      noticeTimer = setTimeout(function() { bar.className = 'notification-bar'; }, 3000);
+      noticeTimer = setTimeout(function() { bar.className = 'notification-bar'; }, 3500);
     }
 
     function switchProvider(prov) {
@@ -368,14 +409,21 @@
 
       document.querySelectorAll('.provider-tab').forEach(function(b) { b.classList.remove('active'); });
 
-      var keySec   = document.getElementById('apiKeySection');
-      var keyInput = document.getElementById('apiKeyInput');
-      var helper   = document.getElementById('keyHelperText');
-      var badge    = document.getElementById('providerBadge');
+      var keySec      = document.getElementById('apiKeySection');
+      var keyInput    = document.getElementById('apiKeyInput');
+      var keyGrp      = document.getElementById('keyInputGroup');
+      var helper      = document.getElementById('keyHelperText');
+      var badge       = document.getElementById('providerBadge');
+      var customRow   = document.getElementById('customEndpointRow');
+      var customInput = document.getElementById('customEndpointInput');
+
+      hideConnectionStatus();
 
       if (prov === 'gemini') {
         document.getElementById('tabGemini').classList.add('active');
         keySec.style.display = 'flex';
+        keyGrp.style.display = 'flex';
+        customRow.style.display = 'none';
         keyInput.placeholder = 'AIzaSy... (Gemini API Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_gemini_key') || '';
         helper.textContent = 'Direct connection to Google Gemini REST API. Stored exclusively in local storage.';
@@ -385,6 +433,8 @@
       } else if (prov === 'openrouter') {
         document.getElementById('tabOpenRouter').classList.add('active');
         keySec.style.display = 'flex';
+        keyGrp.style.display = 'flex';
+        customRow.style.display = 'none';
         keyInput.placeholder = 'sk-or-v1-... (OpenRouter Key)';
         keyInput.value = localStorage.getItem('visiolog_demo_openrouter_key') || '';
         helper.textContent = 'Direct route to open vision models via OpenRouter.';
@@ -393,10 +443,24 @@
 
       } else if (prov === 'ollama') {
         document.getElementById('tabOllama').classList.add('active');
-        keySec.style.display = 'none';
+        keySec.style.display = 'flex';
+        keyGrp.style.display = 'none';
+        customRow.style.display = 'none';
         helper.textContent = 'Connects locally to http://localhost:11434 with zero keys required.';
         badge.textContent = 'Ollama (Local)';
         populateCombobox(PRESETS.ollama);
+
+      } else if (prov === 'custom') {
+        document.getElementById('tabCustom').classList.add('active');
+        keySec.style.display = 'flex';
+        keyGrp.style.display = 'flex';
+        customRow.style.display = 'flex';
+        customInput.value = localStorage.getItem('visiolog_custom_endpoint') || 'http://localhost:8000/v1';
+        keyInput.placeholder = 'Optional Bearer token / API key...';
+        keyInput.value = localStorage.getItem('visiolog_custom_key') || '';
+        helper.textContent = 'Connect to any OpenAI-compatible Vision API (vLLM, LM Studio, Ollama OpenAI endpoint, Together AI).';
+        badge.textContent = 'Custom Endpoint';
+        populateCombobox(PRESETS.custom);
       }
     }
 
@@ -407,7 +471,13 @@
         if (trimmed.length > 20) probeModels(false);
       } else if (activeProvider === 'openrouter') {
         localStorage.setItem('visiolog_demo_openrouter_key', trimmed);
+      } else if (activeProvider === 'custom') {
+        localStorage.setItem('visiolog_custom_key', trimmed);
       }
+    }
+
+    function handleCustomEndpointSave(val) {
+      localStorage.setItem('visiolog_custom_endpoint', val.trim());
     }
 
     function toggleKeyVisibility() {
@@ -423,50 +493,181 @@
     }
 
     function probeModels(notify) {
-      if (activeProvider !== 'gemini') return;
+      if (activeProvider === 'gemini') {
+        var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
+        if (!key) {
+          populateCombobox(PRESETS.gemini);
+          if (notify) showNotice('Enter a Gemini API key to probe available models.', 'error');
+          return;
+        }
 
-      var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
-      if (!key) {
-        populateCombobox(PRESETS.gemini);
-        if (notify) showNotice('Enter a Gemini API key to probe your live account models.', 'error');
-        return;
-      }
+        if (notify) showNotice('Probing Google Gemini API for available models...', 'success');
 
-      if (notify) showNotice('Probing Google Gemini API for available models...', 'success');
+        fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + key)
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            if (data.error) throw new Error(data.error.message || 'API error');
 
-      fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + key)
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (data.error) throw new Error(data.error.message || 'API error');
+            var valid = (data.models || [])
+              .filter(function(m) {
+                var n = (m.name || '');
+                var sup = Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.indexOf('generateContent') >= 0;
+                return sup && n.indexOf('gemini') >= 0 && (n.indexOf('flash') >= 0 || n.indexOf('pro') >= 0);
+              })
+              .map(function(m) { return m.name.replace('models/', ''); });
 
-          var valid = (data.models || [])
-            .filter(function(m) {
-              var n = (m.name || '');
-              var sup = Array.isArray(m.supportedGenerationMethods) && m.supportedGenerationMethods.indexOf('generateContent') >= 0;
-              return sup && n.indexOf('gemini') >= 0 && (n.indexOf('flash') >= 0 || n.indexOf('pro') >= 0);
-            })
-            .map(function(m) { return m.name.replace('models/', ''); });
+            valid.sort(function(a, b) {
+              var extract = function(s) {
+                var match = s.match(/gemini-(\d+(?:\.\d+)?)/);
+                return match ? parseFloat(match[1]) : 0;
+              };
+              return extract(b) - extract(a);
+            });
 
-          valid.sort(function(a, b) {
-            var extract = function(s) {
-              var match = s.match(/gemini-(\d+(?:\.\d+)?)/);
-              return match ? parseFloat(match[1]) : 0;
-            };
-            return extract(b) - extract(a);
+            if (valid.length > 0) {
+              populateCombobox(valid);
+              if (notify) showNotice('Found ' + valid.length + ' Gemini models. Active: ' + activeModel, 'success');
+            } else {
+              populateCombobox(PRESETS.gemini);
+              if (notify) showNotice('Using default Gemini models.', 'success');
+            }
+          })
+          .catch(function() {
+            populateCombobox(PRESETS.gemini);
+            if (notify) showNotice('Using default Gemini model list.', 'success');
           });
 
-          if (valid.length > 0) {
-            populateCombobox(valid);
-            if (notify) showNotice('Found ' + valid.length + ' Gemini models. Active: ' + activeModel, 'success');
-          } else {
-            populateCombobox(PRESETS.gemini);
-            if (notify) showNotice('Using default Gemini models.', 'success');
-          }
+      } else if (activeProvider === 'openrouter') {
+        populateCombobox(PRESETS.openrouter);
+        if (notify) showNotice('OpenRouter vision models loaded.', 'success');
+
+      } else if (activeProvider === 'ollama') {
+        fetch('http://localhost:11434/api/tags')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var models = (data.models || []).map(function(m) { return m.name; });
+            if (models.length > 0) {
+              populateCombobox(models);
+              if (notify) showNotice('Found ' + models.length + ' local Ollama models.', 'success');
+            } else {
+              populateCombobox(PRESETS.ollama);
+            }
+          })
+          .catch(function() {
+            populateCombobox(PRESETS.ollama);
+            if (notify) showNotice('Using default Ollama model presets.', 'success');
+          });
+
+      } else {
+        populateCombobox(PRESETS.custom);
+      }
+    }
+
+    function testOutboundConnection() {
+      var btn = document.getElementById('testConnectionBtn');
+      var box = document.getElementById('connectionStatusBox');
+
+      box.className = 'connection-status-box testing';
+      box.innerHTML = '<svg class="svg-icon spin" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>' +
+        '<span>Testing outbound connection to ' + activeProvider + ' (' + activeModel + ')...</span>';
+
+      var startTime = Date.now();
+
+      if (activeProvider === 'gemini') {
+        var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
+        if (!key) {
+          showConnectionFail('No Gemini API Key provided. Enter your API key in Step 2 above.');
+          return;
+        }
+
+        fetch('https://generativelanguage.googleapis.com/v1beta/models/' + activeModel + '?key=' + key)
+          .then(function(r) {
+            var latency = Date.now() - startTime;
+            if (r.ok) {
+              showConnectionSuccess('Connected to Google Gemini REST API. Model: ' + activeModel + ' (Latency: ' + latency + 'ms).');
+            } else {
+              return r.json().then(function(d) {
+                throw new Error((d.error || {}).message || ('HTTP ' + r.status + ' Error'));
+              });
+            }
+          })
+          .catch(function(err) {
+            showConnectionFail('Gemini Connection Error: ' + err.message + '. Check your API key or model name.');
+          });
+
+      } else if (activeProvider === 'openrouter') {
+        var orKey = localStorage.getItem('visiolog_demo_openrouter_key') || '';
+        if (!orKey) {
+          showConnectionFail('No OpenRouter API Key provided. Enter your key in Step 2 above.');
+          return;
+        }
+
+        fetch('https://openrouter.ai/api/v1/auth/key', {
+          headers: { 'Authorization': 'Bearer ' + orKey }
         })
-        .catch(function() {
-          populateCombobox(PRESETS.gemini);
-          if (notify) showNotice('Using default Gemini model list.', 'success');
-        });
+          .then(function(r) {
+            var latency = Date.now() - startTime;
+            if (r.ok) {
+              showConnectionSuccess('Connected to OpenRouter. Model: ' + activeModel + ' (Latency: ' + latency + 'ms).');
+            } else {
+              throw new Error('Invalid OpenRouter API Key or rate limit.');
+            }
+          })
+          .catch(function(err) {
+            showConnectionFail('OpenRouter Error: ' + err.message + '. Please check your API key.');
+          });
+
+      } else if (activeProvider === 'ollama') {
+        fetch('http://localhost:11434/api/tags')
+          .then(function(r) {
+            var latency = Date.now() - startTime;
+            if (r.ok) {
+              showConnectionSuccess('Connected to Local Ollama at localhost:11434 (Latency: ' + latency + 'ms). Model: ' + activeModel);
+            } else {
+              throw new Error('Ollama responded with HTTP ' + r.status);
+            }
+          })
+          .catch(function() {
+            showConnectionFail('Could not connect to Ollama at http://localhost:11434. Ensure Ollama is running and OLLAMA_ORIGINS="*" is enabled.');
+          });
+
+      } else if (activeProvider === 'custom') {
+        var endpoint = (localStorage.getItem('visiolog_custom_endpoint') || 'http://localhost:8000/v1').replace(/\/+$/, '');
+        var cKey     = localStorage.getItem('visiolog_custom_key') || '';
+        var headers  = cKey ? { 'Authorization': 'Bearer ' + cKey } : {};
+
+        fetch(endpoint + '/models', { headers: headers })
+          .then(function(r) {
+            var latency = Date.now() - startTime;
+            if (r.ok) {
+              showConnectionSuccess('Connected to Custom Endpoint at ' + endpoint + ' (Latency: ' + latency + 'ms).');
+            } else {
+              showConnectionSuccess('Reached endpoint at ' + endpoint + ' (Status: ' + r.status + ', Latency: ' + latency + 'ms). Ready to extract.');
+            }
+          })
+          .catch(function(err) {
+            showConnectionFail('Failed to reach custom endpoint: ' + endpoint + '. Ensure CORS is enabled and the server is running.');
+          });
+      }
+    }
+
+    function showConnectionSuccess(msg) {
+      var box = document.getElementById('connectionStatusBox');
+      box.className = 'connection-status-box connected';
+      box.innerHTML = '<svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>' +
+        '<div><strong>Connection Active:</strong> ' + escHtml(msg) + '</div>';
+    }
+
+    function showConnectionFail(msg) {
+      var box = document.getElementById('connectionStatusBox');
+      box.className = 'connection-status-box failed';
+      box.innerHTML = '<svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>' +
+        '<div><strong>Connection Failed:</strong> ' + escHtml(msg) + '<br /><span style="font-size:0.65rem; opacity:0.85;">Action: Check your network, model identifier, or API credentials.</span></div>';
+    }
+
+    function hideConnectionStatus() {
+      var box = document.getElementById('connectionStatusBox');
+      if (box) { box.className = 'connection-status-box'; box.innerHTML = ''; }
     }
 
     function handleModelInput(val) {
@@ -476,6 +677,7 @@
       localStorage.setItem('visiolog_model', trimmed);
       renderPills();
       filterDropdown(trimmed);
+      hideConnectionStatus();
     }
 
     function selectModel(val) {
@@ -484,6 +686,7 @@
       document.getElementById('modelInput').value = val;
       closeModelDropdown();
       renderPills();
+      hideConnectionStatus();
       showNotice('Active model set to ' + val, 'success');
     }
 
@@ -515,7 +718,7 @@
       });
 
       if (matches.length === 0) {
-        panel.innerHTML = '<div class="combobox-opt" style="color:var(--muted-fg); font-style:italic;">No preset matches. Your typed model will be used.</div>';
+        panel.innerHTML = '<div class="combobox-opt" style="color:var(--muted-fg); font-style:italic;">No preset matches. Your typed model ID will be used directly.</div>';
         return;
       }
 
@@ -574,6 +777,8 @@
         localStorage.removeItem('visiolog_prompt');
         localStorage.removeItem('visiolog_demo_gemini_key');
         localStorage.removeItem('visiolog_demo_openrouter_key');
+        localStorage.removeItem('visiolog_custom_endpoint');
+        localStorage.removeItem('visiolog_custom_key');
         localStorage.removeItem('visiolog_workspace_history');
         location.reload();
       }
