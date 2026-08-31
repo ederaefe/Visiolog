@@ -1,0 +1,3 @@
+# Git Attributes
+demo/** export-ignore
+*.html export-ignore

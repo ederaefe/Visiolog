@@ -44,3 +44,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+
+# Live Demo Website (Isolated on gh-pages branch)
+/demo/
+demo/
+*.html
+!src/**/*.html
+

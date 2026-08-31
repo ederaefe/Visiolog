@@ -247,6 +247,19 @@ The static web client and live workspace operate entirely in the client browser:
 ### 11.2 Public Directory Asset Preservation
 - **Asset-Only Policy**: The `public/` directory is strictly reserved for Next.js assets (brand logos, icons, service worker `sw.js`, `sitemap.xml`, and preview mockups). All HTML demo pages and `public/demo/` subfolders have been permanently purged from `public/`.
 
+---
+
+## 12. Dedicated `gh-pages` Branch Isolation & Clone Prevention Architecture
+
+### 12.1 Live Demo Isolated to `gh-pages` Branch
+- **Dedicated Hosting Environment**: All static demo pages and client-side ingestion tools (`index.html`, `demo.html`, `workspace.html`, `settings.html`, `docs.html`, `contact.html`, `privacy.html`, `terms.html`, `robots.txt`, `sitemap.xml`) reside at the root of an isolated `gh-pages` orphan branch.
+- **GitHub Pages Serving**: GitHub Pages (`https://ederaefe.github.io/Visiolog/`) is served directly from the `gh-pages` branch via the GitHub Actions workflow in `.github/workflows/deploy-pages.yml`.
+
+### 12.2 Clone Exclusion on `main` Branch
+- **Clean Repository Clones**: When users execute `git clone https://github.com/ederaefe/Visiolog.git`, Git checks out the default `main` branch, which contains exclusively the full-stack Next.js web application (`src/`, `package.json`, `supabase/`, etc.). Zero demo HTML files are cloned to their local environment.
+- **Ignore Rules**: The `.gitignore` and `.gitattributes` files on `main` ensure that any local `demo/` folders or loose static HTML files remain ignored and excluded from archive downloads.
+
+
 
 
 
