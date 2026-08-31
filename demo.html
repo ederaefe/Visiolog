@@ -68,12 +68,12 @@
       --card-fg: hsl(0, 0%, 98%);
       --muted: hsl(0, 0%, 22%);
       --muted-fg: hsl(0, 0%, 68%);
-      --primary: hsl(102, 87%, 72%);
-      --primary-fg: hsl(214, 31%, 12%);
+      --primary: #6B9700;
+      --primary-fg: #ffffff;
       --border: hsl(0, 0%, 26%);
       --border-sub: hsl(0, 0%, 20%);
-      --accent: hsl(105, 100%, 20%);
-      --accent-fg: hsl(0, 0%, 100%);
+      --accent: #6B9700;
+      --accent-fg: #ffffff;
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
@@ -1185,7 +1185,10 @@
           <div id="promptQuickBody" style="display: none; margin-top: 0.65rem;">
             <textarea id="workspacePromptTextarea" class="textarea-input" rows="7" style="width: 100%; min-height: 140px; font-family: var(--font-mono); font-size: 0.725rem; line-height: 1.45; resize: vertical; box-sizing: border-box;" oninput="handleWorkspacePromptInput(this.value)" placeholder="Extraction instructions..."></textarea>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.4rem;">
-              <button type="button" class="btn btn-ghost btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;" onclick="resetWorkspacePrompt()">Reset</button>
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.45rem; display: inline-flex; align-items: center; gap: 0.3rem;" onclick="resetWorkspacePrompt()" title="Reset to default prompt" aria-label="Reset prompt">
+                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <span>Reset</span>
+              </button>
               <a href="./settings.html" class="btn btn-ghost btn-sm" style="font-size: 0.7rem; padding: 0.2rem 0.45rem;">Full Settings</a>
             </div>
           </div>
