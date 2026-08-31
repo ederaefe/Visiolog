@@ -236,6 +236,18 @@ The static web client and live workspace operate entirely in the client browser:
   - Local history persistence with load and individual/bulk purge capabilities.
 - **Strict Compliance**: Adheres to zero-emoji, zero-sparkle, pure monochrome SVG icons, desktop text navigation, and responsive mobile icon controls.
 
+---
+
+## 11. Demo Directory Root Segregation & Public Folder Sanitization
+
+### 11.1 Dedicated Root `demo/` Architecture
+- **Complete Standalone Suite**: All static demo pages and components reside exclusively under the root `demo/` directory (`demo/demo.html`, `demo/workspace.html`, `demo/settings.html`, `demo/docs.html`, `demo/index.html`, `demo/contact.html`, `demo/privacy.html`, `demo/terms.html`).
+- **Modular Isolation**: Keeps the static client-side web demo decoupled from server-side Next.js route components while maintaining 100% feature and styling parity.
+
+### 11.2 Public Directory Asset Preservation
+- **Asset-Only Policy**: The `public/` directory is strictly reserved for Next.js assets (brand logos, icons, service worker `sw.js`, `sitemap.xml`, and preview mockups). All HTML demo pages and `public/demo/` subfolders have been permanently purged from `public/`.
+
+
 
 
 

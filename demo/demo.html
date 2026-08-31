@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Workspace — Visiolog</title>
-  <meta name="description" content="Convert paper documents, receipts, invoices, and logs into spreadsheets in your browser." />
+  <title>Demo — Visiolog</title>
+  <meta name="description" content="Try Visiolog live in your browser. Convert paper documents, receipts, invoices, and logs into interactive spreadsheets with zero signup." />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <link rel="canonical" href="https://ederaefe.github.io/Visiolog/workspace.html" />
+  <link rel="canonical" href="https://ederaefe.github.io/Visiolog/demo.html" />
 
   <!-- Inline SVG Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a9500'/%3E%3Ctext x='16' y='23' font-family='Georgia%2C serif' font-size='21' font-weight='900' text-anchor='middle' fill='white'%3EV%3C/text%3E%3C/svg%3E" />
@@ -221,13 +221,12 @@
 
     /* Responsive Text Visibility Helpers */
     .text-desktop-only { display: none; }
-    .icon-mobile-only { display: inline-flex; }
 
     @media (min-width: 768px) {
       .text-desktop-only { display: inline; }
     }
 
-    /* Mobile Workspace Mode Switcher (Icon Only on Mobile, Icon + Label on Larger Screens) */
+    /* Mobile Workspace Mode Switcher */
     .mobile-view-tabs {
       display: none;
       gap: 0.35rem;
@@ -886,7 +885,8 @@
 
         <!-- Desktop Navigation Links (Text Buttons on Desktop >= 768px) -->
         <nav class="desktop-nav-group" aria-label="Desktop Navigation">
-          <a href="./workspace.html" class="btn btn-primary btn-sm">Workspace</a>
+          <a href="./demo.html" class="btn btn-primary btn-sm">Demo</a>
+          <a href="./workspace.html" class="btn btn-outline btn-sm">Workspace</a>
           <a href="./settings.html" class="btn btn-outline btn-sm">Settings</a>
           <a href="./docs.html" class="btn btn-outline btn-sm">Docs</a>
           <a href="./" class="btn btn-ghost btn-sm">Landing</a>
@@ -895,8 +895,8 @@
 
         <!-- Mobile Navigation Group (Monochrome Icons on Mobile < 768px) -->
         <nav class="mobile-nav-group" aria-label="Mobile Navigation">
-          <!-- Workspace Link (Icon #1: 2D Grid) -->
-          <a href="./workspace.html" class="nav-icon-btn active" title="Workspace" aria-label="Workspace">
+          <!-- Workspace/Demo Link (Icon #1: 2D Grid) -->
+          <a href="./demo.html" class="nav-icon-btn active" title="Demo" aria-label="Demo">
             <svg class="svg-icon" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
           </a>
 
@@ -1211,9 +1211,10 @@
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer-inner">
-        <div>&copy; 2026 Visiolog — In-Browser Workspace</div>
+        <div>&copy; 2026 Visiolog — In-Browser Live Demo</div>
         <nav class="footer-links" aria-label="Footer Navigation">
           <a href="./">Landing</a>
+          <a href="./demo.html">Demo</a>
           <a href="./workspace.html">Workspace</a>
           <a href="./settings.html">Settings</a>
           <a href="./docs.html" title="Visiolog Technical Documentation">Documentation</a>
@@ -2170,7 +2171,7 @@
         : '';
 
       var iconHtml = type === 'error'
-        ? '<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+        ? '<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>'
         : (type === 'success'
           ? '<svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
           : spinnerHtml);
