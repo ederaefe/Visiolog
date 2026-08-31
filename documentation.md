@@ -376,6 +376,29 @@ The static web client and live workspace operate entirely in the client browser:
 - **Monochrome SVG Reload Icon**: Replaced plain text reset buttons with clean, subtle reset icon buttons (`<svg><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span>Reset</span>`).
 - **Unified Single Source of Truth**: Both Settings and Workspace prompt editors anchor directly to the high-level advanced systemic prompt template.
 
+---
+
+## 20. Step-by-Step API Key Acquisition Tutorial Guide (`get-key.html`) & Mobile Ergonomics
+
+### 20.1 Dedicated Key Tutorial Center (`get-key.html`)
+- **Interactive Provider Breadcrumb/Tab Switcher**: Allows toggling between **Google Gemini (Recommended)**, **OpenRouter**, **Ollama (Local Offline)**, and **Custom Endpoint** instructions with active tab indicators and URL hash synchronization (`#guide-gemini`, `#guide-openrouter`, `#guide-ollama`, `#guide-custom`).
+- **Structured Instructional Design**: Each guide features:
+  - Direct outbound links to official key management consoles (e.g. `aistudio.google.com/app/apikey`, `openrouter.ai/keys`, `ollama.com/download`).
+  - Numbered step cards with visual breadcrumbs and mock UI boxes.
+  - Contextual **Tips** (e.g., free tier quotas, free model endpoints).
+  - Explicit **Cautions** (e.g., distinguishing OAuth client IDs from REST API keys, configuring `OLLAMA_ORIGINS="*"` for browser CORS).
+  - Immediate action CTAs linking directly to Settings to paste and test keys.
+
+### 20.2 In-Context Linkage Across the App
+- **Credentials Card (`settings.html`)**: Appended `<u><a href="./get-key.html">Get a key</a></u>` after the helper sentence, dynamically pointing to the relevant provider anchor upon tab selection.
+- **Error Status Bar (`workspace.html` & `demo.html`)**: Added a direct `Get Key` primary CTA button alongside `Settings` when a missing or invalid authentication error occurs.
+
+### 20.3 Mobile View Ergonomics & Touch Target Enforcement
+- **Minimum 44px Touch Targets**: Applied across all interactive buttons, provider tabs, text inputs, combobox dropdown selectors, and navigation pills on mobile viewports (< 768px).
+- **Zero Horizontal Viewport Overflow**: Bounded container padding, flexible card structures, and smooth horizontal scrolling tabs with `-webkit-overflow-scrolling: touch`.
+- **Dark Mode `#6B9700` Palette Consistency**: Full theme switcher and high-contrast styling maintained on all mobile breakpoints.
+
+
 
 
 
