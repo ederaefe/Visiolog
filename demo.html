@@ -951,10 +951,15 @@
       </button>
     </div>
 
-    <!-- Live Demo Architecture & Educational Assertion Notice -->
-    <aside class="demo-architecture-banner" role="region" aria-label="Demo Architecture Notice" style="background:var(--card); border:1px solid var(--border); border-left:4px solid var(--primary); border-radius:var(--radius); padding:0.75rem 1rem; margin-top:0.85rem; font-size:0.775rem; line-height:1.5; color:var(--fg);">
-      <strong style="color:var(--primary); font-family:var(--font-mono); text-transform:uppercase; font-size:0.7rem; letter-spacing:0.05em; display:block; margin-bottom:0.15rem;">Live Demo Architecture Notice</strong>
-      This client-side demonstration is intentionally designed to mirror the visual ergonomics, interaction flow, and spreadsheet editing mechanics of the full Visiolog platform, running 100% locally in your browser with custom keys to demonstrate core vision processing. The full production Visiolog platform includes multi-page document pipelines, automated schema validation rule enforcement, persistent Supabase PostgreSQL database synchronization, multi-tenant project workspaces, enterprise audit logs, and cloud vector storage. <a href="./docs.html" style="color:var(--primary); font-weight:700; text-decoration:underline;">Read Real App Docs</a>
+    <!-- Live Demo Architecture & Educational Assertion Notice (One-time Dismissible) -->
+    <aside id="demoArchitectureNotice" class="demo-architecture-banner" role="region" aria-label="Demo Architecture Notice" style="display:none; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--primary); border-radius:var(--radius); padding:0.75rem 1rem; margin-top:0.85rem; font-size:0.775rem; line-height:1.5; color:var(--fg); align-items:flex-start; justify-content:space-between; gap:0.75rem;">
+      <div style="flex:1;">
+        <strong style="color:var(--primary); font-family:var(--font-mono); text-transform:uppercase; font-size:0.7rem; letter-spacing:0.05em; display:block; margin-bottom:0.15rem;">Live Demo Notice</strong>
+        This client-side demo is intentionally designed to mirror the visual layout and spreadsheet mechanics of the full Visiolog platform, running 100% locally in your browser with custom keys. The full production platform includes multi-page document pipelines, automated schema validation rules, persistent Supabase PostgreSQL database sync, multi-tenant project workspaces, and enterprise audit logs. <a href="./docs.html" style="color:var(--primary); font-weight:700; text-decoration:underline;">Read Real App Docs</a>
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" onclick="dismissDemoNotice()" style="padding:0.2rem 0.4rem; flex-shrink:0; color:var(--muted-fg);" title="Dismiss" aria-label="Dismiss">
+        <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </aside>
 
     <div class="workspace-layout">
@@ -980,17 +985,11 @@
         <div class="card" id="uploadCard">
           <div class="card-title">
             <span>Document</span>
-            <div style="display:flex; gap:0.25rem;">
+            <div>
               <!-- New Button (Icon #10: Plus Cross) -->
               <button type="button" class="btn btn-ghost btn-sm" style="padding:0.2rem 0.45rem;" onclick="createBlankSheet()" title="New blank table" aria-label="New">
                 <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span class="text-desktop-only">New</span>
-              </button>
-
-              <!-- Sample Button (Icon #11: Template Layout - NO SPARKLES) -->
-              <button type="button" class="btn btn-ghost btn-sm" style="padding:0.2rem 0.45rem;" onclick="loadSamplePrompt()" title="Load sample document" aria-label="Sample">
-                <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="7" y1="15" x2="7.01" y2="15"/><line x1="11" y1="15" x2="13" y2="15"/></svg>
-                <span class="text-desktop-only">Sample</span>
               </button>
             </div>
           </div>
@@ -1158,7 +1157,7 @@
           </div>
           <h2 class="empty-title">Ready for Extraction</h2>
           <p class="empty-desc">
-            Upload document images or load a realistic sample template to create an interactive spreadsheet.
+            Upload document images or create a new blank spreadsheet to start editing.
           </p>
 
           <div class="empty-actions">
@@ -1166,13 +1165,8 @@
               <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
               <span>Upload</span>
             </button>
-            <button type="button" class="btn btn-outline" onclick="loadSampleTemplate('invoice')">
-              <span>Invoice</span>
-            </button>
-            <button type="button" class="btn btn-outline" onclick="loadSampleTemplate('logbook')">
-              <span>Logbook</span>
-            </button>
             <button type="button" class="btn btn-outline" onclick="createBlankSheet()">
+              <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Blank</span>
             </button>
           </div>
@@ -1396,47 +1390,27 @@
       showStatus('Created new editable spreadsheet "' + name + '".', 'success');
     }
 
-    /* Sample Document Presets */
-    var SAMPLES = {
-      invoice: {
-        name: 'Sample Financial Invoice',
-        headers: ['Item No', 'Description', 'Qty', 'Unit Price', 'Total'],
-        rows: [
-          ['INV-001', 'Cloud Infrastructure Setup', '1', '1200.00', '1200.00'],
-          ['INV-002', 'Vision Model Ingestion Worker', '4', '350.00', '1400.00'],
-          ['INV-003', 'Database Optimization & WAL', '1', '600.00', '600.00'],
-          ['INV-004', 'Zero-Storage Privacy Audit', '1', '850.00', '850.00']
-        ]
-      },
-      logbook: {
-        name: 'Sample Warehouse Logbook',
-        headers: ['SKU', 'Product Name', 'Category', 'Stock Qty', 'Reorder Level', 'Unit Cost'],
-        rows: [
-          ['SKU-9901', 'Thermal Receipt Paper (50pk)', 'Supplies', '140', '30', '18.50'],
-          ['SKU-9902', 'High-Speed Document Scanner', 'Hardware', '12', '5', '420.00'],
-          ['SKU-9903', 'Barcode Inventory Wand', 'Hardware', '25', '10', '75.00'],
-          ['SKU-9904', 'Heavy Duty Archival Binder', 'Supplies', '310', '50', '6.20']
-        ]
+    /* One-Time Live Demo Notice Manager */
+    function initDemoNotice() {
+      var notice = document.getElementById('demoArchitectureNotice');
+      if (!notice) return;
+      try {
+        if (!localStorage.getItem('visiolog_demo_notice_dismissed')) {
+          notice.style.display = 'flex';
+        }
+      } catch (e) {
+        notice.style.display = 'flex';
       }
-    };
-
-    function loadSamplePrompt() {
-      var choice = confirm('Load Sample Invoice? (Click Cancel for Sample Logbook)') ? 'invoice' : 'logbook';
-      loadSampleTemplate(choice);
     }
 
-    function loadSampleTemplate(type) {
-      var sample = SAMPLES[type] || SAMPLES.invoice;
-      uploadedFileName = sample.name;
-      activeHeaders = sample.headers.slice();
-      activeRows = sample.rows.map(function(r) { return r.slice(); });
-
-      uploadedB64 = null;
-      document.getElementById('docPreview').style.display = 'none';
-      renderTable(activeHeaders, activeRows);
-      setViewMode('table');
-      saveToHistory(uploadedFileName, activeHeaders, activeRows);
-      showStatus('Loaded "' + sample.name + '".', 'success');
+    function dismissDemoNotice() {
+      var notice = document.getElementById('demoArchitectureNotice');
+      if (notice) {
+        notice.style.display = 'none';
+      }
+      try {
+        localStorage.setItem('visiolog_demo_notice_dismissed', 'true');
+      } catch (e) {}
     }
 
     /* CRUD: Rename Document */
@@ -1619,9 +1593,10 @@
     /* Provider 1: Gemini REST Execution */
     function runGeminiExtractionWithPolling(key, model, prompt, retryCount, onDone) {
       var maxRetries = 3;
+      var cleanKey = (key || '').trim();
       showStatus('Analyzing with Gemini ' + model + ' in browser...', 'loading');
 
-      var url  = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + key;
+      var url  = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(cleanKey);
       var body = JSON.stringify({
         contents: [{
           parts: [
@@ -1637,7 +1612,10 @@
 
       fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-goog-api-key': cleanKey
+        },
         body: body,
         signal: controller.signal
       })
@@ -1647,16 +1625,25 @@
             var delay = Math.pow(2, retryCount + 1) * 1000;
             showStatus('Rate limit reached. Retrying in ' + (delay / 1000) + 's...', 'loading');
             setTimeout(function() {
-              runGeminiExtractionWithPolling(key, model, prompt, retryCount + 1, onDone);
+              runGeminiExtractionWithPolling(cleanKey, model, prompt, retryCount + 1, onDone);
             }, delay);
             return null;
           }
-          return r.json();
+          return r.json().then(function(data) {
+            return { ok: r.ok, status: r.status, data: data };
+          });
         })
-        .then(function(data) {
-          if (!data) return;
+        .then(function(res) {
+          if (!res) return;
           if (onDone) onDone();
-          if (data.error) throw new Error(data.error.message || 'Gemini API error');
+          var data = res.data;
+          if (!res.ok || (data && data.error)) {
+            var errMsg = (data && data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status + ' Error');
+            if (errMsg.indexOf('authentication credentials') >= 0 || errMsg.indexOf('API key not valid') >= 0 || res.status === 401 || res.status === 403) {
+              throw new Error('Invalid Gemini API Key: Please verify your Google AI Studio key (starts with AIzaSy...) in Settings.');
+            }
+            throw new Error(errMsg);
+          }
           var text = (((data.candidates || [])[0] || {}).content || {});
           var raw  = (text.parts || []).map(function(p) { return p.text || ''; }).join('');
           renderCsvOutput(raw, uploadedFileName);
@@ -2278,6 +2265,7 @@
 
     /* Initialization */
     document.addEventListener('DOMContentLoaded', function() {
+      initDemoNotice();
       renderHistory();
       syncActiveModelStatus();
       setViewMode(localStorage.getItem(VIEW_KEY) || 'table');

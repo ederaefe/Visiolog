@@ -879,10 +879,15 @@
           </a>
         </div>
 
-        <!-- Live Demo Architecture & Educational Assertion Notice Banner -->
-        <aside class="demo-architecture-banner" role="region" aria-label="Demo Architecture Notice" style="background:var(--card); border:1px solid var(--border); border-left:4px solid var(--primary); border-radius:0.85rem; padding:1rem 1.25rem; margin:1.75rem auto 0; max-width:48rem; text-align:left; font-size:0.8125rem; line-height:1.6; color:var(--foreground); box-shadow:0 2px 8px var(--shadow-color);">
-          <strong style="color:var(--primary); font-family:var(--font-mono); text-transform:uppercase; font-size:0.75rem; letter-spacing:0.06em; display:block; margin-bottom:0.25rem;">Live Demo Architecture Notice</strong>
-          This interactive in-browser demonstration is purposefully structured to mirror the ergonomic layout, spreadsheet mechanics, and visual flow of the complete Visiolog production application, while running 100% locally with custom client keys to illustrate real-time vision processing. The full production Visiolog platform incorporates multi-page document pipelines, automated schema validation rule enforcement, persistent Supabase PostgreSQL synchronization, multi-tenant project workspaces, enterprise audit logs, and cloud vector storage. <a href="./docs.html" style="color:var(--primary); font-weight:700; text-decoration:underline;">Read Real App Docs</a>
+        <!-- Live Demo Architecture & Educational Assertion Notice Banner (One-time Dismissible) -->
+        <aside id="demoArchitectureNotice" class="demo-architecture-banner" role="region" aria-label="Demo Architecture Notice" style="display:none; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--primary); border-radius:0.85rem; padding:1rem 1.25rem; margin:1.75rem auto 0; max-width:48rem; text-align:left; font-size:0.8125rem; line-height:1.6; color:var(--foreground); box-shadow:0 2px 8px var(--shadow-color); align-items:flex-start; justify-content:space-between; gap:0.75rem;">
+          <div style="flex:1;">
+            <strong style="color:var(--primary); font-family:var(--font-mono); text-transform:uppercase; font-size:0.75rem; letter-spacing:0.06em; display:block; margin-bottom:0.25rem;">Live Demo Notice</strong>
+            This interactive in-browser demo mirrors the ergonomic layout and spreadsheet mechanics of the complete Visiolog platform, running 100% locally with custom keys. The full production Visiolog suite incorporates multi-page document pipelines, automated schema validation rules, persistent Supabase PostgreSQL sync, multi-tenant project workspaces, and enterprise audit logs. <a href="./docs.html" style="color:var(--primary); font-weight:700; text-decoration:underline;">Read Real App Docs</a>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="dismissDemoNotice()" style="padding:0.2rem 0.4rem; flex-shrink:0; color:var(--muted-foreground);" title="Dismiss" aria-label="Dismiss">
+            <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </aside>
 
         <!-- Trust Badges -->
@@ -1199,13 +1204,30 @@
       updateThemeButtonsUI('auto');
     }
 
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-      var currentSetting = localStorage.getItem('visiolog_theme');
-      if (!currentSetting) {
-        document.documentElement.classList.toggle('dark', e.matches);
-        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+    /* One-Time Live Demo Notice Manager */
+    function initDemoNotice() {
+      var notice = document.getElementById('demoArchitectureNotice');
+      if (!notice) return;
+      try {
+        if (!localStorage.getItem('visiolog_demo_notice_dismissed')) {
+          notice.style.display = 'flex';
+        }
+      } catch (e) {
+        notice.style.display = 'flex';
       }
-    });
+    }
+
+    function dismissDemoNotice() {
+      var notice = document.getElementById('demoArchitectureNotice');
+      if (notice) {
+        notice.style.display = 'none';
+      }
+      try {
+        localStorage.setItem('visiolog_demo_notice_dismissed', 'true');
+      } catch (e) {}
+    }
+
+    initDemoNotice();
   </script>
 </body>
 </html>

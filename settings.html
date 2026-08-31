@@ -430,10 +430,15 @@
         <p class="settings-sub">Vision engine settings, API credentials, prompts, and application reset.</p>
       </div>
 
-      <!-- Live Demo Architecture & Educational Assertion Notice -->
-      <aside class="demo-architecture-banner" role="region" aria-label="Demo Architecture Notice" style="background:var(--card); border:1px solid var(--border); border-left:4px solid var(--primary); border-radius:var(--radius); padding:0.75rem 1rem; margin-bottom:1rem; font-size:0.775rem; line-height:1.5; color:var(--fg);">
-        <strong style="color:var(--primary); font-family:var(--font-mono); text-transform:uppercase; font-size:0.7rem; letter-spacing:0.05em; display:block; margin-bottom:0.15rem;">Live Demo Architecture Notice</strong>
-        These custom API key settings power the client-side demonstration, allowing users to evaluate in-browser vision processing without creating an account or provisioning cloud infrastructure. In the full production Visiolog platform, API credentials, tenant encryption keys, and multi-tenant quotas are managed securely via Supabase PostgreSQL and Row Level Security. <a href="./docs.html" style="color:var(--primary); font-weight:700; text-decoration:underline;">Read Real App Docs</a>
+      <!-- Live Demo Architecture & Educational Assertion Notice (One-time Dismissible) -->
+      <aside id="demoArchitectureNotice" class="demo-architecture-banner" role="region" aria-label="Demo Architecture Notice" style="display:none; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--primary); border-radius:var(--radius); padding:0.75rem 1rem; margin-bottom:1rem; font-size:0.775rem; line-height:1.5; color:var(--fg); align-items:flex-start; justify-content:space-between; gap:0.75rem;">
+        <div style="flex:1;">
+          <strong style="color:var(--primary); font-family:var(--font-mono); text-transform:uppercase; font-size:0.7rem; letter-spacing:0.05em; display:block; margin-bottom:0.15rem;">Live Demo Notice</strong>
+          These custom API key settings power the client-side demonstration, allowing users to evaluate in-browser vision processing without creating an account or provisioning cloud infrastructure. In the full production Visiolog platform, API credentials, tenant encryption keys, and multi-tenant quotas are managed securely via Supabase PostgreSQL and Row Level Security. <a href="./docs.html" style="color:var(--primary); font-weight:700; text-decoration:underline;">Read Real App Docs</a>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="dismissDemoNotice()" style="padding:0.2rem 0.4rem; flex-shrink:0; color:var(--muted-fg);" title="Dismiss" aria-label="Dismiss">
+          <svg class="svg-icon svg-icon-sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </aside>
 
       <div id="noticeBar" class="notification-bar" role="status"></div>
@@ -771,10 +776,33 @@
       }
     }
 
+    /* One-Time Live Demo Notice Manager */
+    function initDemoNotice() {
+      var notice = document.getElementById('demoArchitectureNotice');
+      if (!notice) return;
+      try {
+        if (!localStorage.getItem('visiolog_demo_notice_dismissed')) {
+          notice.style.display = 'flex';
+        }
+      } catch (e) {
+        notice.style.display = 'flex';
+      }
+    }
+
+    function dismissDemoNotice() {
+      var notice = document.getElementById('demoArchitectureNotice');
+      if (notice) {
+        notice.style.display = 'none';
+      }
+      try {
+        localStorage.setItem('visiolog_demo_notice_dismissed', 'true');
+      } catch (e) {}
+    }
+
     /* Model Discovery */
     function probeModels(notify) {
       if (activeProvider === 'gemini') {
-        var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
+        var key = (localStorage.getItem('visiolog_demo_gemini_key') || '').trim();
         if (!key) {
           populateCombobox(PRESETS.gemini);
           if (notify) showNotice('Enter a Gemini API key to probe available models.', 'error');
@@ -783,10 +811,18 @@
 
         if (notify) showNotice('Probing Google Gemini API for available models...', 'success');
 
-        fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + key)
+        fetch('https://generativelanguage.googleapis.com/v1beta/models?key=' + encodeURIComponent(key), {
+          headers: { 'x-goog-api-key': key }
+        })
           .then(function(r) { return r.json(); })
           .then(function(data) {
-            if (data.error) throw new Error(data.error.message || 'API error');
+            if (data.error) {
+              var msg = data.error.message || 'API error';
+              if (msg.indexOf('authentication credentials') >= 0 || msg.indexOf('API key not valid') >= 0) {
+                throw new Error('Invalid Gemini API Key. Please verify your Google AI Studio key.');
+              }
+              throw new Error(msg);
+            }
 
             var valid = (data.models || [])
               .filter(function(m) {
@@ -812,9 +848,9 @@
               if (notify) showNotice('Using default Gemini models.', 'success');
             }
           })
-          .catch(function() {
+          .catch(function(err) {
             populateCombobox(PRESETS.gemini);
-            if (notify) showNotice('Using default Gemini model list.', 'success');
+            if (notify) showNotice('Gemini Error: ' + err.message, 'error');
           });
 
       } else if (activeProvider === 'openrouter') {
@@ -853,22 +889,28 @@
       var startTime = Date.now();
 
       if (activeProvider === 'gemini') {
-        var key = localStorage.getItem('visiolog_demo_gemini_key') || '';
+        var key = (localStorage.getItem('visiolog_demo_gemini_key') || '').trim();
         if (!key) {
           showConnectionFail('No Gemini API Key provided. Enter your API key above.');
           return;
         }
 
-        fetch('https://generativelanguage.googleapis.com/v1beta/models/' + activeModel + '?key=' + key)
+        fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(activeModel) + '?key=' + encodeURIComponent(key), {
+          headers: { 'x-goog-api-key': key }
+        })
           .then(function(r) {
             var latency = Date.now() - startTime;
-            if (r.ok) {
-              showConnectionSuccess('Connected to Google Gemini REST API. Model: ' + activeModel + ' (Latency: ' + latency + 'ms).');
-            } else {
-              return r.json().then(function(d) {
-                throw new Error((d.error || {}).message || ('HTTP ' + r.status + ' Error'));
-              });
-            }
+            return r.json().then(function(d) {
+              if (r.ok && !d.error) {
+                showConnectionSuccess('Connected to Google Gemini REST API. Model: ' + activeModel + ' (Latency: ' + latency + 'ms).');
+              } else {
+                var msg = (d.error || {}).message || ('HTTP ' + r.status + ' Error');
+                if (msg.indexOf('authentication credentials') >= 0 || msg.indexOf('API key not valid') >= 0 || r.status === 401 || r.status === 403) {
+                  throw new Error('Invalid Gemini API Key. Ensure your key starts with AIzaSy... from Google AI Studio (aistudio.google.com/app/apikey).');
+                }
+                throw new Error(msg);
+              }
+            });
           })
           .catch(function(err) {
             showConnectionFail('Gemini Connection Error: ' + err.message);
@@ -1111,6 +1153,7 @@
 
     /* Initialization */
     document.addEventListener('DOMContentLoaded', function() {
+      initDemoNotice();
       var savedProv   = localStorage.getItem('visiolog_provider') || 'gemini';
       var savedModel  = localStorage.getItem('visiolog_model') || 'gemini-2.5-flash';
       var savedPrompt = localStorage.getItem('visiolog_prompt') || DEFAULT_PROMPT;
