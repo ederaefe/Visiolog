@@ -399,6 +399,24 @@ The static web client and live workspace operate entirely in the client browser:
 - **Zero Horizontal Viewport Overflow**: Bounded container padding, flexible card structures, and smooth horizontal scrolling tabs with `-webkit-overflow-scrolling: touch`.
 - **Dark Mode `#6B9700` Palette Consistency**: Full theme switcher and high-contrast styling maintained on all mobile breakpoints.
 
+---
+
+## 21. Universal Mobile Experience & Touch-First Viewport Engineering
+
+### 21.1 Landing Page Navigation & Responsive Typography (`index.html`)
+- **Expanded Mobile Navigation Drawer**: Enhanced `#mobileDrawer` with direct top-level access to **Workspace**, **Settings**, and **Get API Key** alongside informational sections (How It Works, Features, FAQ, Docs).
+- **Mobile Touch Padding & Hero Contrast**: Calibrated hero badge and highlight styling with `#6B9700` dark mode tokens and responsive font clamping (`2.25rem` mobile to `3.5rem` desktop).
+
+### 21.2 Workspace Mobile View & Grid Optimization (`workspace.html` & `demo.html`)
+- **Adaptive Spreadsheet Viewport**: Configured `.table-viewport` with `max-height: calc(100vh - 210px)` and `min-height: 280px` on small screens (< 768px), maintaining comfortable vertical breathing room while preserving 2D table scrolling and sticky header visibility.
+- **Vertical Grid Toolbar Stacking**: Formatted table action buttons (`Copy`, `Download`, `Clear`, `Zoom`) into full-width mobile button clusters to prevent awkward line breaks and overflow.
+- **Automatic Post-Extraction Mode Switching**: Transcribing documents on mobile automatically shifts focus to the `Table` tab upon completion.
+
+### 21.3 Settings & Key Center Mobile Usability (`settings.html` & `get-key.html`)
+- **Touch-Friendly Form Controls**: Enforced 44px minimum tap targets across `.text-input`, `.combobox-input`, `.provider-tab`, and `.btn` elements.
+- **Responsive OS Tab System**: Implemented smooth horizontal sub-tab switching for operating system instructions (Windows, macOS, Linux) with overflow containment.
+
+
 
 
 
